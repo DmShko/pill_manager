@@ -2,6 +2,7 @@
   "name": "pill_manager",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://DmShko.github.io/pill_manager/",
   "type": "module",
   "scripts": {
     "dev": "vite",
