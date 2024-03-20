@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 // type for one pill element
 interface Pill {
-    name: string
+    name?: string
     id: string
-    status: boolean
-    prescription: string
-    quality: number
-    perDay: number
-    duration: number
-    description: string
+    status?: boolean
+    prescription?: string
+    quality?: number
+    perDay?: number
+    duration?: number
+    description?: string
 };
 
 // type for itialState
@@ -32,18 +32,16 @@ const pmSlice = createSlice({
     initialState: pmInitialState,
     reducers: {
 
-        changePills(state, action: PayloadAction <{ operation: string, data: Pill | string}>) {
-            switch (action.payload.operation) {
+        changePills(state, action: PayloadAction<Pill>) {
+            switch (action.type) {
               case 'clearPills':
                 state.pills = [];
                 break;
-              case 'addPill':
-                if(typeof action.payload.data === 'object')
-                state.pills = [...state.pills, action.payload.data];
+              case 'addPill':       
+                state.pills = [...state.pills, action.payload];
                 break;
               case 'deletePill':
-                if(typeof action.payload.data === 'string')
-                state.pills = state.pills.filter(element => element.id !== action.payload.data);
+                state.pills = state.pills.filter(element => element.id !== action.payload.id);
                 break;
               default: break;
             }

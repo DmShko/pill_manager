@@ -9,6 +9,7 @@ import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+
     <Provider store={store}>
       <BrowserRouter basename="/pill_manager">
         <PersistGate loading={null} persistor={persistor}>
@@ -16,5 +17,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </PersistGate>
       </BrowserRouter>
     </Provider>
+    
   </React.StrictMode>,
 )
