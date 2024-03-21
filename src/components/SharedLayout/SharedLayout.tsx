@@ -1,46 +1,40 @@
-import { FC } from 'react'; 
-import { NavLink, Outlet } from 'react-router-dom';
-import { Suspense } from 'react';
+import { FC } from "react";
+import { NavLink, Outlet } from "react-router-dom";
+import { Suspense } from "react";
+
+// styles
+import { SharedLayoutStyles } from "./SharedLayout.styled.js";
 
 const SharedLayout: FC = () => {
   return (
-    <>
-        <header>
+    <SharedLayoutStyles>
+      <header>
+        <div className="header-content">
             <nav>
-                <NavLink to="/">
-                    PM
-                </NavLink>
-                <ul>
-                    <li>
-                        <NavLink to="/pills">
-                            Pills
-                        </NavLink>
-                    </li>
+            <NavLink className="logo" to="/">MEDICINE</NavLink>
+            <ul className="nav-list">
+                <li className="nav-link">
+                <NavLink to="/courses">Courses</NavLink>
+                </li>
 
-                    <li>
-                        <NavLink to="/prescriptions">
-                            Prescriptions
-                        </NavLink>
-                    </li>
+                <li className="nav-link">
+                <NavLink to="/prescriptions">Prescriptions</NavLink>
+                </li>
 
-                    <li>
-                        <NavLink to="/tasks">
-                            Tasks
-                        </NavLink>
-                    </li>
-                </ul>
+            </ul>
             </nav>
-        </header>
-        <main>
-            <Suspense fallback={'..loading'}>
-                <Outlet />
-            </Suspense>
-        </main>
-        <footer>
+        </div>
+      </header>
+      <main>
+        <Suspense fallback={"..loading"}>
+          <Outlet />
+        </Suspense>
+      </main>
+      <footer>
 
-        </footer>
-    </>
-  )
-}
+      </footer>
+    </SharedLayoutStyles>
+  );
+};
 
-export default SharedLayout
+export default SharedLayout;
