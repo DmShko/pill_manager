@@ -1,8 +1,15 @@
-import { FC } from 'react'
+import { FC } from 'react';
+
+import PageContainer from '../../components/PageContainer/PageContainer';
+import CoursesPackage from '../../components/CoursesPackage/CoursesPackage';
 
 const Courses: FC = () => {
   return (
-    <div>Courses</div>
+    
+    <PageContainer>
+      <CoursesPackage />
+    </PageContainer>
+    
   )
 }
 

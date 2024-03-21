@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 
 // import component pages
-import SharedLayout from './components/SharedLayout/SharedLayout';
+import SharedLayout from './components/SharedLayout/SharedLayout.tsx';
 import Courses from './pages/Courses/Courses.tsx';
 import Prescriptions from './pages/Prescriptions/Prescriptions.tsx';
 import Home from './pages/Home/Home.tsx';

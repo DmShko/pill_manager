@@ -3,13 +3,13 @@ import { NavLink, Outlet } from "react-router-dom";
 import { Suspense } from "react";
 
 // styles
-import { SharedLayoutStyles } from "./SharedLayout.styled.js";
+import { SharedLayoutStyles } from "./SharedLayout.styled";
 
 const SharedLayout: FC = () => {
   return (
     <SharedLayoutStyles>
       <header>
-        <div className="header-content">
+        <div className="header-container">
             <nav>
             <NavLink className="logo" to="/">MEDICINE</NavLink>
             <ul className="nav-list">

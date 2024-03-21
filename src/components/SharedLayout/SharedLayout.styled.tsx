@@ -14,9 +14,11 @@ export const SharedLayoutStyles = styled.div`
 
         border: 1px solid gray;
 
+        padding: 10px 0;
+
     }
 
-    .header-content {
+    .header-container {
 
         display: flex;
         flex-direction: row;
@@ -27,6 +29,9 @@ export const SharedLayoutStyles = styled.div`
 
         padding: 0 20px;
 
+        
+        // background-color: orange;
+
     }
 
     .logo {
@@ -34,7 +39,9 @@ export const SharedLayoutStyles = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-item: center;
+        align-items: center;
+
+        font-size: 18px;
 
         width: fit-content;
         height: 100%;
@@ -48,9 +55,10 @@ export const SharedLayoutStyles = styled.div`
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-item: center;
+        align-items: center;
 
-        width: 100%
+        width: 100%;
+        
     }
 
     .nav-list {
@@ -58,7 +66,7 @@ export const SharedLayoutStyles = styled.div`
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        align-item: center;
+        align-items: center;
 
         list-style: none;
 
@@ -74,7 +82,7 @@ export const SharedLayoutStyles = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-item: center;
+        align-items: center;
 
     }
 

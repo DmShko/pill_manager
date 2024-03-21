@@ -1,8 +1,12 @@
-import { FC } from 'react'
+import { FC } from 'react';
+
+import PageContainer from '../../components/PageContainer/PageContainer';
 
 const Home: FC = () => {
   return (
-    <div>Home</div>
+    <PageContainer>
+      Home
+    </PageContainer>
   )
 }
 
