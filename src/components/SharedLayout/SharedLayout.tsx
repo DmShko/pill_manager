@@ -11,7 +11,11 @@ const SharedLayout: FC = () => {
       <header>
         <div className="header-container">
             <nav>
-            <NavLink className="logo" to="/">MEDICINE</NavLink>
+
+              <div className="logo-container">
+                <NavLink className="logo" to="/">MEDICINE</NavLink>
+              </div>
+            
             <ul className="nav-list">
                 <li className="nav-link">
                 <NavLink to="/courses">Courses</NavLink>

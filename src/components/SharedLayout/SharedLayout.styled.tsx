@@ -10,11 +10,11 @@ export const SharedLayoutStyles = styled.div`
         left: 0;
 
         width: calc(100vw - 2px);
-        height: 50px;
-
-        border: 1px solid gray;
+        height: 70px;
 
         padding: 10px 0;
+
+        border-bottom: 2px solid rgba(16, 16, 24, 0.2);
 
     }
 
@@ -34,6 +34,22 @@ export const SharedLayoutStyles = styled.div`
 
     }
 
+    .logo-container {
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 75px;
+        height: 75px;
+
+        box-shadow: inset 1px 1px 4px 3px rgba(16, 16, 24, 0.2);
+
+        border-radius: 50%;
+
+    }
+
     .logo {
 
         display: flex;
@@ -41,13 +57,14 @@ export const SharedLayoutStyles = styled.div`
         justify-content: center;
         align-items: center;
 
-        font-size: 18px;
+        font-size: 14px;
 
-        width: fit-content;
-        height: 100%;
+        height: fit-content;
 
-        padding: 0 5px;
- 
+        padding: 0;
+
+        color: lightgray;
+        
     }
 
     nav {
