@@ -4,7 +4,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface Pill {
     name?: string
     id: string
-    status?: boolean
     prescription?: string
     quality?: number
     perDay?: number
@@ -12,16 +11,31 @@ interface Pill {
     description?: string
 };
 
+enum CourseStatus {
+  'done', 
+  'suspended', 
+  'not done'
+};
+
+// type for one courses item
+interface Courses {
+  courseName?: string
+  doctorName?: string
+  id: string
+  status?: CourseStatus
+  pills: Pill[]
+};
+
 // type for itialState
 interface PmInitialState {
-  pills: Pill[]
+  courses: Courses[]
   isLoading: boolean
   error: boolean
 };
 
 const pmInitialState: PmInitialState = {
 
-  pills: [],
+  courses: [],
   isLoading: false,
   error: false,
  
@@ -32,16 +46,16 @@ const pmSlice = createSlice({
     initialState: pmInitialState,
     reducers: {
 
-        changePills(state, action: PayloadAction<Pill>) {
+        changeCourses(state, action: PayloadAction<Courses>) {
             switch (action.type) {
-              case 'clearPills':
-                state.pills = [];
+              case 'clearCourses':
+                state.courses = [];
                 break;
-              case 'addPill':       
-                state.pills = [...state.pills, action.payload];
+              case 'addCourse':       
+                state.courses = [...state.courses, action.payload];
                 break;
-              case 'deletePill':
-                state.pills = state.pills.filter(element => element.id !== action.payload.id);
+              case 'deleteCourse':
+                state.courses = state.courses.filter(element => element.id !== action.payload.id);
                 break;
               default: break;
             }
@@ -53,6 +67,6 @@ const pmSlice = createSlice({
 );
 
 export const {
-    changePills
+    changeCourses
 } = pmSlice.actions;
 export default pmSlice.reducer;

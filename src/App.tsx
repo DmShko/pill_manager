@@ -8,7 +8,7 @@ import Prescriptions from './pages/Prescriptions/Prescriptions.tsx';
 import Home from './pages/Home/Home.tsx';
 import NotFound from './pages/NotFound/NotFound.tsx';
 
-import './App.css'
+import './App.css';
 
 const COURSES = '/courses';
 const PRESCRIPTIONS = '/prescriptions';
@@ -43,4 +43,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;
