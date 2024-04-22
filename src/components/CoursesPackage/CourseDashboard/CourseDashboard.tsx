@@ -4,6 +4,8 @@ import { nanoid } from 'nanoid';
 // own dispatch hook
 import { useAppDispatch, useAppSelector } from "../../../app.hooks";
 
+import CourseItem from '../CourseItem/CourseItem';
+
 // styles
 import { CourseDashboardStyled } from "./CourseDashboard.styled";
 
@@ -15,7 +17,7 @@ const CourseDashboard: FC = () => {
   // const dispatch = useAppDispatch();
 
   const coursesSelector = useAppSelector(state => state.courses);
-  console.log(coursesSelector.length)
+
   // search cours value
   const [searchCourse, setSearchCourse] = useState('');
 
@@ -53,17 +55,18 @@ const CourseDashboard: FC = () => {
             placeholder='Courses...'
           />
         </label>  
-        <button type='button' onClick={openAddBoard}>Add Course</button>
-        <button type='button'>Delete Cours</button>
+        <button type='button' onClick={openAddBoard}>{isAddBoard ? 'Close registry' : 'Open registry'}</button>
+     
       </div>
 
-      {isAddBoard && <CourseAddBoard/>}
+      <div className='courses'>
+        
+        {isAddBoard && <CourseAddBoard/>}
 
-      <div>
-        <ul>
+        <ul className='courses-list'>
           {coursesSelector.length !== 0 ? coursesSelector.map(element => 
             {
-              return <li key={nanoid()} id={element.id}>{element.doctorName}</li>  
+              return <li className='courses-item' key={nanoid()} id={element.id}><CourseItem courses={element}/></li>  
             }
           ) : 'There are no courses'}
         </ul>

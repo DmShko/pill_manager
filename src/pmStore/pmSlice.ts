@@ -1,41 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// type for one pill element
-interface Pill {
-    name?: string
-    id: string
-    prescription?: string
-    quality?: number
-    perDay?: number
-    duration?: number
-    description?: string
-};
-
-enum CourseStatus {
-  'done', 
-  'suspended', 
-  'not done'
-};
-
-// type for one courses item
-interface Courses {
-  courseName?: string
-  doctorName?: string
-  id: string
-  status?: CourseStatus
-  pills: Pill[]
-};
-
-// type for itialState
-interface PmInitialState {
-  courses: Courses[]
-  isLoading: boolean
-  error: boolean
-};
+// my types
+import { PmInitialState, ActionCourse, Courses, ActionPills, Pill, ChangeProp } from '../types/types';
 
 const pmInitialState: PmInitialState = {
 
   courses: [],
+  tempPills: [],
   isLoading: false,
   error: false,
  
@@ -46,20 +17,42 @@ const pmSlice = createSlice({
     initialState: pmInitialState,
     reducers: {
 
-        changeCourses(state, action: PayloadAction<Courses>) {
-            switch (action.type) {
+        changeCourses(state, action: PayloadAction<ActionCourse>) {
+            switch (action.payload.mode) {
               case 'clearCourses':
                 state.courses = [];
                 break;
               case 'addCourse':       
-                state.courses = [...state.courses, action.payload];
+                state.courses = [...state.courses, (action.payload.data as Courses)];
                 break;
               case 'deleteCourse':
-                state.courses = state.courses.filter(element => element.id !== action.payload.id);
+                state.courses = state.courses.filter(element => element.id !== action.payload.data);
                 break;
               default: break;
             }
         },
+
+        changeTempPills(state, action: PayloadAction<ActionPills>) {
+          switch (action.payload.mode) {
+            case 'clearPills':
+              state.tempPills = [];
+              break;
+            case 'addPill': 
+              state.tempPills = [...state.tempPills, (action.payload.data as Pill)];
+              break;
+            case 'changePill': 
+              const temp = state.tempPills.find(element => element.id === (action.payload.data as ChangeProp).id);
+         
+              if(temp !== undefined && Object.keys(temp).includes(action.payload.key)) {
+                temp[action.payload.key as keyof Pill] = (action.payload.data as ChangeProp).prop;
+              }
+              break;
+            case 'deletePill':
+              state.tempPills = state.tempPills.filter(element => element.id !== action.payload.data);
+              break;
+            default: break;
+          }
+      },
         
     },
     
@@ -67,6 +60,7 @@ const pmSlice = createSlice({
 );
 
 export const {
-    changeCourses
+    changeCourses,
+    changeTempPills
 } = pmSlice.actions;
 export default pmSlice.reducer;
