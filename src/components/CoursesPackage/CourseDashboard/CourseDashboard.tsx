@@ -12,6 +12,10 @@ import { CourseDashboardStyled } from "./CourseDashboard.styled";
 // my components
 import CourseAddBoard from '../CourseAddBoard/CourseAddBoard'
 
+import DeleteImg from '../../SvgComponents/Courses/Delete'; 
+
+import ChangeImg from '../../SvgComponents/Courses/Edit'; 
+
 const CourseDashboard: FC = () => {
 
   // const dispatch = useAppDispatch();
@@ -60,8 +64,13 @@ const CourseDashboard: FC = () => {
       </div>
 
       <div className='courses'>
-        
+
         {isAddBoard && <CourseAddBoard/>}
+
+        <div className='courses-drive'>
+          <button className='courses-button' type='button'><ChangeImg width={'25px'} height={'25px'}/></button>
+          <button className='courses-button' type='button'><DeleteImg width={'25px'} height={'25px'}/></button>
+        </div>
 
         <ul className='courses-list'>
           {coursesSelector.length !== 0 ? coursesSelector.map(element => 
@@ -69,7 +78,7 @@ const CourseDashboard: FC = () => {
               return <li className='courses-item' key={nanoid()} id={element.id}><CourseItem courses={element}/></li>  
             }
           ) : 'There are no courses'}
-        </ul>
+        </ul> 
       </div>
       
     </CourseDashboardStyled>

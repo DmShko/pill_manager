@@ -42,6 +42,10 @@ export const CourseItemStyled = styled.div`
       overflow-y: scroll;
 
       background-color: white;
+
+      border: 2px dashed lightgray;
+      border-top: none;
+      border-bottom: none;
    }
 
    .pill-text-container {
@@ -191,6 +195,8 @@ export const CourseItemStyled = styled.div`
       flex-direction: row;
       align-items: center;
       justify-content: center;
+
+      font-style: italic;
 
       height: 100%;
 

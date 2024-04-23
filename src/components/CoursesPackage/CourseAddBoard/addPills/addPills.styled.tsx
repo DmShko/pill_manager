@@ -57,6 +57,12 @@ export const AddPillsStyled = styled.div`
 
         padding: 0 5px;
 
+        margin-left: 20px;
+
+        transform: skew(160deg); 
+
+        box-shadow: 1px 1px 3px 3px #B2B2B3;
+
     }
 
     .pills-container {
@@ -69,6 +75,7 @@ export const AddPillsStyled = styled.div`
 
         overflow-y: scroll;
 
+        border: 1px dashed gray;
     }
 
     .pills-list {

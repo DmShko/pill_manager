@@ -6,6 +6,7 @@ export const CourseAddBoardStyled = styled.div`
         
       height: fit-content;
 
+      margin-bottom: 20px;
    }
 
    input {
@@ -57,6 +58,15 @@ export const CourseAddBoardStyled = styled.div`
       justify-content: start;
 
       gap: 10px;
+   }
+
+   .course-button {
+
+      margin-left: 20px;
+
+      transform: skew(160deg); 
+
+      box-shadow: 1px 1px 3px 3px #B2B2B3;
    }
 
 `;

@@ -12,7 +12,9 @@ export const CourseDashboardStyled = styled.div`
 
    .courses {
 
-      padding: 20px;
+      padding: 10px;
+
+      box-shadow: 1px 1px 4px 3px #A1A1A1;
 
    }
 
@@ -25,12 +27,14 @@ export const CourseDashboardStyled = styled.div`
 
       gap: 10px;
 
-      magrin: 0;
-      padding: 5px;
+      margin: 0;
+      padding: 10px 5px;
 
       height: 200px;
 
-      border: 1px solid gray;
+      border: 2px solid #646cff;
+      border-left: 1px solid #646cff;
+      border-right: 1px solid #646cff;
 
       list-style: none;
 
@@ -38,10 +42,41 @@ export const CourseDashboardStyled = styled.div`
       background-position: center;
 
       overflow-y: scroll;
+
    }
 
    .courses-item {
       width: 100%;
+   }
+
+   .courses-drive {
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      gap: 10px;
+
+      padding: 10px 0;
+
+      border-top: 2px solid #646cff;
+
+   }
+
+   .courses-button {
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 30px;
+      height: 30px;
+
+      transform: skew(160deg); 
+
+      box-shadow: 1px 1px 3px 3px #B2B2B3;
+
    }
 
 `;
