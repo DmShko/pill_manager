@@ -3,25 +3,25 @@ import { NavLink, Outlet } from "react-router-dom";
 import { Suspense } from "react";
 
 // styles
-import { SharedLayoutStyles } from "./SharedLayout.styled";
+import sh from "./SharedLayout.module.scss";
 
 const SharedLayout: FC = () => {
   return (
-    <SharedLayoutStyles>
+    <>
       <header>
-        <div className="header-container">
+        <div className={sh.headerContainer}>
             <nav>
 
-              <div className="logo-container">
-                <NavLink className="logo" to="/">MEDICINE</NavLink>
+              <div className={sh.logoContainer}>
+                <NavLink className={sh.logo} to="/">MEDICINE</NavLink>
               </div>
             
-            <ul className="nav-list">
-                <li className="nav-link">
+            <ul className={sh.navList}>
+                <li className={sh.navLink}>
                 <NavLink to="/courses">Courses</NavLink>
                 </li>
 
-                <li className="nav-link">
+                <li className={sh.navLink}>
                 <NavLink to="/prescriptions">Prescriptions</NavLink>
                 </li>
 
@@ -37,7 +37,7 @@ const SharedLayout: FC = () => {
       <footer>
 
       </footer>
-    </SharedLayoutStyles>
+    </>
   );
 };
 

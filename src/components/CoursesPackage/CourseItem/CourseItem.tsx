@@ -5,39 +5,39 @@ import { nanoid } from 'nanoid';
 import { CourseItemProps } from '../../../types/types';
 
 // styles
-import { CourseItemStyled } from "./CourseItem.styled";
+import ci from "./CourseItem.module.scss";
 
 const CourseItem: FC<CourseItemProps> = ({ courses }) => {
 
   return (
-    <CourseItemStyled>
-      <div className='course-item'>
+   
+      <div className={ci.courseItem}>
 
-          {courses.courseName !== '' ? <p className='name-item'><span className='name-item-title'>Course: </span>{courses.courseName}</p> :
-           <p className='name-item'><span className='name-item-title'>Course: </span>{'unnamed'}</p>}
+          {courses.courseName !== '' ? <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span>{courses.courseName}</p> :
+           <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span>{'unnamed'}</p>}
 
-          <div className='course-subcontainer'>
-            <div className='registry-info'>
-              <p className='info-item'><span className='title'>Clinic</span><span className='title-value'>{courses.clinicName}</span></p>
-              <p className='info-item'><span className='title'>Clinic Cont.</span><span className='title-value'>{courses.clinicContacts}</span></p>
-              <p className='info-item'><span className='title'>Doctor</span><span className='title-value'>{courses.doctorName}</span></p>
-              <p className='info-item'><span className='title'>Doctor Cont.</span><span className='title-value'>{courses.docContacts}</span></p>
+          <div className={ci.courseSubcontainer}>
+            <div className={ci.registryInfo}>
+              <p className={ci.infoItem}><span className={ci.title}>Clinic</span><span className={ci.titleCalue}>{courses.clinicName}</span></p>
+              <p className={ci.infoItem}><span className={ci.title}>Clinic Cont.</span><span className={ci.titleCalue}>{courses.clinicContacts}</span></p>
+              <p className={ci.infoItem}><span className={ci.title}>Doctor</span><span className={ci.titleCalue}>{courses.doctorName}</span></p>
+              <p className={ci.infoItem}><span className={ci.title}>Doctor Cont.</span><span className={ci.titleCalue}>{courses.docContacts}</span></p>
             </div>
 
-            <div className='status-container'>
-              <div className='status-indicator'></div>
-              <p className='status-item'><span className='status-title'>Status</span>{courses.status}</p>
+            <div className={ci.statusContainer}>
+              <div className={ci.statusIndicator}></div>
+              <p className={ci.statusItem}><span className={ci.statusTitle}>Status</span>{courses.status}</p>
             </div>
 
-            <ul className='courses-pills'>
+            <ul className={ci.coursesPills}>
               {courses.pills.length !== 0 ? courses.pills.map(element => 
                 {
-                  return <li key={nanoid()} className='pill-item' id={element.id}>
-                    <p className='pill-name'>{element.pillName}</p>
-                    <div className='pill-text-container'>
-                      <p className='pill-text'><span className='pill-title'>per/day</span> <span className='pill-title-value'>{element.perDay}</span></p>
-                      <p className='pill-text'><span className='pill-title'>quant.</span> <span className='pill-title-value'>{element.quantity}</span></p>
-                      <p className='pill-text'><span className='pill-title'>durat.</span> <span className='pill-title-value'>{element.duration}</span></p>
+                  return <li key={nanoid()} className={ci.pillItem} id={element.id}>
+                    <p className={ci.pillName}>{element.pillName}</p>
+                    <div className={ci.pillTextContainer}>
+                      <p className={ci.pillText}><span className={ci.pillTitle}>per/day</span> <span className={ci.pillTitleValue}>{element.perDay}</span></p>
+                      <p className={ci.pillText}><span className={ci.pillTitle}>quant.</span> <span className={ci.pillTitleValue}>{element.quantity}</span></p>
+                      <p className={ci.pillText}><span className={ci.pillTitle}>durat.</span> <span className={ci.pillTitleValue}>{element.duration}</span></p>
                     </div>
                   </li>  
                 }
@@ -46,7 +46,7 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
 
           </div>
       </div>
-    </CourseItemStyled>
+  
   )
 }
 

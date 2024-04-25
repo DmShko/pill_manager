@@ -8,7 +8,7 @@ import AddPills  from "./addPills/addPills";
 import { changeCourses } from '../../../pmStore/pmSlice';
 
 // styles
-import { CourseAddBoardStyled } from "./CourseAddBoard.styled";
+import cb from "./CourseAddBoard.module.scss";
 
 const CourseAddBoard = () => {
 
@@ -25,21 +25,21 @@ const CourseAddBoard = () => {
       visitDate: '',
     },
     onSubmit: values => {
-      dispatch(changeCourses({ mode: 'addCourse', data: {id: nanoid(),
+      dispatch(changeCourses({ mode: 'addCourse', data: {id: nanoid(), selected: false,
         courseName: values.courseName,
         doctorName: values.doctorName,
         docContacts: values.docContacts,
         clinicName: values.clinicName,
         clinicContacts: values.clinicContacts,
-        pills: selectorTempPills,}, key: '',}));
+        pills: selectorTempPills,}, key: '', }));
     },
   });
 
   return (
-    <CourseAddBoardStyled>
-        <div className='course-addboard'>
+    
+        <div className={cb.courseAddboard}>
 
-            <form className="course" onSubmit={formik.handleSubmit}>
+            <form className={cb.course} onSubmit={formik.handleSubmit}>
               
               <label htmlFor="courseName">Course name</label>
               <input
@@ -50,9 +50,9 @@ const CourseAddBoard = () => {
                 value={formik.values.courseName}
               />
 
-              <div className="info-container">
+              <div className={cb.infoContainer}>
 
-                <div className="doc-container">
+                <div className={cb.docContainer}>
                   <label htmlFor="doctorName">Doctor</label>
                   <input
                     id="doctorName"
@@ -72,7 +72,7 @@ const CourseAddBoard = () => {
                   />
                 </div>
 
-                <div className="cli-container">
+                <div className={cb.cliContainer}>
                   <label htmlFor="clinicName">Clinic</label>
                   <input
                     id="clinicName"
@@ -92,7 +92,7 @@ const CourseAddBoard = () => {
                   />
                 </div>
                 
-                <div className="visit-container">
+                <div className={cb.visitContainer}>
                   <label htmlFor="visitDate">Date of visit</label>
                   <input
                     id="visitDate"
@@ -103,7 +103,7 @@ const CourseAddBoard = () => {
                   />
                 </div>
 
-                <button type="submit" className="course-button">Create</button>
+                <button type="submit" className={cb.courseButton}>Create</button>
 
               </div>
 
@@ -112,7 +112,7 @@ const CourseAddBoard = () => {
             <AddPills/>
          
         </div>
-    </CourseAddBoardStyled>
+
   )
 }
 

@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 import { useAppDispatch, useAppSelector } from "../../../../app.hooks";
 
 // styles
-import { AddPillsStyled } from "./addPills.styled";
+import ap from "./addPills.module.scss";
 
 // external funcions
 import { changeTempPills } from '../../../../pmStore/pmSlice';
@@ -106,12 +106,12 @@ const AddPills = () => {
   };
 
   return (
-    <AddPillsStyled>
-        <div className='addpills-container'>
+   
+        <div className={ap.addPillsContainer}>
 
-            <form className="pills" onSubmit={formik.handleSubmit}>
+            <form className={ap.pills} onSubmit={formik.handleSubmit}>
               
-              <label htmlFor="pillName">Pill name</label>
+              <label htmlFor='pillName'>Pill name</label>
                 <input
                     id="pillName"
                     name="pillName"
@@ -120,70 +120,70 @@ const AddPills = () => {
                     value={formik.values.pillName}
                 />
 
-                <div className="pills-info">
-                    <div className="input-container">
+                <div className={ap.pillsInfo}>
+                    <div className={ap.inputContainer}>
                         <label htmlFor="perDay">Per day</label>
                         <input
                             id="perDay"
                             name="perDay"
                             type="text"
-                            className="pill-input"
+                            className={ap.pillInput}
                             onChange={formik.handleChange}
                             value={formik.values.perDay}
                         />
                     </div>
 
-                    <div className="input-container">
+                    <div className={ap.inputContainer}>
                         <label htmlFor="quantity">Quantity</label>
                         <input
                             id="quantity"
                             name="quantity"
                             type="text"
-                            className="pill-input"
+                            className={ap.pillInput}
                             onChange={formik.handleChange}
                             value={formik.values.quantity}
                         />
                     </div>
 
-                    <div className="input-container">
+                    <div className={ap.inputContainer}>
                         <label htmlFor="duration">Duration</label>
                         <input
                             id="duration"
                             name="duration"
                             type="text"
-                            className="pill-input"
+                            className={ap.pillInput}
                             onChange={formik.handleChange}
                             value={formik.values.duration}
                         />
                     </div>
                 
-                    <button className="pills-button">Add</button>
+                    <button className={ap.pillsButton}>Add</button>
                 </div>
             </form>
 
-            <div className='pills-container'>
+            <div className={ap.pillsContainer}>
                 {selectorTempPills.length !== 0 ? 
-                    <ul className='pills-list'>
+                    <ul className={ap.pillsList}>
                         {selectorTempPills.map(value => {
-                            return <li className='pills-item' key={nanoid()} id={value.id} onClick={itemClick}>
+                            return <li className={ap.pillsItem} key={nanoid()} id={value.id} onClick={itemClick}>
                                
-                                { itemName ? <input className="item-input" type="text" id='corrName' value={formik.values.corrName} onChange={formik.handleChange}/> 
-                                    : <p className='pills-text' id='itemName'> {value.pillName} </p>}
+                                { itemName ? <input className={ap.itemInput} type="text" id='corrName' value={formik.values.corrName} onChange={formik.handleChange}/> 
+                                    : <p className={ap.pillsText} id='itemName'> {value.pillName} </p>}
 
                                 <p>per/day: </p> 
-                                { itemPerDay ? <input className="item-input" type="text" id='corrPerDay' value={formik.values.corrPerDay} onChange={formik.handleChange}/> 
-                                    : <p className='pills-text' id='itemPerDay'> {value.perDay} </p>}
+                                { itemPerDay ? <input className={ap.itemInput} type="text" id='corrPerDay' value={formik.values.corrPerDay} onChange={formik.handleChange}/> 
+                                    : <p className={ap.pillsText} id='itemPerDay'> {value.perDay} </p>}
 
                                 <p>quan./day: </p> 
-                                { itemQuantity ? <input className="item-input" type="text" id='corrQuantity' value={formik.values.corrQuantity} onChange={formik.handleChange}/> 
-                                    : <p className='pills-text' id='itemQuantity'> {value.quantity} </p>}  
+                                { itemQuantity ? <input className={ap.itemInput} type="text" id='corrQuantity' value={formik.values.corrQuantity} onChange={formik.handleChange}/> 
+                                    : <p className={ap.pillsText} id='itemQuantity'> {value.quantity} </p>}  
 
                                 <p>durat.: </p> 
-                                { itemDuration ? <input className="item-input" type="text" id='corrDuration' value={formik.values.corrDuration} onChange={formik.handleChange}/> 
-                                    : <p className='pills-text' id='itemDuration'> {value.duration} </p>}
+                                { itemDuration ? <input className={ap.itemInput} type="text" id='corrDuration' value={formik.values.corrDuration} onChange={formik.handleChange}/> 
+                                    : <p className={ap.pillsText} id='itemDuration'> {value.duration} </p>}
                                
-                                {itemActiveSave && <button className='item-button' name='save'>Save</button>}
-                                <button className='item-button' name='del'>Del</button>
+                                {itemActiveSave && <button className={ap.itemButton} name='save'>Save</button>}
+                                <button className={ap.itemButton} name='del'>Del</button>
 
                             </li>
                         })}
@@ -192,7 +192,7 @@ const AddPills = () => {
             </div>
         
         </div>
-    </AddPillsStyled>
+ 
   )
 }
 

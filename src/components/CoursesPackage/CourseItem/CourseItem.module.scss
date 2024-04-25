@@ -1,8 +1,6 @@
-import styled from 'styled-components';
 
-export const CourseItemStyled = styled.div`
 
-   .course-item {
+   .courseItem {
 
       display: flex;
       flex-direction: row;
@@ -20,7 +18,7 @@ export const CourseItemStyled = styled.div`
       box-shadow: 1px 1px 4px 3px #A1A1A1;
    }
 
-   .course-subcontainer {
+   .courseSubcontainer {
 
       display: flex;
       flex-direction: row;
@@ -33,7 +31,14 @@ export const CourseItemStyled = styled.div`
 
    }
 
-   .courses-pills {
+   .coursesPills {
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 5px;
 
       width: 50%;
       height: 100px;
@@ -48,7 +53,7 @@ export const CourseItemStyled = styled.div`
       border-bottom: none;
    }
 
-   .pill-text-container {
+   .pillTextContainer {
 
       display: flex;
       flex-direction: row;
@@ -57,7 +62,7 @@ export const CourseItemStyled = styled.div`
 
    }
 
-   .pill-item {
+   .pillItem {
 
       display: flex;
       flex-direction: row;
@@ -75,7 +80,7 @@ export const CourseItemStyled = styled.div`
 
    }
 
-   .pill-text {
+   .pillText {
 
       display: flex;
       flex-direction: column;
@@ -93,7 +98,7 @@ export const CourseItemStyled = styled.div`
       background-color: lightgray;
    }
 
-   .pill-name {
+   .pillName {
 
       font-style: italic;
       background-color: white;
@@ -113,7 +118,7 @@ export const CourseItemStyled = styled.div`
 
    }
 
-   .registry-info {
+   .registryInfo {
 
       display: flex;
       flex-direction: column;
@@ -133,7 +138,7 @@ export const CourseItemStyled = styled.div`
       border-radius: 8px;
    }
 
-   .info-item {
+   .infoItem {
 
       display: flex;
       flex-direction: row;
@@ -155,14 +160,14 @@ export const CourseItemStyled = styled.div`
 
    }
 
-   .name-item {
+   .nameItem {
       width: 100px;
 
       margin: 0;
       overflow-x: hidden;
    }
 
-   .name-item-title {
+   .nameItemTitle {
 
       font-size: 20px;
       font-weight: 600;
@@ -172,7 +177,7 @@ export const CourseItemStyled = styled.div`
       color: blue;
    }
 
-   .pill-title-value {
+   .pillTitleValue {
       
       font-weight: 600;
       font-size: 18px;
@@ -183,13 +188,13 @@ export const CourseItemStyled = styled.div`
 
    }
 
-   .pill-title {
+   .pillTitle {
 
       font-size: 10px;
 
    }
 
-   .title-value {
+   .titleValue {
 
       display: flex;
       flex-direction: row;
@@ -206,7 +211,7 @@ export const CourseItemStyled = styled.div`
 
    /*######### status #########*/
 
-   .status-container {
+   .statusContainer {
 
       display: flex;
       flex-direction: column;
@@ -220,33 +225,34 @@ export const CourseItemStyled = styled.div`
 
    }
 
-   .status-indicator {
+   .statusIndicator {
 
       width: 100%;
-      height: 20%;
+      height: 60%;
 
-      border-radius: 8px;
+      border-radius: 8px 8px 0 0;
 
-      background-color: orange;
+      background-color: tomato;
      
    }
 
-   .status-title {
-
+   .statusTitle {
+     
       font-weight: 600;
+      background-color: white;
 
    }
 
-   .status-item {
+   .statusItem {
 
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
-      height: 80%;
+      height: 40%;
       margin: 0;
 
-   }
+      background-color: lightgray;
 
-`;
+   }

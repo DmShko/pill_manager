@@ -1,18 +1,18 @@
 import { FC } from 'react'
 
 // styles
-import { CoursesPackageStyled } from "./CoursesPackage.styled";
+import cp from "./CoursesPackage.module.scss";
 
 // my components
 import CourseDashboard from './CourseDashboard/CourseDashboard';
 
 const CoursesPackage: FC = () => {
   return (
-    <CoursesPackageStyled>
-      <div className='course-container'>
-        <CourseDashboard />
-      </div>
-    </CoursesPackageStyled>
+    
+    <div className={cp.courseContainer}>
+      <CourseDashboard />
+    </div>
+    
   )
 }
 

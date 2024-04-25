@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // my types
-import { PmInitialState, ActionCourse, Courses, ActionPills, Pill, ChangeProp } from '../types/types';
+import { PmInitialState, ActionCourses, Course, ActionPills, Pill, ChangePillProp, ChangeCourseProp } from '../types/types';
 
 const pmInitialState: PmInitialState = {
 
@@ -17,13 +17,24 @@ const pmSlice = createSlice({
     initialState: pmInitialState,
     reducers: {
 
-        changeCourses(state, action: PayloadAction<ActionCourse>) {
+        changeCourses(state, action: PayloadAction<ActionCourses>) {
             switch (action.payload.mode) {
               case 'clearCourses':
                 state.courses = [];
                 break;
+              case 'changeCourse':
+                const tempCourse = state.courses.find(element => element.id === (action.payload.data as ChangeCourseProp).id);
+
+                if(tempCourse !== undefined && Object.keys(tempCourse).includes(action.payload.key)) {
+                  
+                  if(typeof (action.payload.data as ChangeCourseProp).prop === 'boolean') {
+                    tempCourse[action.payload.key as keyof Pick<Course, 'selected'>] = (action.payload.data as ChangeCourseProp).prop;
+                  } 
+                 
+                }
+                break;
               case 'addCourse':       
-                state.courses = [...state.courses, (action.payload.data as Courses)];
+                state.courses = [...state.courses, (action.payload.data as Course)];
                 break;
               case 'deleteCourse':
                 state.courses = state.courses.filter(element => element.id !== action.payload.data);
@@ -41,10 +52,10 @@ const pmSlice = createSlice({
               state.tempPills = [...state.tempPills, (action.payload.data as Pill)];
               break;
             case 'changePill': 
-              const temp = state.tempPills.find(element => element.id === (action.payload.data as ChangeProp).id);
+              const temp = state.tempPills.find(element => element.id === (action.payload.data as ChangePillProp).id);
          
               if(temp !== undefined && Object.keys(temp).includes(action.payload.key)) {
-                temp[action.payload.key as keyof Pill] = (action.payload.data as ChangeProp).prop;
+                temp[action.payload.key as keyof Pill] = (action.payload.data as ChangePillProp).prop;
               }
               break;
             case 'deletePill':

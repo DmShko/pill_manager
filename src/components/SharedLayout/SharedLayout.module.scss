@@ -1,6 +1,4 @@
-import styled from 'styled-components';
 
-export const SharedLayoutStyles = styled.div`
 
     header {
 
@@ -18,7 +16,7 @@ export const SharedLayoutStyles = styled.div`
 
     }
 
-    .header-container {
+    .headerContainer {
 
         display: flex;
         flex-direction: row;
@@ -34,7 +32,7 @@ export const SharedLayoutStyles = styled.div`
 
     }
 
-    .logo-container {
+    .logoContainer {
 
         display: flex;
         flex-direction: column;
@@ -78,7 +76,7 @@ export const SharedLayoutStyles = styled.div`
         
     }
 
-    .nav-list {
+    .navList {
 
         display: flex;
         flex-direction: row;
@@ -94,7 +92,7 @@ export const SharedLayoutStyles = styled.div`
 
     }
 
-    .nav-link {
+    .navLink {
 
         display: flex;
         flex-direction: column;
@@ -103,4 +101,3 @@ export const SharedLayoutStyles = styled.div`
 
     }
 
-`;

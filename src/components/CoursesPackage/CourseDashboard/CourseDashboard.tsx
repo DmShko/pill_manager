@@ -1,4 +1,4 @@
-import { FC, useState, } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 
 // own dispatch hook
@@ -7,10 +7,12 @@ import { useAppDispatch, useAppSelector } from "../../../app.hooks";
 import CourseItem from '../CourseItem/CourseItem';
 
 // styles
-import { CourseDashboardStyled } from "./CourseDashboard.styled";
+import cd from "./CourseDashboard.module.scss";
 
 // my components
-import CourseAddBoard from '../CourseAddBoard/CourseAddBoard'
+import CourseAddBoard from '../CourseAddBoard/CourseAddBoard';
+
+import { changeCourses } from '../../../pmStore/pmSlice';
 
 import DeleteImg from '../../SvgComponents/Courses/Delete'; 
 
@@ -18,13 +20,12 @@ import ChangeImg from '../../SvgComponents/Courses/Edit';
 
 const CourseDashboard: FC = () => {
 
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const coursesSelector = useAppSelector(state => state.courses);
 
   // search cours value
   const [searchCourse, setSearchCourse] = useState('');
-
   // show/hidden 'add course' board
   const [isAddBoard, setIsAddBoard] = useState(false);
 
@@ -38,19 +39,39 @@ const CourseDashboard: FC = () => {
     
   };
 
-  // const deleteCourse = () => {
-
-  //   dispatch();
+  const courseActions = (evt: React.MouseEvent<HTMLButtonElement>) => {
+    if(evt.currentTarget.id === 'delete')
+    for(const c of coursesSelector){
+        if(c.selected === true) dispatch(changeCourses({ mode: 'deleteCourse', data: c.id, key: '',}));
+    }
     
-  // };
+  };
+
+  const selectCourse = (evt: React.MouseEvent<HTMLLIElement>) => {
+
+    const itemId = evt.currentTarget.id;
+    
+    if(!coursesSelector.find(element => element.id === itemId)?.selected) {
+    
+      dispatch(changeCourses({mode: 'changeCourse', data: {id: itemId, prop: true,}, key: 'selected',})); 
+
+     
+    }else {
+
+  
+      dispatch(changeCourses({mode: 'changeCourse', data: {id: itemId, prop: false,}, key: 'selected',})); 
+
+    };
+
+  };
 
   return (
-    <CourseDashboardStyled>
-      <div className='course-dashboard'>
-        <label className='us.lab'>
+    <>
+      <div className={cd.courseDashboard}>
+        <label className={cd.search}>
           <input 
             value={searchCourse}
-            className='in'
+            className={cd.in}
             type="text"
             name='search'              
             onChange={handleChange}
@@ -63,25 +84,25 @@ const CourseDashboard: FC = () => {
      
       </div>
 
-      <div className='courses'>
+      <div className={cd.courses}>
 
         {isAddBoard && <CourseAddBoard/>}
 
-        <div className='courses-drive'>
-          <button className='courses-button' type='button'><ChangeImg width={'25px'} height={'25px'}/></button>
-          <button className='courses-button' type='button'><DeleteImg width={'25px'} height={'25px'}/></button>
+        <div className={cd.coursesDrive}>
+          <button className={cd.coursesButton} id='changes' onClick={courseActions} type='button'><ChangeImg width={'25px'} height={'25px'}/></button>
+          <button className={cd.coursesButton} id='delete' onClick={courseActions} type='button'><DeleteImg width={'25px'} height={'25px'}/></button>
         </div>
 
-        <ul className='courses-list'>
+        <ul className={cd.coursesList}>
           {coursesSelector.length !== 0 ? coursesSelector.map(element => 
             {
-              return <li className='courses-item' key={nanoid()} id={element.id}><CourseItem courses={element}/></li>  
+              return <li className={cd.courseItem} key={nanoid()} id={element.id} 
+              style={element.selected ? {backgroundColor:'orange'} : {backgroundColor:''}} onClick={selectCourse}><CourseItem courses={element}/></li> 
             }
           ) : 'There are no courses'}
         </ul> 
       </div>
-      
-    </CourseDashboardStyled>
+    </>  
   )
 };
 

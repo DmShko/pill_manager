@@ -8,15 +8,20 @@ export interface Pill {
     description?: string
 };
 
-export interface ChangeProp {
+export interface ChangePillProp {
   id: string
   prop: string
+};
+
+export interface ChangeCourseProp {
+  id: string
+  prop: boolean
 };
 
 // type for pill action argument
 export interface ActionPills {
   mode: string
-  data: Pill | string | ChangeProp
+  data: Pill | string | ChangePillProp
   key: string
 };
 
@@ -28,33 +33,34 @@ enum CourseStatus {
   };
 
 // type for course action argument
-export interface ActionCourse {
+export interface ActionCourses {
   mode: string
-  data: Courses | string | ChangeProp
+  data: Course | string | ChangeCourseProp
   key: string
 };
 
 // type for one courses item
-export interface Courses { 
+export interface Course { 
     id: string
     courseName?: string
     doctorName?: string
     docContacts?: string
-    clinicName?: string,
-    clinicContacts?: string,
-    visitDate?: string,
+    clinicName?: string
+    clinicContacts?: string
+    visitDate?: string
     status?: CourseStatus
+    selected: boolean
     pills: Pill[]
   };
   
   // type for itialState
   export interface PmInitialState {
-    courses: Courses[]
+    courses: Course[]
     tempPills: Pill[],
     isLoading: boolean
     error: boolean
   };
 
   export interface CourseItemProps {
-    courses: Courses
+    courses: Course
   };

@@ -1,8 +1,4 @@
-import styled from 'styled-components';
-
-export const AddPillsStyled = styled.div`
-
-   .addpills-container {
+   .addPillsContainer {
 
       display: flex;
       flex-direction: row;
@@ -26,14 +22,14 @@ export const AddPillsStyled = styled.div`
         height: 100%;
    }
 
-   .input-container {
+   .inputContainer {
         display: flex;
         flex-direction: column;
         align-items: start;
         justify-content: space-between;  
    }
 
-   .pills-info {
+   .pillsInfo {
 
         display: flex;
         flex-direction: row;
@@ -44,13 +40,13 @@ export const AddPillsStyled = styled.div`
 
    }
 
-   .pill-input {
+   .pillInput {
 
         width: 55px;
         border: 1px dashed gray;
    }
 
-   .pills-button {
+   .pillsButton {
 
         width: fit-content;
         height: 45px;
@@ -65,7 +61,7 @@ export const AddPillsStyled = styled.div`
 
     }
 
-    .pills-container {
+    .pillsContainer {
 
         width: 60%;
         height: 100px;
@@ -78,7 +74,7 @@ export const AddPillsStyled = styled.div`
         border: 1px dashed gray;
     }
 
-    .pills-list {
+    .pillsList {
 
         display: flex;
         flex-direction: column;
@@ -91,7 +87,7 @@ export const AddPillsStyled = styled.div`
 
     }
 
-    .pills-item {
+    .pillsItem {
 
         display: flex;
         flex-direction: row;
@@ -105,7 +101,7 @@ export const AddPillsStyled = styled.div`
         background-color: lightgray;
     }
 
-    .pills-text {
+    .pillsText {
 
         display: flex;
         flex-direction: row;
@@ -115,14 +111,11 @@ export const AddPillsStyled = styled.div`
         gap: 10px;
     }
 
-    .item-button {
+    .itemButton {
         padding: 0 5px;
     }
 
-    .item-input {
+    .itemInput {
         width: 20px;
         border: none;
     }
-
-
-`;
