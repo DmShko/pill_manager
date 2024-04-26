@@ -9,8 +9,9 @@
 
       width: 100%;
 
-      box-shadow: 1px 1px 4px 3px #A1A1A1;
+      border-radius: 8px;
 
+      background-image: url('../../../images/courses/pills-svgrepo-com.svg');
    }
 
    .courses {
@@ -31,17 +32,16 @@
       gap: 15px;
 
       margin: 0;
+      
       padding: 10px 5px;
 
       height: 200px;
 
+      border-top: 2px solid lightgray;
       border-bottom: 2px solid lightgray;
-      border-left: 1px solid lightgray;
-      border-right: 1px solid lightgray;
-
+   
       list-style: none;
 
-      background-image: url('../../../images/courses/pills-svgrepo-com.svg');
       background-position: center;
 
       overflow-y: scroll;
@@ -59,9 +59,9 @@
 
       padding: 10px 0;
 
-      // border-top: 2px solid #646cff;
+      margin-bottom: 5px;
 
-      box-shadow: inset 1px 1px 3px 3px lightgray;
+      // box-shadow: inset 1px 1px 3px 3px lightgray;
 
    }
 
@@ -74,8 +74,8 @@
       width: 30px;
       height: 30px;
 
-      transform: skew(160deg); 
+      // transform: skew(160deg); 
 
-      box-shadow: 1px 1px 3px 3px #B2B2B3;
+      border-radius: 50px;
 
    }

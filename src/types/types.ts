@@ -39,6 +39,12 @@ export interface ActionCourses {
   key: string
 };
 
+// type for adit course action argument
+export interface EditActionCourse {
+  mode: string
+  data: Course 
+};
+
 // type for one courses item
 export interface Course { 
     id: string
@@ -57,6 +63,7 @@ export interface Course {
   export interface PmInitialState {
     courses: Course[]
     tempPills: Pill[],
+    editCourse: Course,
     isLoading: boolean
     error: boolean
   };

@@ -7,6 +7,9 @@ import { CourseItemProps } from '../../../types/types';
 // styles
 import ci from "./CourseItem.module.scss";
 
+// images
+import PillImage from '../../SvgComponents/Courses/pillItem/PillImage'; 
+
 const CourseItem: FC<CourseItemProps> = ({ courses }) => {
 
   return (
@@ -25,14 +28,16 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
             </div>
 
             <div className={ci.statusContainer}>
-              <div className={ci.statusIndicator}></div>
-              <p className={ci.statusItem}><span className={ci.statusTitle}>Status</span>{courses.status}</p>
+              <div className={ci.statusIndicator}>
+                <p className={ci.statusItem}><span className={ci.statusTitle}>%</span>{courses.status}</p>
+              </div>
             </div>
 
             <ul className={ci.coursesPills}>
               {courses.pills.length !== 0 ? courses.pills.map(element => 
                 {
                   return <li key={nanoid()} className={ci.pillItem} id={element.id}>
+                    <div><PillImage/></div>
                     <p className={ci.pillName}>{element.pillName}</p>
                     <div className={ci.pillTextContainer}>
                       <p className={ci.pillText}><span className={ci.pillTitle}>per/day</span> <span className={ci.pillTitleValue}>{element.perDay}</span></p>

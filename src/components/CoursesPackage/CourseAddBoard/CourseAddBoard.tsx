@@ -13,11 +13,12 @@ import cb from "./CourseAddBoard.module.scss";
 const CourseAddBoard = () => {
 
   const dispatch = useAppDispatch();
-  const selectorTempPills = useAppSelector(state => state.tempPills);
+  const tempPillsSelector = useAppSelector(state => state.tempPills);
+  const editCourseSelector = useAppSelector(state => state.editCourse);
 
   const formik = useFormik({
     initialValues: {
-      courseName: '',
+      courseName: editCourseSelector.courseName,
       doctorName: '',
       docContacts: '',
       clinicName: '',
@@ -31,7 +32,7 @@ const CourseAddBoard = () => {
         docContacts: values.docContacts,
         clinicName: values.clinicName,
         clinicContacts: values.clinicContacts,
-        pills: selectorTempPills,}, key: '', }));
+        pills: tempPillsSelector,}, key: '', }));
     },
   });
 
