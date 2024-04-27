@@ -61,8 +61,6 @@
 
       margin-bottom: 5px;
 
-      // box-shadow: inset 1px 1px 3px 3px lightgray;
-
    }
 
    .coursesButton {
@@ -74,8 +72,28 @@
       width: 30px;
       height: 30px;
 
-      // transform: skew(160deg); 
+      border: none;
+      outline: none;
 
       border-radius: 50px;
 
+      background-color: transparent;
+
+   }
+
+   .coursesButton:active {
+
+      box-shadow: inset 1px 1px 3px 3px lightgray;
+   }
+
+   .coursesButton:focus {
+
+      outline: none;
+
+   }
+
+   .coursesButton:hover {
+
+      outline: none;
+      background-color: #f9f9f9;
    }

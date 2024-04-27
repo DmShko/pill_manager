@@ -21,7 +21,7 @@ export interface ChangeCourseProp {
 // type for pill action argument
 export interface ActionPills {
   mode: string
-  data: Pill | string | ChangePillProp
+  data: Pill | string | ChangePillProp | Pill[]
   key: string
 };
 
@@ -45,6 +45,17 @@ export interface EditActionCourse {
   data: Course 
 };
 
+// type for isEdit action argument
+export interface IsEditEction {
+  data: boolean 
+};
+
+// type for pressEdit action argument
+export interface PressEditEction {
+  data: boolean 
+};
+
+
 // type for one courses item
 export interface Course { 
     id: string
@@ -62,9 +73,11 @@ export interface Course {
   // type for itialState
   export interface PmInitialState {
     courses: Course[]
-    tempPills: Pill[],
-    editCourse: Course,
+    tempPills: Pill[]
+    editCourse: Course
     isLoading: boolean
+    isEdit: boolean
+    pressEdit: boolean
     error: boolean
   };
 

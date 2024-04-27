@@ -51,9 +51,8 @@
 
       background-color: white;
 
-      border: 2px dashed lightgray;
-      border-top: none;
-      border-bottom: none;
+      border-left: 2px dashed lightgray;
+     
    }
 
    .pillTextContainer {
@@ -91,7 +90,9 @@
       align-items: center;
       justify-content: center;
 
-      width: 40px;
+      width: 55px;
+
+      height: 42px;
 
       margin: 0;
 
@@ -100,10 +101,34 @@
       border-left: 2px solid gray;
 
       background-color: lightgray;
+
+      .itemIcon {
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         justify-content: center;
+
+         height: 10px;
+
+         gap: 3px;     
+
+         .pillTitle {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+      
+            height: 10px;
+      
+            font-size: 10px;
+      
+         }
+      }
    }
 
    .pillName {
 
+      margin: 0;
       font-style: italic;
       background-color: white;
    }
@@ -186,24 +211,21 @@
       font-weight: 600;
       font-size: 18px;
 
+      margin: 0;
+
       width: 100%;
 
       color: blue;
 
    }
 
-   .pillTitle {
-
-      font-size: 10px;
-
-   }
-
    .titleValue {
 
       display: flex;
-      flex-direction: row;
       align-items: center;
       justify-content: center;
+
+      height: 15px;
 
       font-style: italic;
 

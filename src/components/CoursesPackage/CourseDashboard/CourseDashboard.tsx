@@ -16,11 +16,19 @@ import { changeCourses } from '../../../pmStore/pmSlice';
 
 import { changeEditCourse } from '../../../pmStore/pmSlice';
 
+import { changeIsEdit } from '../../../pmStore/pmSlice';
+
+import { changeTempPills } from '../../../pmStore/pmSlice'; 
+
+import { changePressEdit } from '../../../pmStore/pmSlice';
+
 // images
 
 import DeleteImg from '../../SvgComponents/Courses/Delete'; 
 
 import ChangeImg from '../../SvgComponents/Courses/Edit'; 
+
+import Reload from '../../SvgComponents/Courses/Reload'; 
 
 const CourseDashboard: FC = () => {
 
@@ -28,6 +36,7 @@ const CourseDashboard: FC = () => {
 
   const coursesSelector = useAppSelector(state => state.courses);
   const editCoursesSelector = useAppSelector(state => state.editCourse);
+  const pressEditSelector = useAppSelector(state => state.pressEdit);
 
   // search cours value
   const [searchCourse, setSearchCourse] = useState('');
@@ -66,6 +75,10 @@ const CourseDashboard: FC = () => {
     // when only with edit mode
     if(detectSelected() != 1 && isEdit) {
       setIsEdit(false);
+      // clear iEdit in storage
+      dispatch(changeIsEdit({data: false}));
+      dispatch(changePressEdit({ data: false}));
+      dispatch(changeTempPills({mode: 'clearPills', data: '', key: ''}));
       setIsAddBoard(false);
 
       // clear edit course
@@ -87,10 +100,19 @@ const CourseDashboard: FC = () => {
     setSearchCourse(evt.currentTarget.value);
   };
 
+  useEffect(() => {
+
+    if(!isAddBoard) {
+      dispatch(changePressEdit({ data: false}));
+      dispatch(changeTempPills({mode: 'clearPills', data: '', key: ''}));
+    };
+    
+  },[isAddBoard]);
+
   const openAddBoard = () => {
 
     setIsAddBoard(state => !state);
-    
+
   };
 
   const courseActions = (evt: React.MouseEvent<HTMLButtonElement>) => {
@@ -103,8 +125,8 @@ const CourseDashboard: FC = () => {
         }
         break;
       case 'edit':
-        setIsEdit(true);
         setIsAddBoard(true);
+        dispatch(changePressEdit({ data: true}));
         break;
       default:
         break;
@@ -118,6 +140,10 @@ const CourseDashboard: FC = () => {
     
     if(!coursesSelector.find(element => element.id === itemId)?.selected) {
     
+      // activated 'edit' mode
+      setIsEdit(true);
+      // set iEdit in storage
+      dispatch(changeIsEdit({data: true}))
       dispatch(changeCourses({mode: 'changeCourse', data: {id: itemId, prop: true,}, key: 'selected',})); 
 
     }else {
@@ -143,7 +169,7 @@ const CourseDashboard: FC = () => {
             placeholder='Courses...'
           />
         </label>  
-        <button type='button' onClick={openAddBoard}>{isAddBoard ? 'Close registry' : 'Open registry'}</button>
+        <button type='button' onClick={openAddBoard}>{pressEditSelector ? 'Close' : isAddBoard ? 'Close' : 'New course'}</button>
      
       </div>
 
@@ -152,8 +178,9 @@ const CourseDashboard: FC = () => {
         {isAddBoard && <CourseAddBoard/>}
 
         <div className={cd.coursesDrive}>
-          <button className={cd.coursesButton} id='edit' onClick={courseActions} type='button' disabled={detectSelected() > 0 && detectSelected() <= 1 ? false : true}><ChangeImg width={'25px'} height={'25px'}/></button>
-          <button className={cd.coursesButton} id='delete' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'}/></button>
+          <button className={cd.coursesButton} id='edit' onClick={courseActions} type='button' disabled={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? false : true : true}><ChangeImg width={'25px'} height={'25px'} stroke={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? '#646cff' : 'lightgray' : '#646cff'}/></button>
+          <button className={cd.coursesButton} id='delete' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() !== 0 ? '#646cff' : 'lightgray'}/></button>
+          <button className={cd.coursesButton} id='reload' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><Reload width={'25px'} height={'25px'}/></button>
         </div>
 
         <ul className={cd.coursesList}>

@@ -10,6 +10,8 @@ import {
   ChangePillProp,
   ChangeCourseProp,
   EditActionCourse,
+  IsEditEction,
+  PressEditEction,
 } from "../types/types";
 
 const pmInitialState: PmInitialState = {
@@ -20,6 +22,8 @@ const pmInitialState: PmInitialState = {
     selected: false,
     pills: []},
   isLoading: false,
+  isEdit: false,
+  pressEdit: false,
   error: false,
 };
 
@@ -69,6 +73,9 @@ const pmSlice = createSlice({
         case "clearPills":
           state.tempPills = [];
           break;
+        case "freshTempPills":
+          state.tempPills = action.payload.data as Pill[];
+          break;
         case "addPill":
           state.tempPills = [...state.tempPills, action.payload.data as Pill];
           break;
@@ -112,9 +119,21 @@ const pmSlice = createSlice({
           break;
       }
     },
+
+    changeIsEdit(state, action: PayloadAction<IsEditEction>) {
+      
+      state.isEdit = action.payload.data;
+
+    },
+
+    changePressEdit(state, action: PayloadAction<PressEditEction>) {
+      
+      state.pressEdit = action.payload.data;
+
+    },
   },
 });
 
-export const { changeCourses, changeTempPills, changeEditCourse } =
+export const { changeCourses, changeTempPills, changeEditCourse, changeIsEdit, changePressEdit } =
   pmSlice.actions;
 export default pmSlice.reducer;

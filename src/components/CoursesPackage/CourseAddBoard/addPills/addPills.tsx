@@ -1,4 +1,4 @@
-import { useState } from "react"; 
+import  { FC, useState, useEffect } from "react"; 
 import { useFormik } from "formik"; 
 import { nanoid } from "nanoid"; 
 
@@ -11,10 +11,17 @@ import ap from "./addPills.module.scss";
 // external funcions
 import { changeTempPills } from '../../../../pmStore/pmSlice';
 
-const AddPills = () => {
+const AddPills: FC = () => {
 
   const dispatch = useAppDispatch();
   const selectorTempPills = useAppSelector(state => state.tempPills);
+  const editCourseSelector = useAppSelector(state => state.editCourse);
+  const isEditSelector = useAppSelector(state => state.isEdit);
+  const pressEditSelector = useAppSelector(state => state.pressEdit);
+
+  useEffect(() => {
+    if(isEditSelector && pressEditSelector) dispatch(changeTempPills({ mode: 'freshTempPills', data: editCourseSelector.pills, key: '',}));
+  },[editCourseSelector]);
 
   // Pill item field values
   const [itemPerDay, setItemPerDay ] = useState<Boolean>();

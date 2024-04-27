@@ -1,4 +1,5 @@
-import { useFormik } from "formik"; 
+import { FC } from "react";
+import { FormikValues, useFormik } from "formik"; 
 import { nanoid } from "nanoid"; 
 
 // own dispatch hook
@@ -10,21 +11,43 @@ import { changeCourses } from '../../../pmStore/pmSlice';
 // styles
 import cb from "./CourseAddBoard.module.scss";
 
-const CourseAddBoard = () => {
+const CourseAddBoard: FC  = () => {
 
   const dispatch = useAppDispatch();
   const tempPillsSelector = useAppSelector(state => state.tempPills);
   const editCourseSelector = useAppSelector(state => state.editCourse);
+  const pressEditSelector = useAppSelector(state => state.pressEdit);
+
+  // initial for add course or edit course
+  const initial = (): FormikValues => {
+
+    let result = {};
+    
+    if(editCourseSelector.id !== '' && pressEditSelector) {
+      result = {
+        courseName: editCourseSelector.courseName,
+        doctorName: editCourseSelector.doctorName,
+        docContacts: editCourseSelector.docContacts,
+        clinicName: editCourseSelector.clinicName,
+        clinicContacts: editCourseSelector.clinicContacts,
+        visitDate: editCourseSelector.visitDate,
+      }
+    } else {
+      result = {
+        courseName: '',
+        doctorName: '',
+        docContacts: '',
+        clinicName: '',
+        clinicContacts: '',
+        visitDate: '',
+      }
+    };
+
+    return result;
+  };
 
   const formik = useFormik({
-    initialValues: {
-      courseName: editCourseSelector.courseName,
-      doctorName: '',
-      docContacts: '',
-      clinicName: '',
-      clinicContacts: '',
-      visitDate: '',
-    },
+    initialValues: initial(),
     onSubmit: values => {
       dispatch(changeCourses({ mode: 'addCourse', data: {id: nanoid(), selected: false,
         courseName: values.courseName,
@@ -32,7 +55,7 @@ const CourseAddBoard = () => {
         docContacts: values.docContacts,
         clinicName: values.clinicName,
         clinicContacts: values.clinicContacts,
-        pills: tempPillsSelector,}, key: '', }));
+        pills: tempPillsSelector, visitDate: values.visitDate}, key: '', }));
     },
   });
 

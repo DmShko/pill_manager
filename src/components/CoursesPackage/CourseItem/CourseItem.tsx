@@ -10,6 +10,12 @@ import ci from "./CourseItem.module.scss";
 // images
 import PillImage from '../../SvgComponents/Courses/pillItem/PillImage'; 
 
+import Part from '../../SvgComponents/Courses/Part';
+
+import QuantityPill from '../../SvgComponents/Courses/QuantityPill'; 
+
+import Time from '../../SvgComponents/Courses/Time'; 
+
 const CourseItem: FC<CourseItemProps> = ({ courses }) => {
 
   return (
@@ -37,16 +43,16 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
               {courses.pills.length !== 0 ? courses.pills.map(element => 
                 {
                   return <li key={nanoid()} className={ci.pillItem} id={element.id}>
-                    <div><PillImage/></div>
-                    <p className={ci.pillName}>{element.pillName}</p>
+                    <div><PillImage width={'24px'} height={'24px'}/></div>
+                    <p className={ci.pillName}>{element.pillName} <span>mg</span></p>
                     <div className={ci.pillTextContainer}>
-                      <p className={ci.pillText}><span className={ci.pillTitle}>per/day</span> <span className={ci.pillTitleValue}>{element.perDay}</span></p>
-                      <p className={ci.pillText}><span className={ci.pillTitle}>quant.</span> <span className={ci.pillTitleValue}>{element.quantity}</span></p>
-                      <p className={ci.pillText}><span className={ci.pillTitle}>durat.</span> <span className={ci.pillTitleValue}>{element.duration}</span></p>
+                      <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>per/day</p><Part width={'12px'} height={'12px'}/></div><p className={ci.pillTitleValue}>{element.perDay}</p></div>
+                      <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>quant.X</p><QuantityPill width={'15px'} height={'15px'}/></div><p className={ci.pillTitleValue}>{element.quantity}</p></div>
+                      <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>durat.</p><Time width={'15px'} height={'15px'}/></div><p className={ci.pillTitleValue}>{element.duration}</p></div>
                     </div>
                   </li>  
                 }
-              ) : 'There are no courses'}
+              ) : 'There are no pills'}
             </ul>
 
           </div>
