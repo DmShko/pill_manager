@@ -8,7 +8,9 @@ import {
   ActionPills,
   Pill,
   ChangePillProp,
-  ChangeCourseProp,
+  ChangeCoursePropB,
+  ChangeCoursePropS,
+  ChangeCoursePropA,
   EditActionCourse,
   IsEditEction,
   PressEditEction,
@@ -39,20 +41,36 @@ const pmSlice = createSlice({
         case "changeCourse":
           const tempCourse = state.courses.find(
             (element) =>
-              element.id === (action.payload.data as ChangeCourseProp).id
+              element.id === (action.payload.data as ChangeCoursePropB).id
           );
 
           if (
-            tempCourse !== undefined &&
-            Object.keys(tempCourse).includes(action.payload.key)
+            tempCourse !== undefined 
           ) {
             if (
-              typeof (action.payload.data as ChangeCourseProp).prop ===
+              typeof (action.payload.data as ChangeCoursePropB).prop ===
               "boolean"
             ) {
               tempCourse[action.payload.key as keyof Pick<Course, "selected">] =
-                (action.payload.data as ChangeCourseProp).prop;
-            }
+                (action.payload.data as ChangeCoursePropB).prop;
+            } 
+            
+            if (
+              typeof (action.payload.data as ChangeCoursePropS).prop ===
+              "string"
+            ) {
+              tempCourse[action.payload.key as keyof Omit<Course, "selected" | "pills" | "status">] =
+              (action.payload.data as ChangeCoursePropS).prop;
+            };
+
+            if (
+              typeof (action.payload.data as ChangeCoursePropA).prop ===
+              "object"
+            ) {
+              tempCourse[action.payload.key as keyof Pick<Course, "pills">] =
+              (action.payload.data as ChangeCoursePropA).prop;
+            };
+            
           }
           break;
         case "addCourse":

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { FormikValues, useFormik } from "formik"; 
 import { nanoid } from "nanoid"; 
 
@@ -10,6 +10,10 @@ import { changeCourses } from '../../../pmStore/pmSlice';
 
 // styles
 import cb from "./CourseAddBoard.module.scss";
+import { Course } from "../../../types/types";
+
+// my components
+import { changeEditCourse } from '../../../pmStore/pmSlice';
 
 const CourseAddBoard: FC  = () => {
 
@@ -17,6 +21,21 @@ const CourseAddBoard: FC  = () => {
   const tempPillsSelector = useAppSelector(state => state.tempPills);
   const editCourseSelector = useAppSelector(state => state.editCourse);
   const pressEditSelector = useAppSelector(state => state.pressEdit);
+  const coursesSelector = useAppSelector(state => state.courses);
+
+  useEffect(() => {
+
+    if(pressEditSelector) {
+
+      // get current value of 'editCourseSelector' from 'courses'
+      const editCourseValue = coursesSelector.find(element => element.id === editCourseSelector.id);
+            
+      // refresh editCourse
+      if(editCourseValue !== undefined) dispatch(changeEditCourse({mode: 'addEditCourse', data: editCourseValue,}));
+
+    }
+
+  },[coursesSelector]);
 
   // initial for add course or edit course
   const initial = (): FormikValues => {
@@ -49,13 +68,28 @@ const CourseAddBoard: FC  = () => {
   const formik = useFormik({
     initialValues: initial(),
     onSubmit: values => {
-      dispatch(changeCourses({ mode: 'addCourse', data: {id: nanoid(), selected: false,
+      if(pressEditSelector) {
+        // get 'values' keys
+        const valuesKeys = Object.keys(values);
+        // sort value in 'valuesKeys' and compare with search course future values in state
+        // rewrite futures if not equal 
+        for(const e of valuesKeys) {
+          if(values[e] !== editCourseSelector[e as keyof Course]) {
+    
+            // rewrite not equal future
+            dispatch(changeCourses({mode: 'changeCourse', data: {id: editCourseSelector.id, prop: values[e],}, key: e,})); 
+
+          }
+        };
+      } else {
+        dispatch(changeCourses({ mode: 'addCourse', data: {id: nanoid(), selected: false,
         courseName: values.courseName,
         doctorName: values.doctorName,
         docContacts: values.docContacts,
         clinicName: values.clinicName,
         clinicContacts: values.clinicContacts,
         pills: tempPillsSelector, visitDate: values.visitDate}, key: '', }));
+      };
     },
   });
 
@@ -127,7 +161,7 @@ const CourseAddBoard: FC  = () => {
                   />
                 </div>
 
-                <button type="submit" className={cb.courseButton}>Create</button>
+                <button type="submit" className={cb.courseButton}>{pressEditSelector ? 'Save change' : 'Create'}</button>
 
               </div>
 

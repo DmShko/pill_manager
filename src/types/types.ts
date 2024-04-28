@@ -13,9 +13,19 @@ export interface ChangePillProp {
   prop: string
 };
 
-export interface ChangeCourseProp {
+export interface ChangeCoursePropB {
   id: string
-  prop: boolean
+  prop: boolean 
+};
+
+export interface ChangeCoursePropS {
+  id: string
+  prop: string 
+};
+
+export interface ChangeCoursePropA {
+  id: string
+  prop: [] 
 };
 
 // type for pill action argument
@@ -30,12 +40,12 @@ enum CourseStatus {
     'suspended', 
     'not done',
     'not active',
-  };
+};
 
 // type for course action argument
 export interface ActionCourses {
   mode: string
-  data: Course | string | ChangeCourseProp
+  data: Course | string | ChangeCoursePropB | ChangeCoursePropS | ChangeCoursePropA
   key: string
 };
 
