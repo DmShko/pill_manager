@@ -6,11 +6,17 @@ export interface Pill {
     quantity?: string
     duration?: string
     description?: string
+    selectedPill: boolean
 };
 
 export interface ChangePillProp {
   id: string
   prop: string
+};
+
+export interface ChangePillPropB {
+  id: string
+  prop: boolean
 };
 
 export interface ChangeCoursePropB {
@@ -25,13 +31,13 @@ export interface ChangeCoursePropS {
 
 export interface ChangeCoursePropA {
   id: string
-  prop: [] 
+  prop: Pill[] 
 };
 
 // type for pill action argument
 export interface ActionPills {
   mode: string
-  data: Pill | string | ChangePillProp | Pill[]
+  data: Pill | string | ChangePillProp | ChangePillPropB | Pill[]
   key: string
 };
 

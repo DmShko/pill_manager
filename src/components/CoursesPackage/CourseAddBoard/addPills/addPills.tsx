@@ -49,14 +49,28 @@ const AddPills: FC = () => {
             perDay: values.perDay,
             quantity: values.quantity,
             duration: values.duration,
-            description: '',}, key: '',}));
+            description: '', selectedPill: false}, key: '',}));
 
     },
   });
 
   const itemClick = (evt: React.MouseEvent<HTMLElement>)=> {
 
-    const currenElementId= (evt.currentTarget as HTMLLIElement).id
+    const currenElementId = (evt.currentTarget as HTMLLIElement).id
+
+    // set "selectedPill" (true) of edit pill
+    dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: true}, key: 'selectedPill'})); 
+
+    if((evt.target as HTMLButtonElement).id === (evt.currentTarget as HTMLLIElement).id) {
+
+       // reset "selectedPill" (false) of edit pill
+       dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: false}, key: 'selectedPill'})); 
+       setItemName(false);
+       setItemPerDay(false);
+       setItemQuantity(false);
+       setItemDuration(false);
+       
+    };
 
     if((evt.target as HTMLButtonElement).name === 'del') {
 
@@ -66,47 +80,63 @@ const AddPills: FC = () => {
 
     if((evt.target as HTMLButtonElement).name === 'save') {
 
+        // reset "selectedPill" (false) of edit pill
+        dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: false}, key: 'selectedPill'})); 
     
        if(itemName) {
-         dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrName}, key: 'pillName'})); 
+         // write changes and reset itemName
+         if(formik.values.corrName !== '') dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrName}, key: 'pillName'})); 
          setItemName(false);
        };
        if(itemPerDay) {
-         dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrPerDay}, key: 'perDay'})); 
+         // write changes and reset itemPerDay
+         if(formik.values.corrPerDay !== '') dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrPerDay}, key: 'perDay'})); 
          setItemPerDay(false);
        };
        if(itemQuantity) {
-        dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrQuantity}, key: 'quantity'})); 
+        // write changes and reset itemQuantity
+        if(formik.values.corrQuantity !== '') dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrQuantity}, key: 'quantity'})); 
         setItemQuantity(false);
        };
        if(itemDuration) {
-        dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrDuration}, key: 'duration'})); 
+        // write changes and reset itemDuration
+        if(formik.values.corrDuration !== '') dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrDuration}, key: 'duration'})); 
         setItemDuration(false);
        };
+
+       // hidden 'save' button
+       setItemActiveSave(false);
     
     };
 
     if((evt.target as HTMLParagraphElement).id === 'itemName') {
 
         if(!itemActiveSave) setItemActiveSave(true);
+        
         setItemName(true);
+        
     }
 
     if((evt.target as HTMLParagraphElement).id === 'itemPerDay') {
 
         if(!itemActiveSave) setItemActiveSave(true);
+      
         setItemPerDay(true);
+      
     }
 
     if((evt.target as HTMLParagraphElement).id === 'itemQuantity') {
 
         if(!itemActiveSave) setItemActiveSave(true);
+    
         setItemQuantity(true);
+      
     }
 
     if((evt.target as HTMLParagraphElement).id === 'itemDuration') {
 
         if(!itemActiveSave) setItemActiveSave(true);
+     
         setItemDuration(true);
     }
 
@@ -164,7 +194,7 @@ const AddPills: FC = () => {
                         />
                     </div>
                 
-                    <button className={ap.pillsButton}>Add</button>
+                    <button type="submit" className={ap.pillsButton}>Add</button>
                 </div>
             </form>
 
@@ -174,22 +204,22 @@ const AddPills: FC = () => {
                         {selectorTempPills.map(value => {
                             return <li className={ap.pillsItem} key={nanoid()} id={value.id} onClick={itemClick}>
                                
-                                { itemName ? <input className={ap.itemInput} type="text" id='corrName' value={formik.values.corrName} onChange={formik.handleChange}/> 
+                                { itemName && value.selectedPill ? <input className={ap.itemInput} type="text" id='corrName' value={formik.values.corrName} onChange={formik.handleChange}/> 
                                     : <p className={ap.pillsText} id='itemName'> {value.pillName} </p>}
 
                                 <p>per/day: </p> 
-                                { itemPerDay ? <input className={ap.itemInput} type="text" id='corrPerDay' value={formik.values.corrPerDay} onChange={formik.handleChange}/> 
+                                { itemPerDay && value.selectedPill ? <input className={ap.itemInput} type="text" id='corrPerDay' value={formik.values.corrPerDay} onChange={formik.handleChange}/> 
                                     : <p className={ap.pillsText} id='itemPerDay'> {value.perDay} </p>}
 
                                 <p>quan./day: </p> 
-                                { itemQuantity ? <input className={ap.itemInput} type="text" id='corrQuantity' value={formik.values.corrQuantity} onChange={formik.handleChange}/> 
+                                { itemQuantity && value.selectedPill ? <input className={ap.itemInput} type="text" id='corrQuantity' value={formik.values.corrQuantity} onChange={formik.handleChange}/> 
                                     : <p className={ap.pillsText} id='itemQuantity'> {value.quantity} </p>}  
 
                                 <p>durat.: </p> 
-                                { itemDuration ? <input className={ap.itemInput} type="text" id='corrDuration' value={formik.values.corrDuration} onChange={formik.handleChange}/> 
+                                { itemDuration && value.selectedPill ? <input className={ap.itemInput} type="text" id='corrDuration' value={formik.values.corrDuration} onChange={formik.handleChange}/> 
                                     : <p className={ap.pillsText} id='itemDuration'> {value.duration} </p>}
                                
-                                {itemActiveSave && <button className={ap.itemButton} name='save'>Save</button>}
+                                {itemActiveSave && value.selectedPill ? <button className={ap.itemButton} name='save'>Save</button> : ''}
                                 <button className={ap.itemButton} name='del'>Del</button>
 
                             </li>

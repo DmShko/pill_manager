@@ -39,11 +39,17 @@ const CourseDashboard: FC = () => {
   const pressEditSelector = useAppSelector(state => state.pressEdit);
 
   // search cours value
-  const [searchCourse, setSearchCourse] = useState('');
-  // search cours value
   const [isEdit, setIsEdit] = useState(false);
   // show/hidden 'add course' board
   const [isAddBoard, setIsAddBoard] = useState(false);
+
+  
+  // search cours value
+  const [searchCourse, setSearchCourse] = useState('');
+
+  const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchCourse(evt.currentTarget.value);
+  };
 
   // how many courses has 'selected' field as 'true'
   const detectSelected = () => {
@@ -95,10 +101,6 @@ const CourseDashboard: FC = () => {
     if(search !== undefined)  dispatch(changeEditCourse({mode: 'addEditCourse', data: search,}));
     
   },[isEdit]);
-
-  const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchCourse(evt.currentTarget.value);
-  };
 
   useEffect(() => {
 
@@ -156,31 +158,42 @@ const CourseDashboard: FC = () => {
 
   return (
     <>
-      <div className={cd.courseDashboard}>
-        <label className={cd.search}>
-          <input 
-            value={searchCourse}
-            className={cd.in}
-            type="text"
-            name='search'              
-            onChange={handleChange}
-            autoComplete='false'
-            title="search"
-            placeholder='Courses...'
-          />
-        </label>  
-        <button type='button' onClick={openAddBoard}>{pressEditSelector ? 'Close' : isAddBoard ? 'Close' : 'New course'}</button>
+      
+      <button type='button' onClick={openAddBoard}>{pressEditSelector ? 'Close' : isAddBoard ? 'Close' : 'New course'}</button>
      
-      </div>
 
       <div className={cd.courses}>
 
         {isAddBoard && <CourseAddBoard/>}
 
-        <div className={cd.coursesDrive}>
-          <button className={cd.coursesButton} id='edit' onClick={courseActions} type='button' disabled={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? false : true : true}><ChangeImg width={'25px'} height={'25px'} stroke={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? '#646cff' : 'lightgray' : '#646cff'}/></button>
-          <button className={cd.coursesButton} id='delete' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() !== 0 ? '#646cff' : 'lightgray'}/></button>
-          <button className={cd.coursesButton} id='reload' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><Reload width={'25px'} height={'25px'}/></button>
+        <div className={cd.searchContainer}>
+
+          <div className={cd.courseDashboard}>
+              <label className={cd.search}>
+                  <input 
+                    value={searchCourse}
+                    className={cd.in}
+                    type="text"
+                    name='search'              
+                    onChange={handleChange}
+                    autoComplete='false'
+                    title="search"
+                    placeholder='Courses...'
+                  />
+              </label>  
+
+          </div>
+            
+          <div className={cd.coursesDrive}>
+            <button className={cd.coursesButton} id='edit' onClick={courseActions} type='button' disabled={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? false : true : true}><ChangeImg width={'25px'} height={'25px'} stroke={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? '#646cff' : 'lightgray' : '#646cff'}/></button>
+            <button className={cd.coursesButton} id='delete' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() !== 0 ? '#646cff' : 'lightgray'}/></button>
+            <button className={cd.coursesButton} id='reload' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><Reload width={'25px'} height={'25px'}/></button>
+          </div>
+
+          <div className={cd.coursesInfo}>
+
+          </div>
+
         </div>
 
         <ul className={cd.coursesList}>

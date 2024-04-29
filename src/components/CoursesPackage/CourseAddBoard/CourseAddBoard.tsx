@@ -15,6 +15,9 @@ import { Course } from "../../../types/types";
 // my components
 import { changeEditCourse } from '../../../pmStore/pmSlice';
 
+// my types
+import { Pill } from '../../../types/types';
+
 const CourseAddBoard: FC  = () => {
 
   const dispatch = useAppDispatch();
@@ -36,6 +39,32 @@ const CourseAddBoard: FC  = () => {
     }
 
   },[coursesSelector]);
+
+  // compare 'pills' array in search course in 'coursesSelector'  and 'tempPills' array
+  const comparePills = <O, N>(existPills: O, newPills: N): boolean => {
+
+    const pillKey = Object.keys((existPills as Pill[])[0]);
+ 
+    let result = false;
+    
+    if((existPills as []).length === (newPills as []).length) {
+
+      for(let o=0; o < (existPills as []).length; o += 1) {
+
+        // compare keys and return true if not equal 
+        for(const c of pillKey) {
+            
+            if((existPills as [])[o][c] !== (newPills as [])[o][c])  result = true;
+            
+        }
+      };
+    } else {
+      result = true;
+    };
+
+    return result;
+
+  };
 
   // initial for add course or edit course
   const initial = (): FormikValues => {
@@ -74,13 +103,33 @@ const CourseAddBoard: FC  = () => {
         // sort value in 'valuesKeys' and compare with search course future values in state
         // rewrite futures if not equal 
         for(const e of valuesKeys) {
+        
           if(values[e] !== editCourseSelector[e as keyof Course]) {
     
             // rewrite not equal future
             dispatch(changeCourses({mode: 'changeCourse', data: {id: editCourseSelector.id, prop: values[e],}, key: e,})); 
 
           }
+          
         };
+
+        // get old pills from 'coursesSelector'
+        const oldPills = coursesSelector.find(element => element.id === editCourseSelector.id)?.pills
+ 
+        // compare pills array
+        if(oldPills !== undefined) {
+         
+          const compare = comparePills<Pill[], Pill[]>(oldPills , tempPillsSelector);
+
+          if(compare) {
+           
+            // rewrite not equal 'Pills'
+            dispatch(changeCourses({mode: 'changeCourse', data: {id: editCourseSelector.id, prop: tempPillsSelector,}, key: 'pills',})); 
+
+          } 
+          
+        }
+        
       } else {
         dispatch(changeCourses({ mode: 'addCourse', data: {id: nanoid(), selected: false,
         courseName: values.courseName,

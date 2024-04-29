@@ -14,6 +14,7 @@ import {
   EditActionCourse,
   IsEditEction,
   PressEditEction,
+  ChangePillPropB,
 } from "../types/types";
 
 const pmInitialState: PmInitialState = {
@@ -47,6 +48,7 @@ const pmSlice = createSlice({
           if (
             tempCourse !== undefined 
           ) {
+            // for string boolean
             if (
               typeof (action.payload.data as ChangeCoursePropB).prop ===
               "boolean"
@@ -54,7 +56,8 @@ const pmSlice = createSlice({
               tempCourse[action.payload.key as keyof Pick<Course, "selected">] =
                 (action.payload.data as ChangeCoursePropB).prop;
             } 
-            
+
+            // for string futures
             if (
               typeof (action.payload.data as ChangeCoursePropS).prop ===
               "string"
@@ -63,6 +66,7 @@ const pmSlice = createSlice({
               (action.payload.data as ChangeCoursePropS).prop;
             };
 
+            // for string object ("pills")
             if (
               typeof (action.payload.data as ChangeCoursePropA).prop ===
               "object"
@@ -107,9 +111,25 @@ const pmSlice = createSlice({
             temp !== undefined &&
             Object.keys(temp).includes(action.payload.key)
           ) {
-            temp[action.payload.key as keyof Pill] = (
-              action.payload.data as ChangePillProp
-            ).prop;
+            // for string futures
+            if (
+              typeof (action.payload.data as ChangePillProp).prop ===
+              "string"
+            ){
+              temp[action.payload.key as keyof Omit<Pill, "selectedPill">] = (
+                action.payload.data as ChangePillProp
+              ).prop;
+            }
+
+            // for boolean ("selectedPill") future
+            if (
+              typeof (action.payload.data as ChangePillPropB).prop ===
+              "boolean"
+            ){
+              temp[action.payload.key as keyof Pick<Pill, "selectedPill">] = (
+                action.payload.data as ChangePillPropB
+              ).prop;
+            }
           }
           break;
         case "deletePill":
