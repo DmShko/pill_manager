@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, } from 'react';
 import { nanoid } from 'nanoid';
 
 // own dispatch hook
@@ -22,13 +22,16 @@ import { changeTempPills } from '../../../pmStore/pmSlice';
 
 import { changePressEdit } from '../../../pmStore/pmSlice';
 
-// images
+import PillsModal from '../../PillsModal/PillsModal';
 
+// images
 import DeleteImg from '../../SvgComponents/Courses/Delete'; 
 
 import ChangeImg from '../../SvgComponents/Courses/Edit'; 
 
 import Reload from '../../SvgComponents/Courses/Reload'; 
+
+import Details from '../../SvgComponents/Courses/Details'; 
 
 const CourseDashboard: FC = () => {
 
@@ -43,7 +46,9 @@ const CourseDashboard: FC = () => {
   // show/hidden 'add course' board
   const [isAddBoard, setIsAddBoard] = useState(false);
 
-  
+  // open/close modal window
+  const [modalToggle, setModalToggle] = useState(false);
+
   // search cours value
   const [searchCourse, setSearchCourse] = useState('');
 
@@ -117,6 +122,13 @@ const CourseDashboard: FC = () => {
 
   };
 
+  const openModal = () => {
+   
+    // toggle modal window
+    setModalToggle(state => !state);
+     
+  };
+
   const courseActions = (evt: React.MouseEvent<HTMLButtonElement>) => {
 
     switch(evt.currentTarget.id) {
@@ -156,6 +168,16 @@ const CourseDashboard: FC = () => {
 
   };
 
+  const messageCreator = () => {
+
+    let message = '';
+
+    if(pressEditSelector) message = 'EDIT mode ON';
+
+    return message;
+
+  };
+
   return (
     <>
       
@@ -188,13 +210,20 @@ const CourseDashboard: FC = () => {
             <button className={cd.coursesButton} id='edit' onClick={courseActions} type='button' disabled={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? false : true : true}><ChangeImg width={'25px'} height={'25px'} stroke={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? '#646cff' : 'lightgray' : '#646cff'}/></button>
             <button className={cd.coursesButton} id='delete' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() !== 0 ? '#646cff' : 'lightgray'}/></button>
             <button className={cd.coursesButton} id='reload' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><Reload width={'25px'} height={'25px'}/></button>
+            <button className={cd.coursesButton} id='details' onClick={openModal} type='button' disabled={detectSelected() !== 0 ? false : true}><Details width={'25px'} height={'25px'} fill={detectSelected() !== 0 ? '#646cff' : 'lightgray'}/></button>
           </div>
 
           <div className={cd.coursesInfo}>
-
+            <p className={cd.text}>{messageCreator()}</p>
           </div>
 
         </div>
+
+        {modalToggle && <PillsModal openClose={openModal}>
+
+          <div></div>
+          
+        </ PillsModal>}
 
         <ul className={cd.coursesList}>
           {coursesSelector.length !== 0 ? coursesSelector.map(element => 

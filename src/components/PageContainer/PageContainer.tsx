@@ -1,13 +1,13 @@
 import { FC } from 'react'
 
 //styles
-import { PageContainerStyled } from './PageContainer.styled';
+import pec from './PageContainer.module.scss';
 
-const PageContainer: FC<any> = ({children}) => {
+const PageContainer: FC<any> = ({ children }) => {
   return (
-    <PageContainerStyled>
-      <section>{children}</section>
-    </PageContainerStyled>
+   
+    <section className={pec.container}>{children}</section>
+    
   )
 }
 

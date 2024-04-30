@@ -100,3 +100,7 @@ export interface Course {
   export interface CourseItemProps {
     courses: Course
   };
+
+  export interface PillsModalProps {
+    openClose: Function
+  };

@@ -78,6 +78,7 @@
       .coursesInfo {
 
          display: flex;
+         justify-content: center;
          align-items: center;
 
          width: 200px;
@@ -86,6 +87,15 @@
          margin-bottom: 5px;
 
          box-shadow: 1px 1px 4px 3px lightgray;
+
+         .text {
+
+            font-weight: 600;
+            font-style: italic;
+
+            color: #646cff;
+
+         }
 
       }
    
