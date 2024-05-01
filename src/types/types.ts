@@ -104,3 +104,8 @@ export interface Course {
   export interface PillsModalProps {
     openClose: Function
   };
+
+  export interface Content {
+    value: number
+    label: string
+  };

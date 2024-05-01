@@ -81,6 +81,7 @@
       box-shadow: 1px 1px 4px 3px #A1A1A1;
 
       border-radius: 8px;
+
    }
 
    .pillText {
@@ -190,9 +191,17 @@
    }
 
    .nameItem {
-      width: 100px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+
+      width: 170px;
 
       margin: 0;
+      padding-left: 10px;
+
       overflow-x: hidden;
    }
 
@@ -204,6 +213,10 @@
       margin: 0;
 
       color: blue;
+   }
+
+   .visit {
+      font-size: 12px;
    }
 
    .pillTitleValue {

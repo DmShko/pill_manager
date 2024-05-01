@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { FC, KeyboardEvent, useEffect, PropsWithChildren } from "react";
+import { FC, useEffect, PropsWithChildren } from "react";
 
 const modalRoot = document.querySelector('#root-modal') as HTMLElement;
 
@@ -8,6 +8,16 @@ import pm from './PillsModal.module.scss'
 import { PillsModalProps } from '../../types/types';
 
 const PillsModal: FC<PropsWithChildren<PillsModalProps>> = ({ children, openClose }) => {
+
+  useEffect(() => {
+
+    document.body.style.overflow = 'hidden'
+    
+    return () => {
+      document.body.style.overflow = 'scroll'
+    };
+   // eslint-disable-next-line
+  }, []);
 
   // close modal window by click on backdrob
   const clickBackdrob = (evt: React.MouseEvent<HTMLDivElement>) => {

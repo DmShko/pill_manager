@@ -138,3 +138,88 @@
       outline: none;
       background-color: #f9f9f9;
    }
+
+   .modalContainer {
+
+      width: 100%;
+
+      .select {
+
+         width: 25%;
+         margin: 0 auto 20px auto;
+
+         .react-dropdown-select {
+
+            width: 25%;
+
+         }
+      }
+
+      .modalList {
+
+         display: flex;
+         justify-content: center;
+
+         flex-wrap: wrap;
+         column-gap: 10px;
+         row-gap: 10px;
+   
+         list-style: none;
+   
+         padding: 0;
+   
+         width: 80%;
+
+         margin: 0 auto;
+
+         .item {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+   
+            width: 25px;
+            height: 25px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            color: white;
+    
+            background-color: lightgray;
+      
+            border-radius: 50%;
+
+            cursor: pointer;
+
+            transform: color 300ms;
+      
+         }
+   
+      }
+
+      .currentDay {
+
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         justify-content: center;
+
+         gap: 10px;
+
+         margin-bottom: 20px;
+
+         .currentDayButton {
+
+            width: 40px;
+            height: 25px;
+
+            padding: 0;
+
+            border-radius: 8px;
+
+         }
+
+      }
+   }
+   

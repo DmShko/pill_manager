@@ -1,7 +1,10 @@
 
 const PillImage = (props: React.SVGProps<SVGSVGElement>) => {
     return (
-      <div>
+      <div style={
+        {display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',}}>
           <svg 
                 width={props.width}
                 height={props.height}

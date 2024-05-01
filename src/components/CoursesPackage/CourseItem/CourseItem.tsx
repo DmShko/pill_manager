@@ -22,8 +22,8 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
    
       <div className={ci.courseItem}>
 
-          {courses.courseName !== '' ? <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span>{courses.courseName}</p> :
-           <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span>{'unnamed'}</p>}
+          {courses.courseName !== '' ? <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span>{courses.courseName} <span className={ci.visit}>Date of visit: {courses.visitDate}</span></p>:
+           <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span>{'unnamed'}<span className={ci.visit}>Date of visit: {''}</span></p>}
 
           <div className={ci.courseSubcontainer}>
             <div className={ci.registryInfo}>
@@ -43,8 +43,8 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
               {courses.pills.length !== 0 ? courses.pills.map(element => 
                 {
                   return <li key={nanoid()} className={ci.pillItem} id={element.id}>
-                    <div><PillImage width={'24px'} height={'24px'}/></div>
-                    <p className={ci.pillName}>{element.pillName} <span>mg</span></p>
+                    <div ><PillImage width={'24px'} height={'24px'}/></div>
+                    <p className={ci.pillName}>{element.pillName}</p>
                     <div className={ci.pillTextContainer}>
                       <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>per/day</p><Part width={'12px'} height={'12px'}/></div><p className={ci.pillTitleValue}>{element.perDay}</p></div>
                       <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>quant.X</p><QuantityPill width={'15px'} height={'15px'}/></div><p className={ci.pillTitleValue}>{element.quantity}</p></div>

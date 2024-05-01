@@ -1,6 +1,8 @@
 import { FC, useState, useEffect, } from 'react';
 import { nanoid } from 'nanoid';
 
+import Select from 'react-dropdown-select';
+
 // own dispatch hook
 import { useAppDispatch, useAppSelector } from "../../../app.hooks";
 
@@ -33,6 +35,9 @@ import Reload from '../../SvgComponents/Courses/Reload';
 
 import Details from '../../SvgComponents/Courses/Details'; 
 
+// types
+import { Content } from '../../../types/types';
+
 const CourseDashboard: FC = () => {
 
   const dispatch = useAppDispatch();
@@ -51,6 +56,15 @@ const CourseDashboard: FC = () => {
 
   // search cours value
   const [searchCourse, setSearchCourse] = useState('');
+
+  // selected pillName 
+  const [selectedPillName, setSelectedPillName] = useState('');
+
+  // day name visible toggle 
+  const [dayIsVisible, setDayIsVisible] = useState('');
+
+  // day name visible toggle 
+  const [selectedDay, setSelectedDay] = useState(new Date().getDate().toString());
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setSearchCourse(evt.currentTarget.value);
@@ -178,6 +192,38 @@ const CourseDashboard: FC = () => {
 
   };
 
+  const takeContent = () => {
+
+    let content: Content[] = [];
+    
+    for(let p = 0; p < editCoursesSelector.pills.length; p += 1) {
+      content = [...content, { value: p, label: editCoursesSelector.pills[p].pillName}]
+    }
+
+    return content;
+  };
+
+  const takePillDays = () => {
+
+    const daysQuantity = editCoursesSelector.pills.find(element => element.pillName === selectedPillName)?.duration;
+    let days: string[] = [];
+
+    for(let d=0; d < Number(daysQuantity); d += 1) {
+        days = [...days, (d + 1).toString()]
+    }
+
+    return days;
+
+  };
+
+  const dayVisible = (evt: React.MouseEvent<HTMLLIElement>) => {
+    setDayIsVisible(evt.currentTarget.id);
+  };
+
+  const dayUnVisible = () => {
+    setDayIsVisible('');
+  };
+
   return (
     <>
       
@@ -214,14 +260,44 @@ const CourseDashboard: FC = () => {
           </div>
 
           <div className={cd.coursesInfo}>
-            <p className={cd.text}>{messageCreator()}</p>
+            <p className={cd.text}>{`${messageCreator()}`}</p>
           </div>
 
         </div>
 
         {modalToggle && <PillsModal openClose={openModal}>
 
-          <div></div>
+          <div className={cd.modalContainer}>
+           
+            <Select
+              options={takeContent()}
+              className={cd.select}
+              style={{borderRadius: '8px'}}
+              values={[]}
+              onChange={(value) => setSelectedPillName(value[0].label)}
+            />
+
+            <div className={cd.currentDay}>
+              <button type='button' className={cd.currentDayButton}></button>
+              <div>{selectedDay}</div>
+              <button type='button' className={cd.currentDayButton}></button>
+            </div>
+
+            <div className={cd.days}>
+
+              <ul className={cd.modalList}>
+
+                {takePillDays().map(element => {
+                  return(
+                    <li className={cd.item} key={nanoid()} id={element} onMouseOver={dayVisible} onMouseOut={dayUnVisible}>{dayIsVisible === element ? element : ''}</li>
+                  )
+                })}
+
+              </ul>
+              
+            </div>
+
+          </div>
           
         </ PillsModal>}
 
