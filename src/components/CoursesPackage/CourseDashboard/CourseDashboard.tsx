@@ -24,6 +24,8 @@ import { changeTempPills } from '../../../pmStore/pmSlice';
 
 import { changePressEdit } from '../../../pmStore/pmSlice';
 
+import { changeStatistic } from '../../../pmStore/pmSlice';
+
 import PillsModal from '../../PillsModal/PillsModal';
 
 // images
@@ -36,7 +38,9 @@ import Reload from '../../SvgComponents/Courses/Reload';
 import Details from '../../SvgComponents/Courses/Details'; 
 
 // types
-import { Content } from '../../../types/types';
+import { Content, Pill, PillDate, } from '../../../types/types';
+
+const monthes = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const CourseDashboard: FC = () => {
 
@@ -45,6 +49,7 @@ const CourseDashboard: FC = () => {
   const coursesSelector = useAppSelector(state => state.courses);
   const editCoursesSelector = useAppSelector(state => state.editCourse);
   const pressEditSelector = useAppSelector(state => state.pressEdit);
+  const statisticSelector = useAppSelector(state => state.statistic);
 
   // search cours value
   const [isEdit, setIsEdit] = useState(false);
@@ -64,7 +69,13 @@ const CourseDashboard: FC = () => {
   const [dayIsVisible, setDayIsVisible] = useState('');
 
   // day name visible toggle 
-  const [selectedDay, setSelectedDay] = useState(new Date().getDate().toString());
+  const [selectedDay, setSelectedDay] = useState(new Date().getDate());
+
+  // set start day
+  const [startPointDay, setStartPointDay] = useState(0);
+
+  // set start day
+  const [month, setMonth] = useState(new Date().getMonth().toString());
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setSearchCourse(evt.currentTarget.value);
@@ -114,6 +125,13 @@ const CourseDashboard: FC = () => {
 
   useEffect(() => {
 
+    // then rewrite 'Pills' in current course
+    dispatch(changeCourses({mode: 'changeStartDay', data: {id: editCoursesSelector.id, prop: {name: selectedPillName, value: startPointDay.toString()},}, key: 'pills',})); 
+    
+  },[startPointDay]);
+
+  useEffect(() => {
+
     // get edit course
     const search = getSelectedCourse();
     // save edit course
@@ -143,7 +161,33 @@ const CourseDashboard: FC = () => {
      
   };
 
+  const getPillValue = (data: string) => {
+    
+    const startDayValue = coursesSelector.find(element => element.id === editCoursesSelector.id);
+ 
+    if(startDayValue !== undefined) {
+
+      const startPills = startDayValue.pills.find(element => element.pillName === selectedPillName);
+      
+      if(startPills !== undefined){
+
+        if(startPills.startDay !== '0') {
+          return {status: true, value: startPills[data as keyof Pill]};
+        }else {
+          return {status: false, value: startPills[data as keyof Pill]};
+        };
+
+      }
+    } 
+  };
+
   const courseActions = (evt: React.MouseEvent<HTMLButtonElement>) => {
+
+    const getStart = getPillValue('startDay');
+    const getEnd = getPillValue('duration');
+    const year = new Date().getFullYear();
+    const pillMonth = month;
+    const moLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
 
     switch(evt.currentTarget.id) {
 
@@ -155,6 +199,51 @@ const CourseDashboard: FC = () => {
       case 'edit':
         setIsAddBoard(true);
         dispatch(changePressEdit({ data: true}));
+        break;
+      case 'up':
+
+        if(getStart?.value !== '0') {
+
+          if(getStart !== undefined && getEnd !== undefined) {
+            
+            if(selectedDay >= Number(getStart.value) && selectedDay < (Number(getStart.value) + Number(getEnd.value)) - 1) setSelectedDay(state => state += 1);
+          };
+
+        } else {
+
+          
+          if(getStart !== undefined && month !== undefined) {
+           
+            if(selectedDay >= Number(getStart.value + 1) && selectedDay < Number(moLength)) setSelectedDay(state => state += 1);
+          };
+        };
+
+        break;
+      case 'down':
+       
+        if(getStart?.value !== '0') {
+          if(getStart !== undefined && getEnd !== undefined) {
+            
+            if(selectedDay > Number(getStart.value) && selectedDay <= (Number(getStart.value) + Number(getEnd.value)) - 1) setSelectedDay(state => state -= 1);
+          };
+        } else {
+
+          if(getStart !== undefined && month !== undefined) {
+          
+            if(selectedDay > Number(getStart.value + 1) && selectedDay <= Number(moLength)) {
+             
+              setSelectedDay(state => state -= 1);
+            }
+          };
+          
+        };
+
+        break;
+      case 'start':
+        setStartPointDay(selectedDay);
+        break;
+      case 'reschedule':
+        setStartPointDay(selectedDay);
         break;
       default:
         break;
@@ -192,7 +281,7 @@ const CourseDashboard: FC = () => {
 
   };
 
-  const takeContent = () => {
+  const takeContentCourse = () => {
 
     let content: Content[] = [];
     
@@ -203,16 +292,54 @@ const CourseDashboard: FC = () => {
     return content;
   };
 
-  const takePillDays = () => {
+  const takeContentMonth = () => {
 
-    const daysQuantity = editCoursesSelector.pills.find(element => element.pillName === selectedPillName)?.duration;
-    let days: string[] = [];
-
-    for(let d=0; d < Number(daysQuantity); d += 1) {
-        days = [...days, (d + 1).toString()]
+    let resultMonth: Content[] = [];
+    
+    for(let p = 0; p < monthes.length; p += 1) {
+      resultMonth = [...resultMonth, { value: p, label: monthes[p]}]
     }
 
-    return days;
+    return resultMonth;
+  };
+
+  const addDateLable = (data: PillDate[]) => {
+
+    const year = new Date().getFullYear();
+    let pillMonth = month;
+    let monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
+    let counter = Number(getPillValue('startDay')?.value);
+   
+    for(let dn = 0; dn < data.length; dn += 1) {
+     
+        if(counter !== undefined && counter <= monthLength) {
+          // write number of day
+          data[dn].dateNumber = counter.toString();
+          // write month name
+          data[dn].month = pillMonth.toString();
+        } else {
+          counter = Number(getPillValue('startDay')?.value);
+          if(monthes.indexOf(pillMonth) !== 11) pillMonth = monthes[(monthes.indexOf(pillMonth) + 1)].toString();
+        };
+
+        counter += 1;
+    };
+
+  };
+
+  const takePillDays = () => {
+   
+    const daysQuantity = editCoursesSelector.pills.find(element => element.pillName === selectedPillName)?.duration;
+    let days: PillDate[] = [];
+
+    for(let d=0; d < Number(daysQuantity); d += 1) {
+        days = [...days, {position: (d + 1).toString(), dateNumber: '', month: ''}]
+    }
+
+    addDateLable(days);
+
+    // write days;
+    dispatch(changeStatistic({mode: 'changePillsDay', data:{prop: {name: selectedPillName, value: days, start: startPointDay.toString()}},}));
 
   };
 
@@ -222,6 +349,10 @@ const CourseDashboard: FC = () => {
 
   const dayUnVisible = () => {
     setDayIsVisible('');
+  };
+
+  const dayStyle = (data: string) => {
+    if(selectedDay.toString() === data) return {boxShadow: '1px 1px 4px 3px yellowgreen'};
   };
 
   return (
@@ -265,36 +396,61 @@ const CourseDashboard: FC = () => {
 
         </div>
 
-        {modalToggle && <PillsModal openClose={openModal}>
+        {modalToggle && <PillsModal openClose={openModal} selectedDayDrive={setSelectedDay} pillNameReset={setSelectedPillName}>
 
           <div className={cd.modalContainer}>
-           
+          
             <Select
-              options={takeContent()}
+              options={takeContentCourse()}
               className={cd.select}
               style={{borderRadius: '8px'}}
+              name='course'
               values={[]}
-              onChange={(value) => setSelectedPillName(value[0].label)}
+              onChange={(value) => {
+                
+                  setSelectedDay(0)
+                  setSelectedDay(new Date().getDate())
+                  setSelectedPillName(value[0].label)
+                  takePillDays()
+                }
+              }
+            />
+
+            <Select
+              options={takeContentMonth()}
+              className={cd.select}
+              style={{borderRadius: '8px'}}
+              name='month'
+              values={[]} //only [[{}...]...] format
+              onChange={(value) => {
+                  setMonth(value[0].label);
+                }
+              }
             />
 
             <div className={cd.currentDay}>
-              <button type='button' className={cd.currentDayButton}></button>
-              <div>{selectedDay}</div>
-              <button type='button' className={cd.currentDayButton}></button>
+              <button type='button' className={cd.currentDayButton} id='down' onClick={courseActions}></button>
+              <div>{selectedDay.toString()}</div>
+              <button type='button' className={cd.currentDayButton} id='up' onClick={courseActions}></button>
             </div>
 
             <div className={cd.days}>
 
               <ul className={cd.modalList}>
 
-                {takePillDays().map(element => {
+                {getPillValue('startDay')?.status && Object.keys(statisticSelector).length !== 0 && statisticSelector[selectedPillName] !== undefined ? statisticSelector[selectedPillName].days.map(element => {
                   return(
-                    <li className={cd.item} key={nanoid()} id={element} onMouseOver={dayVisible} onMouseOut={dayUnVisible}>{dayIsVisible === element ? element : ''}</li>
+                    month === element.month ? <li className={cd.item} key={nanoid()} id={element.position} onMouseOver={dayVisible} onMouseOut={dayUnVisible} style={dayStyle(element.dateNumber)}>{dayIsVisible === element.position ? element.position : ''}</li> : ''
                   )
-                })}
+                }): ''}
 
               </ul>
               
+            </div>
+            
+            <div className={cd.modalDashbord}>
+              <button type='button' id='start' className={cd.startButton} onClick={courseActions} disabled={getPillValue('startDay')?.status ? true: false}><span>Start</span></button>
+              <button type='button' id='Reschedule' className={cd.rescheduleButton} onClick={courseActions}><span>Reschedule</span></button>
             </div>
 
           </div>

@@ -3,6 +3,7 @@ export interface Pill {
     id: string
     pillName: string
     perDay?: string 
+    startDay: string
     quantity?: string
     duration?: string
     description?: string
@@ -29,6 +30,15 @@ export interface ChangeCoursePropS {
   prop: string 
 };
 
+export interface ChangeCoursePropSD {
+  id: string
+  prop: {name: string, value: string} 
+};
+
+export type ChangeCoursePropST = {
+  prop: {name: string, value: PillDate[], start: string}
+};
+
 export interface ChangeCoursePropA {
   id: string
   prop: Pill[] 
@@ -51,7 +61,7 @@ enum CourseStatus {
 // type for course action argument
 export interface ActionCourses {
   mode: string
-  data: Course | string | ChangeCoursePropB | ChangeCoursePropS | ChangeCoursePropA
+  data: Course | string | ChangeCoursePropB | ChangeCoursePropS | ChangeCoursePropA | ChangeCoursePropSD
   key: string
 };
 
@@ -69,6 +79,12 @@ export interface IsEditEction {
 // type for pressEdit action argument
 export interface PressEditEction {
   data: boolean 
+};
+
+// type for statistic action argument
+export interface StatisticAction {
+  mode: string
+  data: ChangeCoursePropST | string
 };
 
 
@@ -91,6 +107,7 @@ export interface Course {
     courses: Course[]
     tempPills: Pill[]
     editCourse: Course
+    statistic: {[key: string]: {start: string, days: PillDate[]}}
     isLoading: boolean
     isEdit: boolean
     pressEdit: boolean
@@ -103,9 +120,17 @@ export interface Course {
 
   export interface PillsModalProps {
     openClose: Function
+    selectedDayDrive: Function
+    pillNameReset: Function
   };
 
   export interface Content {
     value: number
     label: string
+  };
+
+  export interface PillDate {
+    position: string
+    dateNumber: string
+    month: string
   };

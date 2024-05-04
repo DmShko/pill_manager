@@ -7,14 +7,23 @@ import pm from './PillsModal.module.scss'
 
 import { PillsModalProps } from '../../types/types';
 
-const PillsModal: FC<PropsWithChildren<PillsModalProps>> = ({ children, openClose }) => {
+const PillsModal: FC<PropsWithChildren<PillsModalProps>> = ({ children, openClose, selectedDayDrive, pillNameReset }) => {
 
   useEffect(() => {
 
     document.body.style.overflow = 'hidden'
+
+    // reset to current date after open modal window
+    selectedDayDrive(new Date().getDate());
     
     return () => {
       document.body.style.overflow = 'scroll'
+
+      // reset to current date before close modal window
+      selectedDayDrive(new Date().getDate());
+
+      // reset pill name before close modal window
+      pillNameReset('');
     };
    // eslint-disable-next-line
   }, []);

@@ -10,6 +10,7 @@ import ap from "./addPills.module.scss";
 
 // external funcions
 import { changeTempPills } from '../../../../pmStore/pmSlice';
+import { changeStatistic } from '../../../../pmStore/pmSlice';
 
 const AddPills: FC = () => {
 
@@ -49,7 +50,7 @@ const AddPills: FC = () => {
             perDay: values.perDay,
             quantity: values.quantity,
             duration: values.duration,
-            description: '', selectedPill: false}, key: '',}));
+            description: '', selectedPill: false, startDay: '0', }, key: '',}));
 
     },
   });
@@ -75,6 +76,9 @@ const AddPills: FC = () => {
     if((evt.target as HTMLButtonElement).name === 'del') {
 
         dispatch(changeTempPills({mode: 'deletePill', data: currenElementId, key: ''}));
+
+        // delete pill from 'statistic'
+        dispatch(changeStatistic({mode: 'deletePillsDay', data: currenElementId}));
 
     };
 

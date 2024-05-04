@@ -11,10 +11,14 @@ import {
   ChangeCoursePropB,
   ChangeCoursePropS,
   ChangeCoursePropA,
+  ChangeCoursePropST,
   EditActionCourse,
   IsEditEction,
   PressEditEction,
   ChangePillPropB,
+  ChangeCoursePropSD,
+  StatisticAction,
+
 } from "../types/types";
 
 const pmInitialState: PmInitialState = {
@@ -24,6 +28,7 @@ const pmInitialState: PmInitialState = {
     id: '',
     selected: false,
     pills: []},
+  statistic: {},
   isLoading: false,
   isEdit: false,
   pressEdit: false,
@@ -66,7 +71,7 @@ const pmSlice = createSlice({
               (action.payload.data as ChangeCoursePropS).prop;
             };
 
-            // for string object ("pills")
+            // for all string object ("pills")
             if (
               typeof (action.payload.data as ChangeCoursePropA).prop ===
               "object"
@@ -74,8 +79,33 @@ const pmSlice = createSlice({
               tempCourse[action.payload.key as keyof Pick<Course, "pills">] =
               (action.payload.data as ChangeCoursePropA).prop;
             };
-            
+
           }
+          break;
+        case "changeStartDay":
+          const temp = state.courses.find(
+            (element) =>
+              element.id === (action.payload.data as ChangeCoursePropSD).id
+          );
+          
+          // for part of string object ("pills")
+          if (
+            typeof (action.payload.data as ChangeCoursePropSD).prop ===
+            "object"
+          ) {
+            if (
+              temp !== undefined 
+            ) {
+              let startElement = temp[action.payload.key as keyof Pick<Course, "pills">].find(element => element.pillName === (action.payload.data as ChangeCoursePropSD).prop.name);
+   
+              if(startElement !== undefined) {
+
+                startElement.startDay = (action.payload.data as ChangeCoursePropSD).prop.value;
+                
+              };
+            }
+            
+          };
           break;
         case "addCourse":
           state.courses = [...state.courses, action.payload.data as Course];
@@ -158,6 +188,30 @@ const pmSlice = createSlice({
       }
     },
 
+    changeStatistic(state, action: PayloadAction<StatisticAction>) {
+      switch (action.payload.mode) {
+        case "changePillsDay":
+          state.statistic = {...state.statistic, [(action.payload.data as ChangeCoursePropST).prop.name ]: {start: (action.payload.data as ChangeCoursePropST).prop.start, days: (action.payload.data as ChangeCoursePropST).prop.value},} 
+          break;
+        case "deletePillsDay":
+          const newStatistic: typeof state.statistic = {};
+ 
+          const deleteKey = state.courses.find(element => element.id === state.editCourse.id)?.pills.
+          find(element => element.id === action.payload.data)?.pillName;
+
+          for(const n of Object.keys(state.statistic).filter(value => value !== deleteKey)) {
+
+            newStatistic[n] = state.statistic[n];
+          }  
+          
+          state.statistic = newStatistic;
+
+          break;
+        default:
+          break;
+      }
+    },
+
     changeIsEdit(state, action: PayloadAction<IsEditEction>) {
       
       state.isEdit = action.payload.data;
@@ -172,6 +226,6 @@ const pmSlice = createSlice({
   },
 });
 
-export const { changeCourses, changeTempPills, changeEditCourse, changeIsEdit, changePressEdit } =
+export const { changeCourses, changeTempPills, changeEditCourse, changeIsEdit, changePressEdit, changeStatistic } =
   pmSlice.actions;
 export default pmSlice.reducer;
