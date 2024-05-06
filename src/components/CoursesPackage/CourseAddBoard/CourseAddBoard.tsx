@@ -43,24 +43,25 @@ const CourseAddBoard: FC  = () => {
   // compare 'pills' array in search course in 'coursesSelector'  and 'tempPills' array
   const comparePills = <O, N>(existPills: O, newPills: N): boolean => {
 
-    const pillKey = Object.keys((existPills as Pill[])[0]);
- 
-    let result = false;
-    
-    if((existPills as []).length === (newPills as []).length) {
+      let pillKey: string[] = [];
+      if(existPills !== undefined && (existPills as []).length !== 0) pillKey = Object.keys((existPills as Pill[])[0]);
+  
+      let result = false;
+      
+      if((existPills as []).length === (newPills as []).length) {
 
-      for(let o=0; o < (existPills as []).length; o += 1) {
+        for(let o=0; o < (existPills as []).length; o += 1) {
 
-        // compare keys and return true if not equal 
-        for(const c of pillKey) {
-            
-            if((existPills as [])[o][c] !== (newPills as [])[o][c])  result = true;
-            
-        }
+          // compare keys and return true if not equal 
+          for(const c of pillKey) {
+              
+              if((existPills as [])[o][c] !== (newPills as [])[o][c])  result = true;
+              
+          }
+        };
+      } else {
+        result = true;
       };
-    } else {
-      result = true;
-    };
 
     return result;
 

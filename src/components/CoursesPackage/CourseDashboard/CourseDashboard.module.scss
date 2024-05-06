@@ -158,7 +158,7 @@
       .modalList {
 
          display: flex;
-         justify-content: center;
+         justify-content: flex-start;
 
          flex-wrap: wrap;
          column-gap: 10px;
@@ -168,7 +168,7 @@
    
          padding: 0;
    
-         width: 80%;
+         width: 40%;
 
          margin: 0 auto 20px auto;
 

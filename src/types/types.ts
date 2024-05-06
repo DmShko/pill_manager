@@ -2,10 +2,10 @@
 export interface Pill {
     id: string
     pillName: string
-    perDay?: string 
+    perDay: string 
     startDay: string
-    quantity?: string
-    duration?: string
+    quantity: string
+    duration: string
     description?: string
     selectedPill: boolean
 };

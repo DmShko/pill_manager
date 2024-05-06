@@ -303,43 +303,81 @@ const CourseDashboard: FC = () => {
     return resultMonth;
   };
 
-  const addDateLable = (data: PillDate[]) => {
+  const addDateLable = (data: PillDate[], dataFull: PillDate[], isFull: boolean) => {
 
     const year = new Date().getFullYear();
     let pillMonth = month;
+   
     let monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
     let counter = Number(getPillValue('startDay')?.value);
    
-    for(let dn = 0; dn < data.length; dn += 1) {
-     
-        if(counter !== undefined && counter <= monthLength) {
-          // write number of day
-          data[dn].dateNumber = counter.toString();
-          // write month name
-          data[dn].month = pillMonth.toString();
-        } else {
-          counter = Number(getPillValue('startDay')?.value);
-          if(monthes.indexOf(pillMonth) !== 11) pillMonth = monthes[(monthes.indexOf(pillMonth) + 1)].toString();
-        };
+    if(isFull) {
 
-        counter += 1;
-    };
+      for(let dn = 0; dn < data.length; dn += 1) {
+
+        if(data[dn].month === pillMonth) {
+          // write number of day
+          dataFull[Number(data[dn].dateNumber) - 1].dateNumber = data[dn].dateNumber;
+          // write month name
+          dataFull[Number(data[dn].dateNumber) - 1].month = data[dn].month;
+        } 
+       
+      };
+
+    } else {
+
+      for(let dn = 0; dn < data.length; dn += 1) {
+        
+          if(counter !== undefined && counter <= monthLength) {
+            // write number of day
+            data[dn].dateNumber = counter.toString();
+            // write month name
+            data[dn].month = pillMonth.toString();
+          } else {
+            
+            if(monthes.indexOf(pillMonth) !== 12) {
+              
+              // rewrite month (data don't fit to previous month)
+              pillMonth = monthes[(monthes.indexOf(pillMonth) + 1)].toString();
+              counter = 0;
+              // get length for new month
+              monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
+            }
+          };
+
+          counter += 1;
+      };
+    }
 
   };
 
   const takePillDays = () => {
-   
+
+    const year = new Date().getFullYear();
+    let pillMonth = month;
+    let monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
+
     const daysQuantity = editCoursesSelector.pills.find(element => element.pillName === selectedPillName)?.duration;
+    
     let days: PillDate[] = [];
+    let fullMonth: PillDate[] = [];
 
-    for(let d=0; d < Number(daysQuantity); d += 1) {
-        days = [...days, {position: (d + 1).toString(), dateNumber: '', month: ''}]
+    // generate pill days array
+    for(let f=0; f < Number(daysQuantity); f += 1) {
+      days = [...days, {position: (f + 1).toString(), dateNumber: '', month: ''}];
     }
+    // ...and fill his
+    addDateLable(days, [], false);
 
-    addDateLable(days);
+    // generate full month days array
+    for(let fm=0; fm < Number(monthLength); fm += 1) {
+      fullMonth = [...fullMonth, {position: (fm + 1).toString(), dateNumber: '', month: pillMonth}];
+    }
+    // ...and fill his
+    addDateLable(days, fullMonth, true);
 
     // write days;
-    dispatch(changeStatistic({mode: 'changePillsDay', data:{prop: {name: selectedPillName, value: days, start: startPointDay.toString()}},}));
+    dispatch(changeStatistic({mode: 'changePillsDay', data:{prop: {name: selectedPillName, value: fullMonth, start: startPointDay.toString()}},}));
 
   };
 
@@ -352,7 +390,26 @@ const CourseDashboard: FC = () => {
   };
 
   const dayStyle = (data: string) => {
-    if(selectedDay.toString() === data) return {boxShadow: '1px 1px 4px 3px yellowgreen'};
+
+    let result = {};
+
+    if(selectedDay.toString() === data){
+      if(data !== '') {
+        result= {boxShadow: '1px 1px 4px 3px yellowgreen'};
+      } else {
+        result= {boxShadow: '1px 1px 4px 3px yellowgreen', backgroundColor: '#F0F0F0'};
+      };
+      
+    } else {
+      if(data !== '') {
+        result= {boxShadow: 'lightgray'};
+      } else {
+        result= {backgroundColor: '#F0F0F0'};
+      };
+    };
+
+    return result;
+   
   };
 
   return (
@@ -411,7 +468,7 @@ const CourseDashboard: FC = () => {
                   setSelectedDay(0)
                   setSelectedDay(new Date().getDate())
                   setSelectedPillName(value[0].label)
-                  takePillDays()
+                  
                 }
               }
             />
@@ -424,6 +481,9 @@ const CourseDashboard: FC = () => {
               values={[]} //only [[{}...]...] format
               onChange={(value) => {
                   setMonth(value[0].label);
+
+                  // paint new month if search on
+                  takePillDays()
                 }
               }
             />
