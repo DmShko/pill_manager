@@ -77,6 +77,9 @@ const CourseDashboard: FC = () => {
   // set start day
   const [month, setMonth] = useState(new Date().getMonth().toString());
 
+  // set start month
+  const [startMonth, setStartMonth] = useState('');
+
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setSearchCourse(evt.currentTarget.value);
   };
@@ -147,6 +150,13 @@ const CourseDashboard: FC = () => {
     };
     
   },[isAddBoard]);
+
+  useEffect(() => {
+
+    // paint new month if search on
+    takePillDays()
+    
+  },[month]);
 
   const openAddBoard = () => {
 
@@ -241,6 +251,7 @@ const CourseDashboard: FC = () => {
         break;
       case 'start':
         setStartPointDay(selectedDay);
+        setStartMonth(month);
         break;
       case 'reschedule':
         setStartPointDay(selectedDay);
@@ -307,15 +318,18 @@ const CourseDashboard: FC = () => {
 
     const year = new Date().getFullYear();
     let pillMonth = month;
-   
+ 
     let monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
     let counter = Number(getPillValue('startDay')?.value);
-   
+    let overCounter = 0;
+    
     if(isFull) {
 
+      // load days array of full month 
       for(let dn = 0; dn < data.length; dn += 1) {
 
-        if(data[dn].month === pillMonth) {
+        if(data[dn].month === pillMonth && data[dn].dateNumber !== '0') {
+          
           // write number of day
           dataFull[Number(data[dn].dateNumber) - 1].dateNumber = data[dn].dateNumber;
           // write month name
@@ -332,16 +346,23 @@ const CourseDashboard: FC = () => {
             // write number of day
             data[dn].dateNumber = counter.toString();
             // write month name
-            data[dn].month = pillMonth.toString();
+            data[dn].month = startMonth.toString();
           } else {
             
-            if(monthes.indexOf(pillMonth) !== 12) {
-              
+            if(monthes.indexOf(startMonth) !== 12) {
+        
               // rewrite month (data don't fit to previous month)
-              pillMonth = monthes[(monthes.indexOf(pillMonth) + 1)].toString();
-              counter = 0;
+              pillMonth = monthes[(monthes.indexOf(startMonth) + 1)].toString();
+              
               // get length for new month
-              monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
+              monthLength = Number(new Date(year, monthes.indexOf(startMonth), 0).toString().split(' ')[2]);
+
+               // write number of day
+              data[dn].dateNumber = overCounter.toString();
+              // write month name
+              data[dn].month = pillMonth.toString();
+
+              if(counter !== data.length - 1) overCounter += 1;
             }
           };
 
@@ -362,12 +383,15 @@ const CourseDashboard: FC = () => {
     let days: PillDate[] = [];
     let fullMonth: PillDate[] = [];
 
-    // generate pill days array
-    for(let f=0; f < Number(daysQuantity); f += 1) {
-      days = [...days, {position: (f + 1).toString(), dateNumber: '', month: ''}];
-    }
-    // ...and fill his
-    addDateLable(days, [], false);
+   
+      // generate pill days array
+      for(let f=0; f < Number(daysQuantity); f += 1) {
+        days = [...days, {position: (f + 1).toString(), dateNumber: '', month: ''}];
+      }
+
+      // ...and fill his
+      addDateLable(days, [], false);
+    
 
     // generate full month days array
     for(let fm=0; fm < Number(monthLength); fm += 1) {
@@ -375,7 +399,7 @@ const CourseDashboard: FC = () => {
     }
     // ...and fill his
     addDateLable(days, fullMonth, true);
-
+    
     // write days;
     dispatch(changeStatistic({mode: 'changePillsDay', data:{prop: {name: selectedPillName, value: fullMonth, start: startPointDay.toString()}},}));
 
@@ -482,8 +506,7 @@ const CourseDashboard: FC = () => {
               onChange={(value) => {
                   setMonth(value[0].label);
 
-                  // paint new month if search on
-                  takePillDays()
+                  // go to 153 row
                 }
               }
             />
