@@ -74,11 +74,8 @@ const CourseDashboard: FC = () => {
   // set start day
   const [startPointDay, setStartPointDay] = useState(0);
 
-  // set start day
+  // set current month
   const [month, setMonth] = useState(new Date().getMonth().toString());
-
-  // set start month
-  const [startMonth, setStartMonth] = useState('');
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setSearchCourse(evt.currentTarget.value);
@@ -130,6 +127,8 @@ const CourseDashboard: FC = () => {
 
     // then rewrite 'Pills' in current course
     dispatch(changeCourses({mode: 'changeStartDay', data: {id: editCoursesSelector.id, prop: {name: selectedPillName, value: startPointDay.toString()},}, key: 'pills',})); 
+
+    dispatch(changeCourses({mode: 'changeStartMounth', data: {id: editCoursesSelector.id, prop: {name: selectedPillName, value: month.toString()},}, key: 'pills',})); 
     
   },[startPointDay]);
 
@@ -153,8 +152,15 @@ const CourseDashboard: FC = () => {
 
   useEffect(() => {
 
+    const getStart = getPillValue('startDay');
     // paint new month if search on
     takePillDays()
+
+        
+    if(getStart?.value !== undefined && getStart?.value != '0') setSelectedDay(Number(getStart?.value));
+        
+    // setStartMonth(month);
+    // setStartPointDay(selectedDay);
     
   },[month]);
 
@@ -183,7 +189,7 @@ const CourseDashboard: FC = () => {
 
         if(startPills.startDay !== '0') {
           return {status: true, value: startPills[data as keyof Pill]};
-        }else {
+        } else {
           return {status: false, value: startPills[data as keyof Pill]};
         };
 
@@ -191,10 +197,18 @@ const CourseDashboard: FC = () => {
     } 
   };
 
+  const calcEnd = () => {
+
+    return statisticSelector[selectedPillName].days.filter(element => element.month === month).filter(element => element.dateNumber !== '').length;
+    
+  };
+
   const courseActions = (evt: React.MouseEvent<HTMLButtonElement>) => {
 
+    // const getEnd = getPillValue('duration');
     const getStart = getPillValue('startDay');
-    const getEnd = getPillValue('duration');
+    const getEnd = calcEnd();
+    
     const year = new Date().getFullYear();
     const pillMonth = month;
     const moLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
@@ -216,7 +230,7 @@ const CourseDashboard: FC = () => {
 
           if(getStart !== undefined && getEnd !== undefined) {
             
-            if(selectedDay >= Number(getStart.value) && selectedDay < (Number(getStart.value) + Number(getEnd.value)) - 1) setSelectedDay(state => state += 1);
+            if(selectedDay >= Number(getStart.value) && selectedDay < (Number(getStart.value) + getEnd) - 1) setSelectedDay(state => state += 1);
           };
 
         } else {
@@ -234,7 +248,7 @@ const CourseDashboard: FC = () => {
         if(getStart?.value !== '0') {
           if(getStart !== undefined && getEnd !== undefined) {
             
-            if(selectedDay > Number(getStart.value) && selectedDay <= (Number(getStart.value) + Number(getEnd.value)) - 1) setSelectedDay(state => state -= 1);
+            if(selectedDay > Number(getStart.value) && selectedDay <= (Number(getStart.value) + getEnd) - 1) setSelectedDay(state => state -= 1);
           };
         } else {
 
@@ -251,7 +265,7 @@ const CourseDashboard: FC = () => {
         break;
       case 'start':
         setStartPointDay(selectedDay);
-        setStartMonth(month);
+        // setStartMonth(month);
         break;
       case 'reschedule':
         setStartPointDay(selectedDay);
@@ -318,56 +332,62 @@ const CourseDashboard: FC = () => {
 
     const year = new Date().getFullYear();
     let pillMonth = month;
- 
+    const startMonth = coursesSelector.find(element => element.courseName === editCoursesSelector.courseName)?.pills.
+    find(element => element.pillName === selectedPillName)?.startMonth;
+
     let monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
     let counter = Number(getPillValue('startDay')?.value);
     let overCounter = 0;
-    
-    if(isFull) {
 
-      // load days array of full month 
-      for(let dn = 0; dn < data.length; dn += 1) {
+    if(startMonth !== undefined) {
 
-        if(data[dn].month === pillMonth && data[dn].dateNumber !== '0') {
-          
-          // write number of day
-          dataFull[Number(data[dn].dateNumber) - 1].dateNumber = data[dn].dateNumber;
-          // write month name
-          dataFull[Number(data[dn].dateNumber) - 1].month = data[dn].month;
-        } 
-       
-      };
+      if(isFull) {
+        console.log(data)
+        // load days array of full month 
+        for(let dn = 0; dn < data.length; dn += 1) {
 
-    } else {
-
-      for(let dn = 0; dn < data.length; dn += 1) {
-        
-          if(counter !== undefined && counter <= monthLength) {
-            // write number of day
-            data[dn].dateNumber = counter.toString();
-            // write month name
-            data[dn].month = startMonth.toString();
-          } else {
+          if(data[dn].month === pillMonth && data[dn].dateNumber !== '0') {
             
-            if(monthes.indexOf(startMonth) !== 12) {
+            // write number of day
+            dataFull[Number(data[dn].dateNumber) - 1].dateNumber = data[dn].dateNumber;
+            // write month name
+            dataFull[Number(data[dn].dateNumber) - 1].month = data[dn].month;
+          } 
         
-              // rewrite month (data don't fit to previous month)
-              pillMonth = monthes[(monthes.indexOf(startMonth) + 1)].toString();
-              
-              // get length for new month
-              monthLength = Number(new Date(year, monthes.indexOf(startMonth), 0).toString().split(' ')[2]);
+        };
 
-               // write number of day
-              data[dn].dateNumber = overCounter.toString();
+      } else {
+
+        for(let dn = 0; dn < data.length; dn += 1) {
+          
+            if(counter !== undefined && counter <= monthLength) {
+              // write number of day
+              data[dn].dateNumber = counter.toString();
               // write month name
-              data[dn].month = pillMonth.toString();
+              data[dn].month = startMonth.toString();
+            } else {
+              
+              if(monthes.indexOf(startMonth) !== 12) {
+          
+                // rewrite month (data don't fit to previous month)
+                pillMonth = monthes[(monthes.indexOf(startMonth) + 1)].toString();
+                
+                // get length for new month
+                monthLength = Number(new Date(year, monthes.indexOf(startMonth), 0).toString().split(' ')[2]);
 
-              if(counter !== data.length - 1) overCounter += 1;
-            }
-          };
+                // write number of day
+                data[dn].dateNumber = overCounter.toString();
+                // write month name
+                data[dn].month = pillMonth.toString();
 
-          counter += 1;
-      };
+                if(counter !== data.length - 1) overCounter += 1;
+              }
+            };
+
+            counter += 1;
+        };
+      }
+
     }
 
   };

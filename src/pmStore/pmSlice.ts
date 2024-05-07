@@ -107,6 +107,31 @@ const pmSlice = createSlice({
             
           };
           break;
+        case "changeStartMounth":
+            const tempCours = state.courses.find(
+              (element) =>
+                element.id === (action.payload.data as ChangeCoursePropSD).id
+            );
+            
+            // for part of string object ("pills")
+            if (
+              typeof (action.payload.data as ChangeCoursePropSD).prop ===
+              "object"
+            ) {
+              if (
+                tempCours !== undefined 
+              ) {
+                let startElement = tempCours[action.payload.key as keyof Pick<Course, "pills">].find(element => element.pillName === (action.payload.data as ChangeCoursePropSD).prop.name);
+               
+                if(startElement !== undefined) {
+                  
+                  startElement.startMonth = (action.payload.data as ChangeCoursePropSD).prop.value;
+                  
+                };
+              }
+              
+            };
+            break;
         case "addCourse":
           state.courses = [...state.courses, action.payload.data as Course];
           break;

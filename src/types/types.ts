@@ -3,6 +3,7 @@ export interface Pill {
     id: string
     pillName: string
     perDay: string 
+    startMonth: string
     startDay: string
     quantity: string
     duration: string

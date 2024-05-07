@@ -50,7 +50,7 @@ const AddPills: FC = () => {
             perDay: values.perDay,
             quantity: values.quantity,
             duration: values.duration,
-            description: '', selectedPill: false, startDay: '0', }, key: '',}));
+            description: '', selectedPill: false, startMonth: '', startDay: '0', }, key: '',}));
 
     },
   });
