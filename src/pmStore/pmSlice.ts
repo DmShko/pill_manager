@@ -18,6 +18,7 @@ import {
   ChangePillPropB,
   ChangeCoursePropSD,
   StatisticAction,
+  StartDateEction,
 
 } from "../types/types";
 
@@ -32,6 +33,7 @@ const pmInitialState: PmInitialState = {
   isLoading: false,
   isEdit: false,
   pressEdit: false,
+  startDate: '',
   error: false,
 };
 
@@ -243,6 +245,12 @@ const pmSlice = createSlice({
 
     },
 
+    changeStartDay(state, action: PayloadAction<StartDateEction>) {
+      
+      state.startDate = action.payload.data;
+
+    },
+
     changePressEdit(state, action: PayloadAction<PressEditEction>) {
       
       state.pressEdit = action.payload.data;
@@ -251,6 +259,6 @@ const pmSlice = createSlice({
   },
 });
 
-export const { changeCourses, changeTempPills, changeEditCourse, changeIsEdit, changePressEdit, changeStatistic } =
+export const { changeCourses, changeTempPills, changeEditCourse, changeIsEdit, changePressEdit, changeStatistic, changeStartDay } =
   pmSlice.actions;
 export default pmSlice.reducer;

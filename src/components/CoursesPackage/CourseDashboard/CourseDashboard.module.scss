@@ -139,107 +139,122 @@
       background-color: #f9f9f9;
    }
 
-   .modalContainer {
+ 
+   .modalContainer{
 
-      width: 100%;
+      display: flex; 
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+     
+      .dashContainer {
 
-      .select {
+         width: 100%;
 
-         width: 25%;
-         margin: 0 auto 20px auto;
+         .select {
 
-         .react-dropdown-select {
+            width: 100%;
+            margin: 0 auto 20px auto;
 
-            width: 25%;
+            .react-dropdown-select {
 
+               width: 25%;
+
+            }
          }
-      }
 
-      .modalList {
-
-         display: flex;
-         justify-content: flex-start;
-
-         flex-wrap: wrap;
-         column-gap: 10px;
-         row-gap: 10px;
-   
-         list-style: none;
-   
-         padding: 0;
-   
-         width: 40%;
-
-         margin: 0 auto 20px auto;
-
-         .item {
+         .modalList {
 
             display: flex;
+            justify-content: flex-start;
+
+            flex-wrap: wrap;
+            column-gap: 10px;
+            row-gap: 10px;
+      
+            list-style: none;
+      
+            padding: 0;
+      
+            width: 40%;
+
+            margin: 0 auto 20px auto;
+
+            .item {
+
+               display: flex;
+               align-items: center;
+               justify-content: center;
+      
+               width: 25px;
+               height: 25px;
+
+               font-size: 14px;
+               font-weight: 600;
+
+               color: white;
+      
+               background-color: lightgray;
+         
+               border-radius: 50%;
+
+               cursor: pointer;
+
+               transform: scale 300ms;
+         
+            }
+
+            .item:hover {
+               scale: 1.3;
+            }
+      
+         }
+
+         .currentDay {
+
+            display: flex;
+            flex-direction: row;
             align-items: center;
             justify-content: center;
-   
-            width: 25px;
-            height: 25px;
 
-            font-size: 14px;
-            font-weight: 600;
+            gap: 10px;
 
-            color: white;
-    
-            background-color: lightgray;
-      
-            border-radius: 50%;
+            margin-bottom: 20px;
 
-            cursor: pointer;
+            .currentDayButton {
 
-            transform: scale 300ms;
-      
+               width: 40px;
+               height: 25px;
+
+               padding: 0;
+
+               border-radius: 8px;
+
+            }
+
          }
 
-         .item:hover {
-            scale: 1.3;
+         .modalDashbord {
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            gap: 20px;
+
+            .startButton {
+
+               background-color: yellowgreen;
+
+            }
+
          }
-   
       }
 
-      .currentDay {
+      .dayContainer {
+         width: 40%;
 
-         display: flex;
-         flex-direction: row;
-         align-items: center;
-         justify-content: center;
-
-         gap: 10px;
-
-         margin-bottom: 20px;
-
-         .currentDayButton {
-
-            width: 40px;
-            height: 25px;
-
-            padding: 0;
-
-            border-radius: 8px;
-
-         }
-
-      }
-
-      .modalDashbord {
-
-         display: flex;
-         flex-direction: row;
-         align-items: center;
-         justify-content: center;
-
-         gap: 20px;
-
-         .startButton {
-
-            background-color: yellowgreen;
-
-         }
-
+         background-color: red;
       }
    }

@@ -14,17 +14,7 @@ import cd from "./CourseDashboard.module.scss";
 // my components
 import CourseAddBoard from '../CourseAddBoard/CourseAddBoard';
 
-import { changeCourses } from '../../../pmStore/pmSlice';
-
-import { changeEditCourse } from '../../../pmStore/pmSlice';
-
-import { changeIsEdit } from '../../../pmStore/pmSlice';
-
-import { changeTempPills } from '../../../pmStore/pmSlice'; 
-
-import { changePressEdit } from '../../../pmStore/pmSlice';
-
-import { changeStatistic } from '../../../pmStore/pmSlice';
+import { changeCourses, changeEditCourse, changeIsEdit, changeTempPills, changePressEdit, changeStatistic, changeStartDay } from '../../../pmStore/pmSlice';
 
 import PillsModal from '../../PillsModal/PillsModal';
 
@@ -47,6 +37,7 @@ const CourseDashboard: FC = () => {
   const dispatch = useAppDispatch();
 
   const coursesSelector = useAppSelector(state => state.courses);
+  const startDateSelector = useAppSelector(state => state.startDate);
   const editCoursesSelector = useAppSelector(state => state.editCourse);
   const pressEditSelector = useAppSelector(state => state.pressEdit);
   const statisticSelector = useAppSelector(state => state.statistic);
@@ -145,6 +136,7 @@ const CourseDashboard: FC = () => {
 
     if(!isAddBoard) {
       dispatch(changePressEdit({ data: false}));
+      dispatch(changeStartDay({ data: '0'}));
       dispatch(changeTempPills({mode: 'clearPills', data: '', key: ''}));
     };
     
@@ -152,12 +144,40 @@ const CourseDashboard: FC = () => {
 
   useEffect(() => {
 
-    const getStart = getPillValue('startDay');
-    // paint new month if search on
-    takePillDays()
+    // set current start date
+    dispatch(changeStartDay({data: calcStart()[0].dateNumber}));
+    
+  },[statisticSelector]);
 
-        
-    if(getStart?.value !== undefined && getStart?.value != '0') setSelectedDay(Number(getStart?.value));
+  useEffect(() => {
+
+    setSelectedDay(Number(startDateSelector));
+    
+  },[startDateSelector]);
+
+  useEffect(() => {
+
+    // const getStart = getPillValue('startDay');
+    // const getStart = calcStart()[0].dateNumber;
+    // paint new month if search on
+
+    // if start button click
+    if(startPointDay !== 0) takePillDays();
+
+    // if(selectedDay === 0) {
+
+    //   setSelectedDay(0);
+    //   setSelectedDay(new Date().getDate());
+
+    // } else {
+    //   setSelectedDay(Number(calcStart()));
+    // };
+ 
+    // if(getStart !== undefined && getStart != '0') {
+      
+    //   setSelectedDay(Number(getStart));
+
+    // }
         
     // setStartMonth(month);
     // setStartPointDay(selectedDay);
@@ -186,7 +206,7 @@ const CourseDashboard: FC = () => {
       const startPills = startDayValue.pills.find(element => element.pillName === selectedPillName);
       
       if(startPills !== undefined){
-
+        
         if(startPills.startDay !== '0') {
           return {status: true, value: startPills[data as keyof Pill]};
         } else {
@@ -198,16 +218,40 @@ const CourseDashboard: FC = () => {
   };
 
   const calcEnd = () => {
+    const tempEnd = statisticSelector[selectedPillName];
 
-    return statisticSelector[selectedPillName].days.filter(element => element.month === month).filter(element => element.dateNumber !== '').length;
+    if(tempEnd !== undefined) {
+    return tempEnd.days.filter(element => element.month === month).filter(element => element.dateNumber !== '').length;
+    }
+  };
+
+  const calcStart = () => {
+
+    const tempStart = statisticSelector[selectedPillName];
+   
+    let result: PillDate[] = [{position: '',
+      dateNumber: '0',
+      month: '',}];
+
+    if(tempStart !== undefined) {
+     
+      const tempDay = tempStart.days.filter(element => element.dateNumber !== '');
+     
+      if(tempDay !== undefined && tempDay.length !== 0) {
+       
+        result = tempDay;
+      }
+
+    };
+   
+    return result;
     
   };
 
   const courseActions = (evt: React.MouseEvent<HTMLButtonElement>) => {
 
     // const getEnd = getPillValue('duration');
-    const getStart = getPillValue('startDay');
-    const getEnd = calcEnd();
+    // const getStart = getPillValue('startDay');
     
     const year = new Date().getFullYear();
     const pillMonth = month;
@@ -225,36 +269,39 @@ const CourseDashboard: FC = () => {
         dispatch(changePressEdit({ data: true}));
         break;
       case 'up':
+      
+        const getStartUp = calcStart()[0].dateNumber;
+        const getEndUp = calcEnd();
+        
+        if(getStartUp !== '0') {
 
-        if(getStart?.value !== '0') {
-
-          if(getStart !== undefined && getEnd !== undefined) {
+          if(getStartUp !== undefined && getEndUp !== undefined) {
             
-            if(selectedDay >= Number(getStart.value) && selectedDay < (Number(getStart.value) + getEnd) - 1) setSelectedDay(state => state += 1);
+            if(selectedDay >= Number(getStartUp) && selectedDay < (Number(getStartUp) + getEndUp) - 1) setSelectedDay(state => state += 1);
           };
 
         } else {
-
           
-          if(getStart !== undefined && month !== undefined) {
+          if(getStartUp !== undefined && month !== undefined) {
            
-            if(selectedDay >= Number(getStart.value + 1) && selectedDay < Number(moLength)) setSelectedDay(state => state += 1);
+            if(selectedDay >= Number(getStartUp) + 1 && selectedDay < Number(moLength)) setSelectedDay(state => state += 1);
           };
         };
 
         break;
       case 'down':
-       
-        if(getStart?.value !== '0') {
-          if(getStart !== undefined && getEnd !== undefined) {
+        const getStartDown = calcStart()[0].dateNumber;
+        const getEndDown = calcEnd();
+        if(getStartDown !== '0') {
+          if(getStartDown !== undefined && getEndDown !== undefined) {
             
-            if(selectedDay > Number(getStart.value) && selectedDay <= (Number(getStart.value) + getEnd) - 1) setSelectedDay(state => state -= 1);
+            if(selectedDay > Number(getStartDown) && selectedDay <= (Number(getStartDown) + getEndDown) - 1) setSelectedDay(state => state -= 1);
           };
         } else {
 
-          if(getStart !== undefined && month !== undefined) {
+          if(getStartDown !== undefined && month !== undefined) {
           
-            if(selectedDay > Number(getStart.value + 1) && selectedDay <= Number(moLength)) {
+            if(selectedDay > Number(getStartDown) + 1 && selectedDay <= Number(moLength)) {
              
               setSelectedDay(state => state -= 1);
             }
@@ -264,6 +311,7 @@ const CourseDashboard: FC = () => {
 
         break;
       case 'start':
+    
         setStartPointDay(selectedDay);
         // setStartMonth(month);
         break;
@@ -342,7 +390,7 @@ const CourseDashboard: FC = () => {
     if(startMonth !== undefined) {
 
       if(isFull) {
-        console.log(data)
+        
         // load days array of full month 
         for(let dn = 0; dn < data.length; dn += 1) {
 
@@ -393,7 +441,7 @@ const CourseDashboard: FC = () => {
   };
 
   const takePillDays = () => {
-
+    
     const year = new Date().getFullYear();
     let pillMonth = month;
     let monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
@@ -403,26 +451,24 @@ const CourseDashboard: FC = () => {
     let days: PillDate[] = [];
     let fullMonth: PillDate[] = [];
 
-   
-      // generate pill days array
-      for(let f=0; f < Number(daysQuantity); f += 1) {
-        days = [...days, {position: (f + 1).toString(), dateNumber: '', month: ''}];
-      }
+    // generate pill days array
+    for(let f=0; f < Number(daysQuantity); f += 1) {
+      days = [...days, {position: (f + 1).toString(), dateNumber: '', month: ''}];
+    };
 
-      // ...and fill his
-      addDateLable(days, [], false);
+    // ...and fill his
+    addDateLable(days, [], false);
     
-
     // generate full month days array
     for(let fm=0; fm < Number(monthLength); fm += 1) {
       fullMonth = [...fullMonth, {position: (fm + 1).toString(), dateNumber: '', month: pillMonth}];
-    }
+    };
     // ...and fill his
     addDateLable(days, fullMonth, true);
-    
+
     // write days;
     dispatch(changeStatistic({mode: 'changePillsDay', data:{prop: {name: selectedPillName, value: fullMonth, start: startPointDay.toString()}},}));
-
+    
   };
 
   const dayVisible = (evt: React.MouseEvent<HTMLLIElement>) => {
@@ -436,7 +482,7 @@ const CourseDashboard: FC = () => {
   const dayStyle = (data: string) => {
 
     let result = {};
-
+  
     if(selectedDay.toString() === data){
       if(data !== '') {
         result= {boxShadow: '1px 1px 4px 3px yellowgreen'};
@@ -500,60 +546,65 @@ const CourseDashboard: FC = () => {
         {modalToggle && <PillsModal openClose={openModal} selectedDayDrive={setSelectedDay} pillNameReset={setSelectedPillName}>
 
           <div className={cd.modalContainer}>
-          
-            <Select
-              options={takeContentCourse()}
-              className={cd.select}
-              style={{borderRadius: '8px'}}
-              name='course'
-              values={[]}
-              onChange={(value) => {
+            <div className={cd.dashContainer}>
+              <Select
+                options={takeContentCourse()}
+                className={cd.select}
+                style={{borderRadius: '8px'}}
+                name='course'
+                values={[]}
+                onChange={(value) => {               
+
+                    setSelectedPillName(value[0].label)
+                    
+                  }
+                }
+              />
+
+              <Select
+                options={takeContentMonth()}
+                className={cd.select}
+                style={{borderRadius: '8px'}}
+                name='month'
+                values={[]} //only [[{}...]...] format
+                onChange={(value) => {
+                    
+                    setMonth(value[0].label);
+
+                    // go to 153 row
+                  }
+                }
+              />
+
+              <div className={cd.currentDay}>
+                <button type='button' className={cd.currentDayButton} id='down' onClick={courseActions}></button>
+                <div>{startDateSelector === '0' ? selectedDay.toString() : startDateSelector}</div>
+                <button type='button' className={cd.currentDayButton} id='up' onClick={courseActions}></button>
+              </div>
+
+              <div className={cd.days}>
+
+                <ul className={cd.modalList}>
+
+                  {getPillValue('startDay')?.status && Object.keys(statisticSelector).includes(selectedPillName) ? statisticSelector[selectedPillName].days.map(element => {
+                    return(
+                      month === element.month ? <li className={cd.item} key={nanoid()} id={element.position} onMouseOver={dayVisible} onMouseOut={dayUnVisible} style={dayStyle(element.dateNumber)}>{dayIsVisible === element.position ? element.position : ''}</li> : ''
+                    )
+                  }): ''}
+
+                </ul>
                 
-                  setSelectedDay(0)
-                  setSelectedDay(new Date().getDate())
-                  setSelectedPillName(value[0].label)
-                  
-                }
-              }
-            />
-
-            <Select
-              options={takeContentMonth()}
-              className={cd.select}
-              style={{borderRadius: '8px'}}
-              name='month'
-              values={[]} //only [[{}...]...] format
-              onChange={(value) => {
-                  setMonth(value[0].label);
-
-                  // go to 153 row
-                }
-              }
-            />
-
-            <div className={cd.currentDay}>
-              <button type='button' className={cd.currentDayButton} id='down' onClick={courseActions}></button>
-              <div>{selectedDay.toString()}</div>
-              <button type='button' className={cd.currentDayButton} id='up' onClick={courseActions}></button>
-            </div>
-
-            <div className={cd.days}>
-
-              <ul className={cd.modalList}>
-
-                {getPillValue('startDay')?.status && Object.keys(statisticSelector).length !== 0 && statisticSelector[selectedPillName] !== undefined ? statisticSelector[selectedPillName].days.map(element => {
-                  return(
-                    month === element.month ? <li className={cd.item} key={nanoid()} id={element.position} onMouseOver={dayVisible} onMouseOut={dayUnVisible} style={dayStyle(element.dateNumber)}>{dayIsVisible === element.position ? element.position : ''}</li> : ''
-                  )
-                }): ''}
-
-              </ul>
+              </div>
               
+              <div className={cd.modalDashbord}>
+                <button type='button' id='start' className={cd.startButton} onClick={courseActions} disabled={getPillValue('startDay')?.status ? true: false}><span>Start</span></button>
+                <button type='button' id='Reschedule' className={cd.rescheduleButton} onClick={courseActions}><span>Reschedule</span></button>
+              </div>
+
             </div>
-            
-            <div className={cd.modalDashbord}>
-              <button type='button' id='start' className={cd.startButton} onClick={courseActions} disabled={getPillValue('startDay')?.status ? true: false}><span>Start</span></button>
-              <button type='button' id='Reschedule' className={cd.rescheduleButton} onClick={courseActions}><span>Reschedule</span></button>
+
+            <div className={cd.dayContainer}>
+              
             </div>
 
           </div>
