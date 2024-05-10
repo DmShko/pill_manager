@@ -40,6 +40,10 @@ export type ChangeCoursePropST = {
   prop: {name: string, value: PillDate[], start: string}
 };
 
+export type ChangeFutureProp = {
+  prop: {pillName: string, futureName: string, dateNumber: string, value: number | boolean}
+};
+
 export interface ChangeCoursePropA {
   id: string
   prop: Pill[] 
@@ -90,7 +94,7 @@ export interface PressEditEction {
 // type for statistic action argument
 export interface StatisticAction {
   mode: string
-  data: ChangeCoursePropST | string
+  data: ChangeCoursePropST | ChangeFutureProp | string
 };
 
 
@@ -140,4 +144,6 @@ export interface Course {
     position: string
     dateNumber: string
     month: string
+    done: number
+    status: boolean
   };

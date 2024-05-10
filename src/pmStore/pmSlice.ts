@@ -19,6 +19,8 @@ import {
   ChangeCoursePropSD,
   StatisticAction,
   StartDateEction,
+  ChangeFutureProp,
+  PillDate,
 
 } from "../types/types";
 
@@ -220,6 +222,33 @@ const pmSlice = createSlice({
         case "changePillsDay":
           state.statistic = {...state.statistic, [(action.payload.data as ChangeCoursePropST).prop.name ]: {start: (action.payload.data as ChangeCoursePropST).prop.start, days: (action.payload.data as ChangeCoursePropST).prop.value},} 
           break;
+
+        case "changePillsFutures":
+
+          const currentPill = state.statistic[(action.payload.data as ChangeFutureProp).prop.pillName]
+          
+          if(currentPill !== undefined) {
+
+            const currentDay = currentPill.days.find(element => element.dateNumber === (action.payload.data as ChangeFutureProp).prop.dateNumber);
+            
+            if(currentDay !== undefined) {
+              const future = (action.payload.data as ChangeFutureProp).prop.futureName;
+              switch(future) {
+                case 'done':
+                  currentDay[(action.payload.data as ChangeFutureProp).prop.futureName as keyof Pick<PillDate, 'done'>] = (action.payload.data as ChangeFutureProp).prop.value as number;
+                  break;
+                case 'status':
+                  currentDay[(action.payload.data as ChangeFutureProp).prop.futureName as keyof Pick<PillDate, 'status'>] = (action.payload.data as ChangeFutureProp).prop.value as boolean;
+                  break;
+                default:
+                  break;
+              };
+              
+            };
+            
+          };
+        break;
+
         case "deletePillsDay":
           const newStatistic: typeof state.statistic = {};
  
