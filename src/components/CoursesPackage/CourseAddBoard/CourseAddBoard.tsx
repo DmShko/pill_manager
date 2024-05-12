@@ -21,10 +21,10 @@ import { Pill } from '../../../types/types';
 const CourseAddBoard: FC  = () => {
 
   const dispatch = useAppDispatch();
-  const tempPillsSelector = useAppSelector(state => state.tempPills);
-  const editCourseSelector = useAppSelector(state => state.editCourse);
-  const pressEditSelector = useAppSelector(state => state.pressEdit);
-  const coursesSelector = useAppSelector(state => state.courses);
+  const tempPillsSelector = useAppSelector(state => state.pm.tempPills);
+  const editCourseSelector = useAppSelector(state => state.pm.editCourse);
+  const pressEditSelector = useAppSelector(state => state.pm.pressEdit);
+  const coursesSelector = useAppSelector(state => state.pm.courses);
 
   useEffect(() => {
 

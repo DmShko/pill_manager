@@ -6,12 +6,16 @@ import SharedLayout from './components/SharedLayout/SharedLayout.tsx';
 import Courses from './pages/Courses/Courses.tsx';
 import Prescriptions from './pages/Prescriptions/Prescriptions.tsx';
 import Home from './pages/Home/Home.tsx';
+import SignIn from './pages/SignIn/SignIn.tsx';
+import SignUp from './pages/SignUp/SignUp.tsx';
 import NotFound from './pages/NotFound/NotFound.tsx';
 
 import './App.css';
 
 const COURSES = '/courses';
 const PRESCRIPTIONS = '/prescriptions';
+const SIGNIN = '/signin';
+const SIGNUP = '/signup';
 const NOTFOUND = '/*';
 
 const App = () => {
@@ -21,6 +25,8 @@ const App = () => {
   
   {path: COURSES, element: <Courses />,}, 
   {path: PRESCRIPTIONS, element: <Prescriptions />,}, 
+  {path: SIGNIN, element: <SignIn />,}, 
+  {path: SIGNUP, element: <SignUp />,},
   {path: NOTFOUND, element: <NotFound />,},
   
   ];

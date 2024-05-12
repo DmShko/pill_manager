@@ -1,0 +1,33 @@
+.container {
+
+    background-image: url('../../images/courses/pills-svgrepo-com.svg');
+    background-position: center;
+    background-size: contain;
+    background-repeat: repeat-x;
+
+    height: 100vh;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 40%;
+        height: 200px;
+
+        padding: 20px;
+        margin: 0 auto;
+
+        background-color: white;
+
+    }
+
+    input {
+
+        border: none;
+        border-bottom: 2px solid lightgray;
+
+    }
+
+}

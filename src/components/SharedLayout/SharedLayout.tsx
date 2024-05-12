@@ -24,8 +24,18 @@ const SharedLayout: FC = () => {
                 <li className={sh.navLink}>
                 <NavLink to="/prescriptions">Prescriptions</NavLink>
                 </li>
-
             </ul>
+
+            <ul className={sh.authList}>
+                <li className={sh.authLink}>
+                <NavLink to="/signin">SignIn</NavLink>
+                </li>
+
+                <li className={sh.authLink}>
+                <NavLink to="/signup">SignUp</NavLink>
+                </li>
+            </ul>
+
             </nav>
         </div>
       </header>

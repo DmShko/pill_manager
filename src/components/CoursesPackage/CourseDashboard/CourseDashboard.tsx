@@ -40,11 +40,11 @@ const CourseDashboard: FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const coursesSelector = useAppSelector(state => state.courses);
-  const startDateSelector = useAppSelector(state => state.startDate);
-  const editCoursesSelector = useAppSelector(state => state.editCourse);
-  const pressEditSelector = useAppSelector(state => state.pressEdit);
-  const statisticSelector = useAppSelector(state => state.statistic);
+  const coursesSelector = useAppSelector(state => state.pm.courses);
+  const startDateSelector = useAppSelector(state => state.pm.startDate);
+  const editCoursesSelector = useAppSelector(state => state.pm.editCourse);
+  const pressEditSelector = useAppSelector(state => state.pm.pressEdit);
+  const statisticSelector = useAppSelector(state => state.pm.statistic);
 
   // search cours value
   const [isEdit, setIsEdit] = useState(false);

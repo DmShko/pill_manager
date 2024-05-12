@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
 import { persistStore, persistReducer, FLUSH,
     REHYDRATE,
@@ -10,6 +10,12 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 
 // my reducers
 import pmReducer from './pmSlice.js';
+import changeSingUp from './signUpStore.js';
+
+const rootReducer = combineReducers({
+  signUp: changeSingUp,
+  pm: pmReducer,
+});
 
 const persistConfig = {
     // 'key' is indeficate of one or more storage
@@ -19,7 +25,7 @@ const persistConfig = {
 };
 
 // basic reducer
-const persistedReducer = persistReducer(persistConfig, pmReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
     reducer: persistedReducer,
