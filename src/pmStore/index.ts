@@ -11,17 +11,26 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 // my reducers
 import pmReducer from './pmSlice.js';
 import changeSingUp from './signUpStore.js';
+import changeSingIn from './signInStore.js';
+import acCourse from './addCourseStore.js';
+import lo from './logoutStore.js';
+import gc from './getCoursesStore.js';
+import dc from './deleteCourseStore.js';
 
 const rootReducer = combineReducers({
   signUp: changeSingUp,
+  signIn: changeSingIn,
   pm: pmReducer,
+  addCourse: acCourse,
+  logout: lo,
+  getCourses: gc,
+  deleteCourses: dc,
 });
 
 const persistConfig = {
     // 'key' is indeficate of one or more storage
     key: 'root',
     storage,
-   
 };
 
 // basic reducer

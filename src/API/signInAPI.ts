@@ -2,17 +2,17 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // types
-import { SignUpArgs } from '../types/authTypes'
-import { SignUpRes } from '../types/authTypes'
+import { SignInArgs } from '../types/authTypes'
+import { SignInRes } from '../types/authTypes'
 
-const URL = 'http://localhost:3000/api/auth/signup';
+const URL = 'http://localhost:3000/api/auth/signin';
 // createAsyncThunk<return data type, arg type, rejectValue type>
-export const singUpAPI = createAsyncThunk<SignUpRes, SignUpArgs, {rejectValue: string}>(
-  'singUp/singUpAPI', 
+export const singInAPI = createAsyncThunk<SignInRes, SignInArgs, {rejectValue: string}>(
+  'singIn/singInAPI', 
   async function (arg, {rejectWithValue}) {
   
    // axios.post<URL type, response type, config type>
-   return await axios.post<string, SignUpRes>(URL, arg)
+   return await axios.post<string, SignInRes>(URL, arg)
     .then((res) => {
       // Signed up 
       return res;
@@ -23,4 +23,4 @@ export const singUpAPI = createAsyncThunk<SignUpRes, SignUpArgs, {rejectValue: s
     });
 });
 
-export default singUpAPI
+export default singInAPI

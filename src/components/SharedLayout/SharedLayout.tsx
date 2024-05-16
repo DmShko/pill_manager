@@ -5,7 +5,21 @@ import { Suspense } from "react";
 // styles
 import sh from "./SharedLayout.module.scss";
 
+import logoutAPI from "../../API/logoutAPI";
+
+// own dispatch hook
+import { useAppDispatch, useAppSelector  } from "../../app.hooks";
+
 const SharedLayout: FC = () => {
+
+  const dispatch = useAppDispatch();
+
+  const tokenSelector = useAppSelector(state => state.signIn.token);
+
+  const logout = () => {
+    dispatch(logoutAPI({token: tokenSelector,}));
+  };
+
   return (
     <>
       <header>
@@ -35,6 +49,8 @@ const SharedLayout: FC = () => {
                 <NavLink to="/signup">SignUp</NavLink>
                 </li>
             </ul>
+
+                <button onClick={logout}>Logout</button>
 
             </nav>
         </div>

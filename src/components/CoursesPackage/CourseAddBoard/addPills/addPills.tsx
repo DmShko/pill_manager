@@ -15,10 +15,10 @@ import { changeStatistic } from '../../../../pmStore/pmSlice';
 const AddPills: FC = () => {
 
   const dispatch = useAppDispatch();
-  const selectorTempPills = useAppSelector(state => state.tempPills);
-  const editCourseSelector = useAppSelector(state => state.editCourse);
-  const isEditSelector = useAppSelector(state => state.isEdit);
-  const pressEditSelector = useAppSelector(state => state.pressEdit);
+  const selectorTempPills = useAppSelector(state => state.pm.tempPills);
+  const editCourseSelector = useAppSelector(state => state.pm.editCourse);
+  const isEditSelector = useAppSelector(state => state.pm.isEdit);
+  const pressEditSelector = useAppSelector(state => state.pm.pressEdit);
 
   useEffect(() => {
     if(isEditSelector && pressEditSelector) dispatch(changeTempPills({ mode: 'freshTempPills', data: editCourseSelector.pills, key: '',}));

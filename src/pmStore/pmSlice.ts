@@ -28,7 +28,7 @@ const pmInitialState: PmInitialState = {
   courses: [],
   tempPills: [],
   editCourse: {
-    id: '',
+    _id: '',
     selected: false,
     pills: []},
   statistic: {},
@@ -51,7 +51,7 @@ const pmSlice = createSlice({
         case "changeCourse":
           const tempCourse = state.courses.find(
             (element) =>
-              element.id === (action.payload.data as ChangeCoursePropB).id
+              element._id === (action.payload.data as ChangeCoursePropB)._id
           );
 
           if (
@@ -89,7 +89,7 @@ const pmSlice = createSlice({
         case "changeStartDay":
           const temp = state.courses.find(
             (element) =>
-              element.id === (action.payload.data as ChangeCoursePropSD).id
+              element._id === (action.payload.data as ChangeCoursePropSD)._id
           );
           
           // for part of string object ("pills")
@@ -114,7 +114,7 @@ const pmSlice = createSlice({
         case "changeStartMounth":
             const tempCours = state.courses.find(
               (element) =>
-                element.id === (action.payload.data as ChangeCoursePropSD).id
+                element._id === (action.payload.data as ChangeCoursePropSD)._id
             );
             
             // for part of string object ("pills")
@@ -139,9 +139,12 @@ const pmSlice = createSlice({
         case "addCourse":
           state.courses = [...state.courses, action.payload.data as Course];
           break;
+        case "reloadCourses":
+          state.courses = action.payload.data as Course[];
+          break;
         case "deleteCourse":
           state.courses = state.courses.filter(
-            (element) => element.id !== action.payload.data
+            (element) => element._id !== action.payload.data
           );
           break;
         default:
@@ -163,7 +166,7 @@ const pmSlice = createSlice({
         case "changePill":
           const temp = state.tempPills.find(
             (element) =>
-              element.id === (action.payload.data as ChangePillProp).id
+              element.id === (action.payload.data as ChangePillProp)._id
           );
 
           if (
@@ -205,7 +208,7 @@ const pmSlice = createSlice({
       switch (action.payload.mode) {
         case "clearEditCourse":
           state.editCourse = {
-            id: '',
+            _id: '',
             selected: false,
             pills: []};
           break;
@@ -252,7 +255,7 @@ const pmSlice = createSlice({
         case "deletePillsDay":
           const newStatistic: typeof state.statistic = {};
  
-          const deleteKey = state.courses.find(element => element.id === state.editCourse.id)?.pills.
+          const deleteKey = state.courses.find(element => element._id === state.editCourse._id)?.pills.
           find(element => element.id === action.payload.data)?.pillName;
 
           for(const n of Object.keys(state.statistic).filter(value => value !== deleteKey)) {

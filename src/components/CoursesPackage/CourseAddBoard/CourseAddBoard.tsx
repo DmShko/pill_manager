@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { FormikValues, useFormik } from "formik"; 
 import { nanoid } from "nanoid"; 
 
@@ -15,6 +15,9 @@ import { Course } from "../../../types/types";
 // my components
 import { changeEditCourse } from '../../../pmStore/pmSlice';
 
+// async
+import { addCourseAPI } from '../../../API/addCourseAPI';
+
 // my types
 import { Pill } from '../../../types/types';
 
@@ -25,19 +28,31 @@ const CourseAddBoard: FC  = () => {
   const editCourseSelector = useAppSelector(state => state.pm.editCourse);
   const pressEditSelector = useAppSelector(state => state.pm.pressEdit);
   const coursesSelector = useAppSelector(state => state.pm.courses);
+  const tokenSelector = useAppSelector(state => state.signIn.token);
+
+  const [ newCourseId, setNewCourseId ] = useState('');
 
   useEffect(() => {
 
     if(pressEditSelector) {
 
       // get current value of 'editCourseSelector' from 'courses'
-      const editCourseValue = coursesSelector.find(element => element.id === editCourseSelector.id);
+      const editCourseValue = coursesSelector.find(element => element._id === editCourseSelector._id);
             
       // refresh editCourse
       if(editCourseValue !== undefined) dispatch(changeEditCourse({mode: 'addEditCourse', data: editCourseValue,}));
 
     }
 
+    if(newCourseId !== '') {
+
+      const newCourse = coursesSelector.find(element => element._id === newCourseId);
+
+      if(newCourse !== undefined)
+      // save course change or new course to DB
+      dispatch(addCourseAPI({data: newCourse, token: tokenSelector,}));
+    };
+    
   },[coursesSelector]);
 
   // compare 'pills' array in search course in 'coursesSelector'  and 'tempPills' array
@@ -72,7 +87,7 @@ const CourseAddBoard: FC  = () => {
 
     let result = {};
     
-    if(editCourseSelector.id !== '' && pressEditSelector) {
+    if(editCourseSelector._id !== '' && pressEditSelector) {
       result = {
         courseName: editCourseSelector.courseName,
         doctorName: editCourseSelector.doctorName,
@@ -98,6 +113,10 @@ const CourseAddBoard: FC  = () => {
   const formik = useFormik({
     initialValues: initial(),
     onSubmit: values => {
+
+      // reset newCourseId
+      setNewCourseId('');
+
       if(pressEditSelector) {
         // get 'values' keys
         const valuesKeys = Object.keys(values);
@@ -108,14 +127,14 @@ const CourseAddBoard: FC  = () => {
           if(values[e] !== editCourseSelector[e as keyof Course]) {
     
             // rewrite not equal future
-            dispatch(changeCourses({mode: 'changeCourse', data: {id: editCourseSelector.id, prop: values[e],}, key: e,})); 
+            dispatch(changeCourses({mode: 'changeCourse', data: {_id: editCourseSelector._id, prop: values[e],}, key: e,})); 
 
           }
           
         };
 
         // get old pills from 'coursesSelector'
-        const oldPills = coursesSelector.find(element => element.id === editCourseSelector.id)?.pills
+        const oldPills = coursesSelector.find(element => element._id === editCourseSelector._id)?.pills
  
         // compare pills array
         if(oldPills !== undefined) {
@@ -125,14 +144,20 @@ const CourseAddBoard: FC  = () => {
           if(compare) {
            
             // rewrite not equal 'Pills'
-            dispatch(changeCourses({mode: 'changeCourse', data: {id: editCourseSelector.id, prop: tempPillsSelector,}, key: 'pills',})); 
+            dispatch(changeCourses({mode: 'changeCourse', data: {_id: editCourseSelector._id, prop: tempPillsSelector,}, key: 'pills',})); 
 
           } 
           
         }
         
       } else {
-        dispatch(changeCourses({ mode: 'addCourse', data: {id: nanoid(), selected: false,
+
+        const courseId = nanoid();
+
+        // save newCourseId
+        setNewCourseId(courseId);
+
+        dispatch(changeCourses({ mode: 'addCourse', data: {_id: courseId, selected: false,
         courseName: values.courseName,
         doctorName: values.doctorName,
         docContacts: values.docContacts,

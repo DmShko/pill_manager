@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import singUpAPI  from '../API/signUpAPI';
 
 // types
-import { singUpInitialState } from '../types/authType';
+import { singUpInitialState } from '../types/authTypes';
 
 const singUpSliceInitialState: singUpInitialState = {
 

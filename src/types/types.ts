@@ -12,27 +12,27 @@ export interface Pill {
 };
 
 export interface ChangePillProp {
-  id: string
+  _id: string
   prop: string
 };
 
 export interface ChangePillPropB {
-  id: string
+  _id: string
   prop: boolean
 };
 
 export interface ChangeCoursePropB {
-  id: string
+  _id: string
   prop: boolean 
 };
 
 export interface ChangeCoursePropS {
-  id: string
+  _id: string
   prop: string 
 };
 
 export interface ChangeCoursePropSD {
-  id: string
+  _id: string
   prop: {name: string, value: string} 
 };
 
@@ -45,7 +45,7 @@ export type ChangeFutureProp = {
 };
 
 export interface ChangeCoursePropA {
-  id: string
+  _id: string
   prop: Pill[] 
 };
 
@@ -66,7 +66,7 @@ enum CourseStatus {
 // type for course action argument
 export interface ActionCourses {
   mode: string
-  data: Course | string | ChangeCoursePropB | ChangeCoursePropS | ChangeCoursePropA | ChangeCoursePropSD
+  data: Course | string | ChangeCoursePropB | ChangeCoursePropS | ChangeCoursePropA | ChangeCoursePropSD | Course[]
   key: string
 };
 
@@ -100,7 +100,7 @@ export interface StatisticAction {
 
 // type for one courses item
 export interface Course { 
-    id: string
+    _id: string
     courseName?: string
     doctorName?: string
     docContacts?: string

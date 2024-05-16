@@ -18,6 +18,9 @@ import { changeCourses, changeEditCourse, changeIsEdit, changeTempPills, changeP
 
 import PillsModal from '../../PillsModal/PillsModal';
 
+import getCoursesAPI from '../../../API/getCoursesAPI';
+import updateByIdAPI from '../../../API/deleteCourseAPI'
+
 // images
 import DeleteImg from '../../SvgComponents/Courses/Delete'; 
 
@@ -45,6 +48,8 @@ const CourseDashboard: FC = () => {
   const editCoursesSelector = useAppSelector(state => state.pm.editCourse);
   const pressEditSelector = useAppSelector(state => state.pm.pressEdit);
   const statisticSelector = useAppSelector(state => state.pm.statistic);
+  const tokenSelector = useAppSelector(state => state.signIn.token);
+  const reloadCourseSelector = useAppSelector(state => state.getCourses.freshCourses);
 
   // search cours value
   const [isEdit, setIsEdit] = useState(false);
@@ -104,6 +109,18 @@ const CourseDashboard: FC = () => {
 
   useEffect(() => {
 
+    dispatch(changeCourses({mode: 'reloadCourses', data: reloadCourseSelector, key: ''}));
+    
+  },[reloadCourseSelector]);
+
+  useEffect(() => {
+
+    if(tokenSelector !== '') dispatch(getCoursesAPI({token: tokenSelector,}));
+    
+  },[]);
+
+  useEffect(() => {
+
     // when only with edit mode
     if(detectSelected() != 1 && isEdit) {
       setIsEdit(false);
@@ -122,9 +139,9 @@ const CourseDashboard: FC = () => {
   useEffect(() => {
 
     // then rewrite 'Pills' in current course
-    dispatch(changeCourses({mode: 'changeStartDay', data: {id: editCoursesSelector.id, prop: {name: selectedPillName, value: startPointDay.toString()},}, key: 'pills',})); 
+    dispatch(changeCourses({mode: 'changeStartDay', data: {_id: editCoursesSelector._id, prop: {name: selectedPillName, value: startPointDay.toString()},}, key: 'pills',})); 
 
-    dispatch(changeCourses({mode: 'changeStartMounth', data: {id: editCoursesSelector.id, prop: {name: selectedPillName, value: month.toString()},}, key: 'pills',})); 
+    dispatch(changeCourses({mode: 'changeStartMounth', data: {_id: editCoursesSelector._id, prop: {name: selectedPillName, value: month.toString()},}, key: 'pills',})); 
     
   },[startPointDay]);
 
@@ -211,7 +228,7 @@ const CourseDashboard: FC = () => {
 
   const getPillValue = (data: string) => {
     
-    const startDayValue = coursesSelector.find(element => element.id === editCoursesSelector.id);
+    const startDayValue = coursesSelector.find(element => element._id === editCoursesSelector._id);
  
     if(startDayValue !== undefined) {
 
@@ -287,7 +304,10 @@ const CourseDashboard: FC = () => {
 
       case 'delete':
         for(const c of coursesSelector){
-          if(c.selected === true) dispatch(changeCourses({ mode: 'deleteCourse', data: c.id, key: '',}));
+          if(c.selected === true) {
+            dispatch(changeCourses({ mode: 'deleteCourse', data: c._id, key: '',}));
+            dispatch(updateByIdAPI({ token: tokenSelector,  id: c._id,}));
+          }
         }
         break;
       case 'edit':
@@ -373,17 +393,17 @@ const CourseDashboard: FC = () => {
 
     const itemId = evt.currentTarget.id;
     
-    if(!coursesSelector.find(element => element.id === itemId)?.selected) {
+    if(!coursesSelector.find(element => element._id === itemId)?.selected) {
     
       // activated 'edit' mode
       setIsEdit(true);
       // set iEdit in storage
       dispatch(changeIsEdit({data: true}))
-      dispatch(changeCourses({mode: 'changeCourse', data: {id: itemId, prop: true,}, key: 'selected',})); 
+      dispatch(changeCourses({mode: 'changeCourse', data: {_id: itemId, prop: true,}, key: 'selected',})); 
 
     }else {
   
-      dispatch(changeCourses({mode: 'changeCourse', data: {id: itemId, prop: false,}, key: 'selected',})); 
+      dispatch(changeCourses({mode: 'changeCourse', data: {_id: itemId, prop: false,}, key: 'selected',})); 
 
     };
 
@@ -721,7 +741,7 @@ const CourseDashboard: FC = () => {
         <ul className={cd.coursesList}>
           {coursesSelector.length !== 0 ? coursesSelector.map(element => 
             {
-              return <li className={cd.courseItem} key={nanoid()} id={element.id} 
+              return <li className={cd.courseItem} key={nanoid()} id={element._id} 
               style={element.selected ? {backgroundColor:'rgb(255, 179, 0, 0.8)'} : {backgroundColor:''}} onClick={selectCourse}><CourseItem courses={element}/></li> 
             }
           ) : 'There are no courses'}
