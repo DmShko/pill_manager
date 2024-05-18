@@ -17,6 +17,7 @@ import { changeEditCourse } from '../../../pmStore/pmSlice';
 
 // async
 import { addCourseAPI } from '../../../API/addCourseAPI';
+import { patchCourseAPI } from '../../../API/patchCourseAPI';
 
 // my types
 import { Pill } from '../../../types/types';
@@ -129,6 +130,8 @@ const CourseAddBoard: FC  = () => {
             // rewrite not equal future
             dispatch(changeCourses({mode: 'changeCourse', data: {_id: editCourseSelector._id, prop: values[e],}, key: e,})); 
 
+            // rewrite in DB
+            dispatch(patchCourseAPI({token: tokenSelector, id: editCourseSelector._id, prop: values[e], key: e,}));
           }
           
         };
@@ -145,6 +148,9 @@ const CourseAddBoard: FC  = () => {
            
             // rewrite not equal 'Pills'
             dispatch(changeCourses({mode: 'changeCourse', data: {_id: editCourseSelector._id, prop: tempPillsSelector,}, key: 'pills',})); 
+
+            // rewrite in DB
+            dispatch(patchCourseAPI({token: tokenSelector, id: editCourseSelector._id, prop: tempPillsSelector, key: 'pills',}));
 
           } 
           

@@ -116,6 +116,7 @@ export interface Course {
   export interface PmInitialState {
     courses: Course[]
     tempPills: Pill[]
+    pillsIsChange: string []
     editCourse: Course
     statistic: {[key: string]: {start: string, days: PillDate[]}}
     isLoading: boolean

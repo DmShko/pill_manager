@@ -27,6 +27,7 @@ import {
 const pmInitialState: PmInitialState = {
   courses: [],
   tempPills: [],
+  pillsIsChange: [],
   editCourse: {
     _id: '',
     selected: false,

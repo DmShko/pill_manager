@@ -19,7 +19,9 @@ import { changeCourses, changeEditCourse, changeIsEdit, changeTempPills, changeP
 import PillsModal from '../../PillsModal/PillsModal';
 
 import getCoursesAPI from '../../../API/getCoursesAPI';
-import updateByIdAPI from '../../../API/deleteCourseAPI'
+import updateByIdAPI from '../../../API/deleteCourseAPI';
+import allStatisticAPI from '../../../API/allStatisticAPI';
+import addStatisticAPI from '../../../API/addStatisticAPI';
 
 // images
 import DeleteImg from '../../SvgComponents/Courses/Delete'; 
@@ -50,6 +52,7 @@ const CourseDashboard: FC = () => {
   const statisticSelector = useAppSelector(state => state.pm.statistic);
   const tokenSelector = useAppSelector(state => state.signIn.token);
   const reloadCourseSelector = useAppSelector(state => state.getCourses.freshCourses);
+  const statisticsSelector = useAppSelector(state => state.getStatistic.statistics);
 
   // search cours value
   const [isEdit, setIsEdit] = useState(false);
@@ -75,8 +78,11 @@ const CourseDashboard: FC = () => {
   // set current month
   const [month, setMonth] = useState(new Date().getMonth().toString());
 
-   // set current month
-   const [pillDone, setPillDone] = useState(0);
+  // set current month
+  const [pillDone, setPillDone] = useState(0);
+
+  // set reload month
+  const [reload, setReload] = useState(false);
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setSearchCourse(evt.currentTarget.value);
@@ -109,6 +115,12 @@ const CourseDashboard: FC = () => {
 
   useEffect(() => {
 
+    if(modalToggle) dispatch(allStatisticAPI({token: tokenSelector}));
+    
+  },[modalToggle]);
+
+  useEffect(() => {
+
     dispatch(changeCourses({mode: 'reloadCourses', data: reloadCourseSelector, key: ''}));
     
   },[reloadCourseSelector]);
@@ -117,7 +129,7 @@ const CourseDashboard: FC = () => {
 
     if(tokenSelector !== '') dispatch(getCoursesAPI({token: tokenSelector,}));
     
-  },[]);
+  },[reload]);
 
   useEffect(() => {
 
@@ -179,9 +191,29 @@ const CourseDashboard: FC = () => {
 
   useEffect(() => {
 
+    const statisticPill = statisticSelector[selectedPillName];
+    let doneDay: PillDate = { position: '',
+      dateNumber: '',
+      month: '',
+      done: 0,
+      status: false,};
+
+    if(statisticPill !== undefined) {
+      const days = statisticPill.days.find(element => element.dateNumber === selectedDay.toString());
+      if(days !== undefined)
+      doneDay = days;
+    };
+
     if(pillDone !== 0)
     dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'done', dateNumber: selectedDay.toString(), value: pillDone},},}));
-    
+
+    // after load all statistic, check all statistic length does't equal 0
+    if(statisticsSelector.length === 0 && doneDay != undefined) {
+
+      // write change Pill statistic to DB
+      dispatch(addStatisticAPI({token: tokenSelector, data: {pillName: selectedPillName, day: doneDay,}}));
+    }
+
   },[pillDone]);
 
   useEffect(() => {
@@ -264,7 +296,7 @@ const CourseDashboard: FC = () => {
 
     if(tempStart !== undefined) {
      
-      const tempDay = tempStart.days.filter(element => element.dateNumber !== '');
+      const tempDay = tempStart.days.filter(element => element.dateNumber !== '').filter(element => element.month === month);
      
       if(tempDay !== undefined && tempDay.length !== 0) {
        
@@ -313,6 +345,9 @@ const CourseDashboard: FC = () => {
       case 'edit':
         setIsAddBoard(true);
         dispatch(changePressEdit({ data: true}));
+        break;
+      case 'reload':
+        setReload(state => !state);  
         break;
       case 'up':
       
@@ -459,12 +494,23 @@ const CourseDashboard: FC = () => {
         // load days array of full month 
         for(let dn = 0; dn < data.length; dn += 1) {
 
-          if(data[dn].month === pillMonth && data[dn].dateNumber !== '0') {
+          if(data[dn].dateNumber !== '0') {
+
+            for(const f of dataFull) {
+              if(f.month === data[dn].month && Number(f.position) === Number(data[dn].dateNumber)) {
+              
+                // write number of day
+                f.dateNumber = data[dn].dateNumber;
+                // write month name
+                f.month = data[dn].month;
+                
+              }
+            };
             
             // write number of day
-            dataFull[Number(data[dn].dateNumber) - 1].dateNumber = data[dn].dateNumber;
+            // dataFull[Number(data[dn].dateNumber) - 1].dateNumber = data[dn].dateNumber;
             // write month name
-            dataFull[Number(data[dn].dateNumber) - 1].month = data[dn].month;
+            // dataFull[Number(data[dn].dateNumber) - 1].month = data[dn].month;
           } 
         
         };
@@ -505,11 +551,24 @@ const CourseDashboard: FC = () => {
 
   };
 
+  const howMonthsInDays = async (value: PillDate []) => {
+
+    let howMonth: string [] = [];
+       
+    for(const e of value) {
+      if(monthes.includes(e.month) && !howMonth.includes(e.month)) howMonth = [...howMonth, e.month];
+    };
+
+    // howMonth contain only month name from 'days' months name set
+    return howMonth;
+
+  };
+
   const takePillDays = () => {
     
     const year = new Date().getFullYear();
-    let pillMonth = month;
-    let monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
+    // let pillMonth = month;
+    // let monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
 
     const daysQuantity = editCoursesSelector.pills.find(element => element.pillName === selectedPillName)?.duration;
     
@@ -523,16 +582,33 @@ const CourseDashboard: FC = () => {
 
     // ...and fill his
     addDateLable(days, [], false);
-    
-    // generate full month days array
-    for(let fm=0; fm < Number(monthLength); fm += 1) {
-      fullMonth = [...fullMonth, {position: (fm + 1).toString(), dateNumber: '', month: pillMonth, done: 0, status: false}];
-    };
-    // ...and fill his
-    addDateLable(days, fullMonth, true);
 
-    // write days;
-    dispatch(changeStatistic({mode: 'changePillsDay', data:{prop: {name: selectedPillName, value: fullMonth, start: startPointDay.toString()}},}));
+    /**How months contain 'days' */
+
+      howMonthsInDays(days).then(value => {
+
+        for(let m=0; m < value.length; m += 1) {
+
+          // generate length for current month from value (howMonth -> see 523 row)
+          const monthLength = Number(new Date(year, monthes.indexOf(value[m]), 0).toString().split(' ')[2]);
+          
+          // generate full month days array
+          for(let fm=0; fm < Number(monthLength); fm += 1) {
+           
+            fullMonth = [...fullMonth, {position: (fm + 1).toString(), dateNumber: '', month: value[m], done: 0, status: false}];
+          
+          };
+          
+        };
+
+        // ...and fill his
+        addDateLable(days, fullMonth, true);
+
+        // write days;
+        dispatch(changeStatistic({mode: 'changePillsDay', data:{prop: {name: selectedPillName, value: fullMonth, start: startPointDay.toString()}},}));
+
+      });  
+    /** */
     
   };
 
@@ -611,7 +687,7 @@ const CourseDashboard: FC = () => {
   return (
     <>
       
-      <button type='button' onClick={openAddBoard}>{pressEditSelector ? 'Close' : isAddBoard ? 'Close' : 'New course'}</button>
+      <button className={cd.newButton} type='button' onClick={openAddBoard}>{pressEditSelector ? 'Close' : isAddBoard ? 'Close' : 'New course'}</button>
      
 
       <div className={cd.courses}>

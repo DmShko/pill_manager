@@ -60,12 +60,12 @@ const AddPills: FC = () => {
     const currenElementId = (evt.currentTarget as HTMLLIElement).id
 
     // set "selectedPill" (true) of edit pill
-    dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: true}, key: 'selectedPill'})); 
+    dispatch(changeTempPills({mode: 'changePill', data: {_id: currenElementId, prop: true}, key: 'selectedPill'})); 
 
     if((evt.target as HTMLButtonElement).id === (evt.currentTarget as HTMLLIElement).id) {
 
        // reset "selectedPill" (false) of edit pill
-       dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: false}, key: 'selectedPill'})); 
+       dispatch(changeTempPills({mode: 'changePill', data: {_id: currenElementId, prop: false}, key: 'selectedPill'})); 
        setItemName(false);
        setItemPerDay(false);
        setItemQuantity(false);
@@ -85,26 +85,26 @@ const AddPills: FC = () => {
     if((evt.target as HTMLButtonElement).name === 'save') {
 
         // reset "selectedPill" (false) of edit pill
-        dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: false}, key: 'selectedPill'})); 
+        dispatch(changeTempPills({mode: 'changePill', data: {_id: currenElementId, prop: false}, key: 'selectedPill'})); 
     
        if(itemName) {
          // write changes and reset itemName
-         if(formik.values.corrName !== '') dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrName}, key: 'pillName'})); 
+         if(formik.values.corrName !== '') dispatch(changeTempPills({mode: 'changePill', data: {_id: currenElementId, prop: formik.values.corrName}, key: 'pillName'})); 
          setItemName(false);
        };
        if(itemPerDay) {
          // write changes and reset itemPerDay
-         if(formik.values.corrPerDay !== '') dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrPerDay}, key: 'perDay'})); 
+         if(formik.values.corrPerDay !== '') dispatch(changeTempPills({mode: 'changePill', data: {_id: currenElementId, prop: formik.values.corrPerDay}, key: 'perDay'})); 
          setItemPerDay(false);
        };
        if(itemQuantity) {
         // write changes and reset itemQuantity
-        if(formik.values.corrQuantity !== '') dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrQuantity}, key: 'quantity'})); 
+        if(formik.values.corrQuantity !== '') dispatch(changeTempPills({mode: 'changePill', data: {_id: currenElementId, prop: formik.values.corrQuantity}, key: 'quantity'})); 
         setItemQuantity(false);
        };
        if(itemDuration) {
         // write changes and reset itemDuration
-        if(formik.values.corrDuration !== '') dispatch(changeTempPills({mode: 'changePill', data: {id: currenElementId, prop: formik.values.corrDuration}, key: 'duration'})); 
+        if(formik.values.corrDuration !== '') dispatch(changeTempPills({mode: 'changePill', data: {_id: currenElementId, prop: formik.values.corrDuration}, key: 'duration'})); 
         setItemDuration(false);
        };
 

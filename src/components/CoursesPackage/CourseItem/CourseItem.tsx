@@ -22,8 +22,8 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
    
       <div className={ci.courseItem}>
 
-          {courses.courseName !== '' ? <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span>{courses.courseName} <span className={ci.visit}>Date of visit: {courses.visitDate}</span></p>:
-           <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span>{'unnamed'}<span className={ci.visit}>Date of visit: {''}</span></p>}
+          {courses.courseName !== '' ? <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span><span className={ci.nameText}>{courses.courseName?.toLocaleUpperCase()} </span><span className={ci.visit}>Date of visit: {courses.visitDate}</span></p>:
+           <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span><span className={ci.nameText}>{'unnamed'}</span><span className={ci.visit}>Date of visit: {''}</span></p>}
 
           <div className={ci.courseSubcontainer}>
             <div className={ci.registryInfo}>
@@ -33,10 +33,17 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
               <p className={ci.infoItem}><span className={ci.title}>Doctor Cont.</span><span className={ci.titleCalue}>{courses.docContacts}</span></p>
             </div>
 
-            <div className={ci.statusContainer}>
-              <div className={ci.statusIndicator}>
-                <p className={ci.statusItem}><span className={ci.statusTitle}>%</span>{courses.status}</p>
+            <div className={ci.status}>
+              <div className={ci.statusContainer}>
+                
+                <div className={ci.statusIndicator}>
+                  <p className={ci.statusItem}><span className={ci.statusTitle}>%</span></p>
+                </div>
+
               </div>
+
+              <p className={ci.statusText}>{courses.status}</p>
+
             </div>
 
             <ul className={ci.coursesPills}>
