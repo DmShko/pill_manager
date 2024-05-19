@@ -22,6 +22,7 @@ import getCoursesAPI from '../../../API/getCoursesAPI';
 import updateByIdAPI from '../../../API/deleteCourseAPI';
 import allStatisticAPI from '../../../API/allStatisticAPI';
 import addStatisticAPI from '../../../API/addStatisticAPI';
+import patchStatisticAPI from '../../../API/patchStatisticAPI';
 
 // images
 import DeleteImg from '../../SvgComponents/Courses/Delete'; 
@@ -53,6 +54,9 @@ const CourseDashboard: FC = () => {
   const tokenSelector = useAppSelector(state => state.signIn.token);
   const reloadCourseSelector = useAppSelector(state => state.getCourses.freshCourses);
   const statisticsSelector = useAppSelector(state => state.getStatistic.statistics);
+  const isAddStatistic = useAppSelector(state => state.addStatistic.isLoad);
+  const isGetStatistic = useAppSelector(state => state.getStatistic.isLoad);
+  const isPatchStatistic = useAppSelector(state => state.patchStatistic.isLoad);
 
   // search cours value
   const [isEdit, setIsEdit] = useState(false);
@@ -78,7 +82,7 @@ const CourseDashboard: FC = () => {
   // set current month
   const [month, setMonth] = useState(new Date().getMonth().toString());
 
-  // set current month
+  // set done future
   const [pillDone, setPillDone] = useState(0);
 
   // set reload month
@@ -114,10 +118,54 @@ const CourseDashboard: FC = () => {
   };
 
   useEffect(() => {
-
-    if(modalToggle) dispatch(allStatisticAPI({token: tokenSelector}));
+  
+    if((modalToggle && isAddStatistic) || (modalToggle && isPatchStatistic)) dispatch(allStatisticAPI({token: tokenSelector}));
     
-  },[modalToggle]);
+  },[isAddStatistic, isPatchStatistic, month]);
+
+  useEffect(() => {
+   
+    if(isGetStatistic) {
+      
+      // refresh calendar days
+      const calendarStatDays = statisticSelector[selectedPillName];
+        
+      if(calendarStatDays !== undefined && statisticsSelector.length !== 0) {
+
+        for(const e of statisticsSelector) {
+          
+          for(const d of calendarStatDays.days) {
+            
+            if(d.dateNumber === e.dateNumber)
+            
+            // change future 'done' in statistic day
+            dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'done', dateNumber: d.dateNumber, value: e.done},},}));
+          };
+        
+        };
+
+      }; 
+    };
+    
+  },[isGetStatistic]);
+  
+  useEffect(() => {
+   
+    let getPill = statisticSelector[selectedPillName];
+
+    if(getPill !== undefined) {
+
+      const getDay = getPill.days.find(element => element.dateNumber === selectedDay.toString());
+
+      if(getDay !== undefined) {
+
+        setPillDone(getDay.done);
+        
+      }
+     
+    }
+
+  },[selectedDay]);
 
   useEffect(() => {
 
@@ -128,7 +176,7 @@ const CourseDashboard: FC = () => {
   useEffect(() => {
 
     if(tokenSelector !== '') dispatch(getCoursesAPI({token: tokenSelector,}));
-    
+   
   },[reload]);
 
   useEffect(() => {
@@ -191,28 +239,53 @@ const CourseDashboard: FC = () => {
 
   useEffect(() => {
 
+    if(pillDone !== 0) {
+
+    // change future 'done' in statistic day
+    // dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'done', dateNumber: selectedDay.toString(), value: pillDone},},}));
+
+    // search 'pill' in current course statistic
     const statisticPill = statisticSelector[selectedPillName];
-    let doneDay: PillDate = { position: '',
+
+    // is day with id of current already pill present in statistics
+    let isPillDay = false;
+    let pillId = '';
+
+    let doneDay: PillDate = {position: '',
       dateNumber: '',
       month: '',
       done: 0,
       status: false,};
 
+    const pillInStatistic = statisticsSelector.find(element => element.dateNumber === selectedDay.toString());
+
+    if(pillInStatistic !== undefined) {
+      isPillDay = true;
+      pillId = pillInStatistic._id;
+    } 
+  
     if(statisticPill !== undefined) {
-      const days = statisticPill.days.find(element => element.dateNumber === selectedDay.toString());
-      if(days !== undefined)
-      doneDay = days;
+     
+      const dayStatistic = statisticPill.days.find(element => element.dateNumber === selectedDay.toString());
+      if(dayStatistic !== undefined)
+      doneDay = dayStatistic;
     };
 
-    if(pillDone !== 0)
-    dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'done', dateNumber: selectedDay.toString(), value: pillDone},},}));
-
     // after load all statistic, check all statistic length does't equal 0
-    if(statisticsSelector.length === 0 && doneDay != undefined) {
+    if(statisticsSelector.length === 0 && doneDay != undefined || !isPillDay) {
+     
+      // write change Pill statistic to DB
+      dispatch(addStatisticAPI({token: tokenSelector, data: {_id: nanoid(), pillName: selectedPillName, dateNumber: doneDay.dateNumber,
+        month: doneDay.month,
+        done: pillDone,
+        status: doneDay.status}}));
+    } else {
 
       // write change Pill statistic to DB
-      dispatch(addStatisticAPI({token: tokenSelector, data: {pillName: selectedPillName, day: doneDay,}}));
-    }
+      dispatch(patchStatisticAPI({token: tokenSelector, data: {id: pillId, prop: {key: 'done', value: pillDone,}}}));
+    };
+
+  }
 
   },[pillDone]);
 
@@ -317,6 +390,7 @@ const CourseDashboard: FC = () => {
       const day = pillSelected.days?.find(element => element.dateNumber === selectedDay.toString());
 
       if(day !== undefined) {
+        
         return day.done;
       }
     }
@@ -353,8 +427,7 @@ const CourseDashboard: FC = () => {
       
         const getStartUp = calcStart()[0].dateNumber;
         const getEndUp = calcEnd();
-        setPillDone(0);
-        
+
         if(getStartUp !== '0') {
 
           if(getStartUp !== undefined && getEndUp !== undefined) {
@@ -375,8 +448,7 @@ const CourseDashboard: FC = () => {
 
         const getStartDown = calcStart()[0].dateNumber;
         const getEndDown = calcEnd();
-        setPillDone(0);
-
+        
         if(getStartDown !== '0') {
           if(getStartDown !== undefined && getEndDown !== undefined) {
             
@@ -406,11 +478,11 @@ const CourseDashboard: FC = () => {
       case 'count':
         const pillPerDay = coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay;
         const getDone = getDateDone();
-
+      
         if(getDone !== undefined) {
-
-          if(getDone< Number(pillPerDay) && pillPerDay !== undefined) {
-              
+           
+          if(getDone < Number(pillPerDay) && pillPerDay !== undefined) {
+            
             setPillDone(state => state += 1);
                 
           };
@@ -768,11 +840,11 @@ const CourseDashboard: FC = () => {
 
               <div className={cd.currentDay}>
                 <button type='button' className={cd.currentDayButton} id='down' onClick={courseActions}></button>
-                <div>{selectedDay.toString()}</div>
+                <div className={cd.currentDayData}>{selectedDay.toString()}</div>
                 <button type='button' className={cd.currentDayButton} id='up' onClick={courseActions}></button>
 
                 <div className={cd.modalDashbord}>
-                  <button type='button' id='start' className={cd.startButton} onClick={courseActions} disabled={getPillValue('startDay')?.status ? true: false}><span>Start</span></button>
+                  {startPointDay === 0 ? <button type='button' id='start' className={cd.startButton} onClick={courseActions} disabled={getPillValue('startDay')?.status ? true: false}><span>Start</span></button> : ''}
                 </div>
 
               </div>

@@ -17,7 +17,9 @@ import lo from './logoutStore.js';
 import gc from './getCoursesStore.js';
 import dc from './deleteCourseStore.js';
 import pc from './patchCourseStore.js';
-import as from './getStatisticStore.js';
+import gs from './getStatisticStore.js';
+import ps from './patchStatisticStore.js';
+import as from './addStatisticStore.js';
 
 const rootReducer = combineReducers({
   signUp: changeSingUp,
@@ -28,7 +30,9 @@ const rootReducer = combineReducers({
   getCourses: gc,
   deleteCourses: dc,
   patchCourses: pc,
-  getStatistic: as,
+  getStatistic: gs,
+  addStatistic: as,
+  patchStatistic: ps,
 });
 
 const persistConfig = {

@@ -61,17 +61,49 @@ export interface allStatisticArgs {
 
 };
 
+export type DayStatistic = {
+    
+    _id: string
+    pillName: string
+    dateNumber: string
+    month: string
+    done: number
+    status: boolean
+    
+};
+
 export interface addStatisticArgs {
 
     token: string
-    data: {pillName: string, day: PillDate, }
+    data: DayStatistic
 
 };
 
-
 export interface allStatisticInitialState {
  
-    statistics: Pill[]
+    statistics: DayStatistic[]
+    isLoad: boolean
+    isLoading: boolean
+    error: string
+};
+
+export interface addStatisticInitialState {
+ 
+    isLoad: boolean;
+    isLoading: boolean
+    error: string
+};
+
+export interface patchStatisticArgs {
+
+    token: string
+    data: {id: string, prop: { key: string, value: number}}
+
+};
+
+export interface patchStatisticInitialState {
+
+    isLoad: boolean
     isLoading: boolean
     error: string
 };

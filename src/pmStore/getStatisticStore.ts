@@ -8,6 +8,7 @@ import { allStatisticInitialState } from '../types/prescriptionTypes';
 const getStatisticInitialState: allStatisticInitialState = {
 
   statistics: [],
+  isLoad: false,
   isLoading: false,
   error: '',
  
@@ -25,11 +26,13 @@ const getStatisticSlice = createSlice({
     builder => {
       builder.addCase(allStatisticAPI.pending, (state) => {
         state.isLoading = true; state.error = '';
+        state.isLoad = false;
       });
             
       builder.addCase(allStatisticAPI.fulfilled, (state, action) => {
 
         state.isLoading = false;
+        state.isLoad = true;
         state.statistics = action.payload.data;
         // some actions with 'action'...
       });
