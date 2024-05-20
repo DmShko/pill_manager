@@ -136,6 +136,10 @@ export interface Course {
     pillNameReset: Function
   };
 
+  export interface addBoardProps {
+    openClose: Function
+  };
+
   export interface Content {
     value: number
     label: string

@@ -23,6 +23,7 @@ import updateByIdAPI from '../../../API/deleteCourseAPI';
 import allStatisticAPI from '../../../API/allStatisticAPI';
 import addStatisticAPI from '../../../API/addStatisticAPI';
 import patchStatisticAPI from '../../../API/patchStatisticAPI';
+import patchCourseAPI from '../../../API/patchCourseAPI';
 
 // images
 import DeleteImg from '../../SvgComponents/Courses/Delete'; 
@@ -79,8 +80,11 @@ const CourseDashboard: FC = () => {
   // set start day
   const [startPointDay, setStartPointDay] = useState(0);
 
+  // set start day
+  const [countPress, setCountPress] = useState(false);
+
   // set current month
-  const [month, setMonth] = useState(new Date().getMonth().toString());
+  const [month, setMonth] = useState(monthes[new Date().getMonth()]);
 
   // set done future
   const [pillDone, setPillDone] = useState(0);
@@ -136,7 +140,7 @@ const CourseDashboard: FC = () => {
           
           for(const d of calendarStatDays.days) {
             
-            if(d.dateNumber === e.dateNumber)
+            if(d.dateNumber === e.dateNumber && e.pillName === selectedPillName)
             
             // change future 'done' in statistic day
             dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'done', dateNumber: d.dateNumber, value: e.done},},}));
@@ -238,9 +242,10 @@ const CourseDashboard: FC = () => {
   },[startDateSelector]);
 
   useEffect(() => {
-
-    if(pillDone !== 0) {
-
+    
+    if(pillDone !== 0 && countPress) {
+  
+    setCountPress(false);
     // change future 'done' in statistic day
     // dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'done', dateNumber: selectedDay.toString(), value: pillDone},},}));
 
@@ -259,7 +264,7 @@ const CourseDashboard: FC = () => {
 
     const pillInStatistic = statisticsSelector.find(element => element.dateNumber === selectedDay.toString());
 
-    if(pillInStatistic !== undefined) {
+    if(pillInStatistic !== undefined && pillInStatistic.pillName === selectedPillName) {
       isPillDay = true;
       pillId = pillInStatistic._id;
     } 
@@ -270,7 +275,7 @@ const CourseDashboard: FC = () => {
       if(dayStatistic !== undefined)
       doneDay = dayStatistic;
     };
-
+   
     // after load all statistic, check all statistic length does't equal 0
     if(statisticsSelector.length === 0 && doneDay != undefined || !isPillDay) {
      
@@ -288,33 +293,43 @@ const CourseDashboard: FC = () => {
   }
 
   },[pillDone]);
+  //         ^, countPress
+  
+  useEffect(() => {
+
+    // first start load start point day for selected month
+    const searchCours = coursesSelector.find(element => element._id === editCoursesSelector._id);
+    
+    if(searchCours !== undefined) {
+      const pill = searchCours.pills.find(element => element.pillName === selectedPillName);
+
+      if(pill !== undefined) {
+
+        setStartPointDay(0);
+
+        if(Number(pill.startDay) !== 0) {
+          setStartPointDay(Number(pill.startDay));
+
+          // auto set after reselevt 'pillName'
+          setSelectedDay(Number(pill.startDay));
+        } 
+
+      }
+
+    }
+
+    // first start load statistic
+    dispatch(allStatisticAPI({token: tokenSelector}));
+    
+  },[selectedPillName]);
 
   useEffect(() => {
 
-    // const getStart = getPillValue('startDay');
-    // const getStart = calcStart()[0].dateNumber;
-    // paint new month if search on
+    // first start load statistic
+    if(statisticsSelector.length === 0) dispatch(allStatisticAPI({token: tokenSelector}));
 
     // if start button click
     if(startPointDay !== 0) takePillDays();
-
-    // if(selectedDay === 0) {
-
-    //   setSelectedDay(0);
-    //   setSelectedDay(new Date().getDate());
-
-    // } else {
-    //   setSelectedDay(Number(calcStart()));
-    // };
- 
-    // if(getStart !== undefined && getStart != '0') {
-      
-    //   setSelectedDay(Number(getStart));
-
-    // }
-        
-    // setStartMonth(month);
-    // setStartPointDay(selectedDay);
     
   },[month]);
 
@@ -397,11 +412,24 @@ const CourseDashboard: FC = () => {
 
   };
 
+  const getDoneVisible = () => {
+    
+    const pillSelected = statisticSelector[selectedPillName];
+
+    if(pillSelected !== undefined) {
+      const day = pillSelected.days?.find(element=> element.dateNumber === selectedDay.toString());
+
+      if(day !== undefined && day.month === month) {
+        
+        return day.done;
+
+      }
+    }
+
+  };
+
   const courseActions = (evt: React.MouseEvent<HTMLButtonElement>) => {
 
-    // const getEnd = getPillValue('duration');
-    // const getStart = getPillValue('startDay');
-    
     const year = new Date().getFullYear();
     const pillMonth = month;
     const moLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
@@ -468,14 +496,17 @@ const CourseDashboard: FC = () => {
 
         break;
       case 'start':
-    
+       
         setStartPointDay(selectedDay);
+       
         // setStartMonth(month);
         break;
       case 'reschedule':
         setStartPointDay(selectedDay);
         break;
       case 'count':
+
+        setCountPress(true);
         const pillPerDay = coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay;
         const getDone = getDateDone();
       
@@ -554,7 +585,7 @@ const CourseDashboard: FC = () => {
     let pillMonth = month;
     const startMonth = coursesSelector.find(element => element.courseName === editCoursesSelector.courseName)?.pills.
     find(element => element.pillName === selectedPillName)?.startMonth;
-
+   
     let monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
     let counter = Number(getPillValue('startDay')?.value);
     let overCounter = 0;
@@ -578,11 +609,7 @@ const CourseDashboard: FC = () => {
                 
               }
             };
-            
-            // write number of day
-            // dataFull[Number(data[dn].dateNumber) - 1].dateNumber = data[dn].dateNumber;
-            // write month name
-            // dataFull[Number(data[dn].dateNumber) - 1].month = data[dn].month;
+         
           } 
         
         };
@@ -590,7 +617,7 @@ const CourseDashboard: FC = () => {
       } else {
 
         for(let dn = 0; dn < data.length; dn += 1) {
-          
+       
             if(counter !== undefined && counter <= monthLength) {
               // write number of day
               data[dn].dateNumber = counter.toString();
@@ -630,17 +657,19 @@ const CourseDashboard: FC = () => {
     for(const e of value) {
       if(monthes.includes(e.month) && !howMonth.includes(e.month)) howMonth = [...howMonth, e.month];
     };
-
+   
     // howMonth contain only month name from 'days' months name set
     return howMonth;
 
   };
 
   const takePillDays = () => {
+
+    const searchCours = coursesSelector.find(element => element._id === editCoursesSelector._id);
+    let pills: Pill[] = [];
+    if(searchCours !== undefined) pills = searchCours.pills;
     
     const year = new Date().getFullYear();
-    // let pillMonth = month;
-    // let monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
 
     const daysQuantity = editCoursesSelector.pills.find(element => element.pillName === selectedPillName)?.duration;
     
@@ -654,7 +683,7 @@ const CourseDashboard: FC = () => {
 
     // ...and fill his
     addDateLable(days, [], false);
-
+   
     /**How months contain 'days' */
 
       howMonthsInDays(days).then(value => {
@@ -670,14 +699,17 @@ const CourseDashboard: FC = () => {
             fullMonth = [...fullMonth, {position: (fm + 1).toString(), dateNumber: '', month: value[m], done: 0, status: false}];
           
           };
-          
+        
         };
 
         // ...and fill his
         addDateLable(days, fullMonth, true);
-
+ 
         // write days;
-        dispatch(changeStatistic({mode: 'changePillsDay', data:{prop: {name: selectedPillName, value: fullMonth, start: startPointDay.toString()}},}));
+        dispatch(changeStatistic({mode: 'changePillsDay', data:{prop: {name: selectedPillName, value: fullMonth, start: getPillValue('startDay')?.value as string}},}));
+
+        // write change row 678 to DB refresh 'pills' (save startDay value)
+        dispatch(patchCourseAPI({token: tokenSelector, id: editCoursesSelector._id, prop: pills, key: 'pills',}));
 
       });  
     /** */
@@ -698,9 +730,9 @@ const CourseDashboard: FC = () => {
       if(gradientDone === 360) {
         if(selectedDay.toString() === data){
           if(data !== '') {
-            result= {boxShadow: '1px 1px 4px 3px yellowgreen', backgroundColor: 'yellowgreen'};
+            result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: 'yellowgreen'};
           } else {
-            result= {boxShadow: '1px 1px 4px 3px yellowgreen', backgroundColor: '#F0F0F0'};
+            result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#F0F0F0'};
           };
           
         } else {
@@ -714,9 +746,9 @@ const CourseDashboard: FC = () => {
       } else {
         if(selectedDay.toString() === data){
           if(data !== '') {
-            result= {boxShadow: '1px 1px 4px 3px yellowgreen', backgroundColor: '#FDB12D'};
+            result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#FDB12D'};
           } else {
-            result= {boxShadow: '1px 1px 4px 3px yellowgreen', backgroundColor: '#F0F0F0'};
+            result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#F0F0F0'};
           };
           
         } else {
@@ -764,7 +796,7 @@ const CourseDashboard: FC = () => {
 
       <div className={cd.courses}>
 
-        {isAddBoard && <CourseAddBoard/>}
+        {isAddBoard && <CourseAddBoard openClose={openAddBoard}/>}
 
         <div className={cd.searchContainer}>
 
@@ -871,7 +903,7 @@ const CourseDashboard: FC = () => {
 
                 <div className={cd.dayDoneContent}>
         
-                  {getDateDone() !== undefined ? <p><span className={cd.doneDay}>{`${getDateDone()} /`}</span> <span className={cd.perDay}>{`${coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay}`}</span> </p> : ''}  
+                  {getDoneVisible() !== undefined ? <p><span className={cd.doneDay}>{`${getDoneVisible()} /`}</span> <span className={cd.perDay}>{`${coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay}`}</span> </p> : ''}  
 
                 </div>
                

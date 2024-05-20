@@ -21,8 +21,9 @@ import { patchCourseAPI } from '../../../API/patchCourseAPI';
 
 // my types
 import { Pill } from '../../../types/types';
+import { addBoardProps } from "../../../types/types"; 
 
-const CourseAddBoard: FC  = () => {
+const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
 
   const dispatch = useAppDispatch();
   const tempPillsSelector = useAppSelector(state => state.pm.tempPills);
@@ -53,6 +54,8 @@ const CourseAddBoard: FC  = () => {
       // save course change or new course to DB
       dispatch(addCourseAPI({data: newCourse, token: tokenSelector,}));
     };
+
+    openClose(false);
     
   },[coursesSelector]);
 
@@ -171,6 +174,7 @@ const CourseAddBoard: FC  = () => {
         clinicContacts: values.clinicContacts,
         pills: tempPillsSelector, visitDate: values.visitDate}, key: '', }));
       };
+      
     },
   });
 
