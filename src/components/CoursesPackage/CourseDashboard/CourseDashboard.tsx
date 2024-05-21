@@ -155,6 +155,8 @@ const CourseDashboard: FC = () => {
   
   useEffect(() => {
    
+    const pillPerDay = coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay;
+
     let getPill = statisticSelector[selectedPillName];
 
     if(getPill !== undefined) {
@@ -164,6 +166,13 @@ const CourseDashboard: FC = () => {
       if(getDay !== undefined) {
 
         setPillDone(getDay.done);
+
+        // set 'status' true if done
+        if(getDay.done === Number(pillPerDay) && pillPerDay !== undefined) {
+          
+          dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'status', dateNumber: selectedDay.toString(), value: true},},}));
+    
+        };
         
       }
      
@@ -246,9 +255,7 @@ const CourseDashboard: FC = () => {
     if(pillDone !== 0 && countPress) {
   
     setCountPress(false);
-    // change future 'done' in statistic day
-    // dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'done', dateNumber: selectedDay.toString(), value: pillDone},},}));
-
+    
     // search 'pill' in current course statistic
     const statisticPill = statisticSelector[selectedPillName];
 
@@ -718,6 +725,8 @@ const CourseDashboard: FC = () => {
 
   const dayStyle = (data: string) => {
 
+    const today = new Date().getDate();
+
     let result = {};
 
     const getDone = getDateDone();
@@ -745,8 +754,15 @@ const CourseDashboard: FC = () => {
     
       } else {
         if(selectedDay.toString() === data){
+
           if(data !== '') {
-            result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#FDB12D'};
+
+            if(Number(data) < today) {
+              result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: 'tomato'};
+            } else {
+              result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#FDB12D'};
+            };
+
           } else {
             result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#F0F0F0'};
           };
@@ -786,6 +802,59 @@ const CourseDashboard: FC = () => {
       return {background: `conic-gradient(${colorDone}, ${gradientDone}deg, lightgray)`};
     };
     
+  };
+
+  const getStatus = () => {
+
+    const today = new Date().getDate();
+
+    const currentStatisticPill = statisticSelector[selectedPillName];
+
+    let around = {count: false, reschedule: false,};
+
+    if(currentStatisticPill !== undefined) {
+
+      const currentStatisticDay = currentStatisticPill.days.find(element => Number(element.dateNumber) === selectedDay);
+
+      if(selectedDay > today) {
+        around.count = true;
+        around.reschedule = true;
+      };
+    
+      if(selectedDay < today && currentStatisticDay !== undefined) {
+
+        if(!currentStatisticDay.status) {
+
+          around.count = true;
+          around.reschedule = false;
+
+        } else {
+
+          around.count = true;
+          around.reschedule = true;
+
+        };
+
+      };
+
+      if(selectedDay === today && currentStatisticDay !== undefined) {
+
+        if(!currentStatisticDay.status) {
+
+          around.count = false;
+          around.reschedule = true;
+
+        } else {
+
+          around.count = true;
+          around.reschedule = true;
+
+        };
+
+      };
+    };
+
+    return around;
   };
 
   return (
@@ -909,8 +978,8 @@ const CourseDashboard: FC = () => {
                
               </div>
 
-              <button type='button' id='count' className={cd.countButton} onClick={courseActions}><span>Count</span></button>
-              <button type='button' id='reschedule' className={cd.rescheduleButton} onClick={courseActions}><span>Reschedule</span></button>
+              <button type='button' id='count' className={cd.countButton} onClick={courseActions} disabled={getStatus().count ? true : false}><span>Count</span></button>
+              <button type='button' id='reschedule' className={cd.rescheduleButton} onClick={courseActions} disabled={getStatus().reschedule ? true : false}><span>Reschedule</span></button>
 
             </div>
 
