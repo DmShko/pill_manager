@@ -11,7 +11,7 @@ const URL='http://localhost:3000/api/pills/';
 export const patchCourseAPI = createAsyncThunk<any, patchCoursesArgs, {rejectValue: string}>(
   'patchCourses/patchCoursesAPI', 
   async function (arg, {rejectWithValue}) {
-   
+  
     const config = {
 
       headers: {'Authorization':`Bearer ${arg.token}`},

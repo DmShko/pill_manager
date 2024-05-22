@@ -21,6 +21,7 @@ import {
   StartDateEction,
   ChangeFutureProp,
   PillDate,
+  ActualMonthesEction,
 
 } from "../types/types";
 
@@ -33,6 +34,7 @@ const pmInitialState: PmInitialState = {
     selected: false,
     pills: []},
   statistic: {},
+  actualMonthes: [],
   isLoading: false,
   isEdit: false,
   pressEdit: false,
@@ -169,7 +171,7 @@ const pmSlice = createSlice({
             (element) =>
               element.id === (action.payload.data as ChangePillProp)._id
           );
-
+       
           if (
             temp !== undefined &&
             Object.keys(temp).includes(action.payload.key)
@@ -179,6 +181,7 @@ const pmSlice = createSlice({
               typeof (action.payload.data as ChangePillProp).prop ===
               "string"
             ){
+             
               temp[action.payload.key as keyof Omit<Pill, "selectedPill">] = (
                 action.payload.data as ChangePillProp
               ).prop;
@@ -244,6 +247,9 @@ const pmSlice = createSlice({
                 case 'status':
                   currentDay[(action.payload.data as ChangeFutureProp).prop.futureName as keyof Pick<PillDate, 'status'>] = (action.payload.data as ChangeFutureProp).prop.value as boolean;
                   break;
+                case 'reschedule':
+                  currentDay[(action.payload.data as ChangeFutureProp).prop.futureName as keyof Pick<PillDate, 'reschedule'>] = (action.payload.data as ChangeFutureProp).prop.value as boolean;
+                  break;
                 default:
                   break;
               };
@@ -284,6 +290,12 @@ const pmSlice = createSlice({
 
     },
 
+    changeActualMonthes(state, action: PayloadAction<ActualMonthesEction>) {
+      
+      state.actualMonthes = action.payload.data;
+
+    },
+
     changePressEdit(state, action: PayloadAction<PressEditEction>) {
       
       state.pressEdit = action.payload.data;
@@ -292,6 +304,6 @@ const pmSlice = createSlice({
   },
 });
 
-export const { changeCourses, changeTempPills, changeEditCourse, changeIsEdit, changePressEdit, changeStatistic, changeStartDay } =
+export const { changeCourses, changeTempPills, changeEditCourse, changeIsEdit, changePressEdit, changeStatistic, changeStartDay, changeActualMonthes } =
   pmSlice.actions;
 export default pmSlice.reducer;

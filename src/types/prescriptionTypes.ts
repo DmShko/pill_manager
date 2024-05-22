@@ -68,6 +68,7 @@ export type DayStatistic = {
     dateNumber: string
     month: string
     done: number
+    reschedule: boolean
     status: boolean
     
 };

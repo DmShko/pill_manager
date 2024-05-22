@@ -14,7 +14,7 @@ import cd from "./CourseDashboard.module.scss";
 // my components
 import CourseAddBoard from '../CourseAddBoard/CourseAddBoard';
 
-import { changeCourses, changeEditCourse, changeIsEdit, changeTempPills, changePressEdit, changeStatistic, changeStartDay } from '../../../pmStore/pmSlice';
+import { changeCourses, changeEditCourse, changeIsEdit, changeTempPills, changePressEdit, changeStatistic, changeStartDay, changeActualMonthes } from '../../../pmStore/pmSlice';
 
 import PillsModal from '../../PillsModal/PillsModal';
 
@@ -38,6 +38,8 @@ import Calendar from '../../SvgComponents/Courses/pillItem/Calendar';
 
 import PillImage from '../../SvgComponents/Courses/pillItem/PillImage'; 
 
+import Done from '../../SvgComponents/Courses/Modal/Success'; 
+
 // types
 import { Content, Pill, PillDate, } from '../../../types/types';
 
@@ -49,6 +51,7 @@ const CourseDashboard: FC = () => {
 
   const coursesSelector = useAppSelector(state => state.pm.courses);
   const startDateSelector = useAppSelector(state => state.pm.startDate);
+  const actualMonthesSelector = useAppSelector(state => state.pm.actualMonthes);
   const editCoursesSelector = useAppSelector(state => state.pm.editCourse);
   const pressEditSelector = useAppSelector(state => state.pm.pressEdit);
   const statisticSelector = useAppSelector(state => state.pm.statistic);
@@ -80,8 +83,11 @@ const CourseDashboard: FC = () => {
   // set start day
   const [startPointDay, setStartPointDay] = useState(0);
 
-  // set start day
+  // count button press
   const [countPress, setCountPress] = useState(false);
+
+  // reschedule button press
+  const [rescPress, setRescPress] = useState(false);
 
   // set current month
   const [month, setMonth] = useState(monthes[new Date().getMonth()]);
@@ -140,10 +146,16 @@ const CourseDashboard: FC = () => {
           
           for(const d of calendarStatDays.days) {
             
-            if(d.dateNumber === e.dateNumber && e.pillName === selectedPillName)
+            if(d.dateNumber === e.dateNumber && e.pillName === selectedPillName) {
+
+              // change future 'done' in statistic day
+              dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'done', dateNumber: d.dateNumber, value: e.done},},}));
+
+              // change future 'reschedule' in statistic day
+              dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'reschedule', dateNumber: d.dateNumber, value: e.reschedule},},}));
+
+            }
             
-            // change future 'done' in statistic day
-            dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'done', dateNumber: d.dateNumber, value: e.done},},}));
           };
         
         };
@@ -188,6 +200,7 @@ const CourseDashboard: FC = () => {
 
   useEffect(() => {
 
+    setReload(false);  
     if(tokenSelector !== '') dispatch(getCoursesAPI({token: tokenSelector,}));
    
   },[reload]);
@@ -267,10 +280,11 @@ const CourseDashboard: FC = () => {
       dateNumber: '',
       month: '',
       done: 0,
-      status: false,};
+      status: false, reschedule: false,};
 
     const pillInStatistic = statisticsSelector.find(element => element.dateNumber === selectedDay.toString());
 
+    // if selected day exist in statistic
     if(pillInStatistic !== undefined && pillInStatistic.pillName === selectedPillName) {
       isPillDay = true;
       pillId = pillInStatistic._id;
@@ -285,12 +299,12 @@ const CourseDashboard: FC = () => {
    
     // after load all statistic, check all statistic length does't equal 0
     if(statisticsSelector.length === 0 && doneDay != undefined || !isPillDay) {
-     
+      
       // write change Pill statistic to DB
       dispatch(addStatisticAPI({token: tokenSelector, data: {_id: nanoid(), pillName: selectedPillName, dateNumber: doneDay.dateNumber,
         month: doneDay.month,
         done: pillDone,
-        status: doneDay.status}}));
+        status: doneDay.status, reschedule: doneDay.reschedule}}));
     } else {
 
       // write change Pill statistic to DB
@@ -301,6 +315,92 @@ const CourseDashboard: FC = () => {
 
   },[pillDone]);
   //         ^, countPress
+
+  useEffect(() => {
+   
+    if(rescPress) {
+
+      setRescPress(false);
+
+      const currentCourse = coursesSelector.find(element => element.selected === true);
+      let currentCourseId = '';
+
+      let currentPill: Pill = {id: '',
+        pillName: '',
+        perDay: '', 
+        startMonth: '',
+        startDay: '',
+        quantity: '',
+        duration: '',
+        description: '',
+        selectedPill: false};
+
+      if(currentCourse !== undefined) {
+
+        currentCourseId = currentCourse._id;
+
+        const tempPill = currentCourse.pills.find(element => element.pillName === selectedPillName);
+
+        if(tempPill !== undefined) currentPill = tempPill;
+
+      };
+
+        // search 'pill' in current course statistic
+      const statisticPill = statisticSelector[selectedPillName];
+
+      let scheduleDay: PillDate = {position: '',
+        dateNumber: '',
+        month: '',
+        done: 0,
+        status: false, reschedule: false,};
+
+      if(statisticPill !== undefined) {
+      
+        const dayStatistic = statisticPill.days.find(element => element.dateNumber === selectedDay.toString());
+
+        if(dayStatistic !== undefined) scheduleDay = dayStatistic;
+
+      };
+    
+      // if future 'done' of reschedule day > 0, then add day to 'statistics' with 'done' value
+      // if(scheduleDay.done > 0) {
+      
+        // write change Pill statistic with reschedule 'done' to DB
+        dispatch(addStatisticAPI({token: tokenSelector, data: {_id: nanoid(), pillName: selectedPillName, dateNumber: scheduleDay.dateNumber,
+          month: scheduleDay.month,
+          done: scheduleDay.done,
+          status: scheduleDay.status, reschedule: true}}));  
+
+      // };
+
+      // if future 'done' of reschedule day = 0, then just write to future 'reschedule' of selected day true
+      // if(scheduleDay.done === 0) {
+        
+        if(currentPill !== undefined) {
+       
+          // 'pills' without currentPill
+          const tempPills = currentCourse?.pills.filter(element => element.id !== currentPill.id);
+
+          let newPills: Pill[] = [];
+
+          // increase the 'duration' value
+          currentPill = {...currentPill, duration: (Number(currentPill.duration) + 1).toString(),};
+          
+          if(tempPills !== undefined) newPills = [...tempPills, currentPill];
+        
+          dispatch(patchCourseAPI({token: tokenSelector, id: editCoursesSelector._id, prop: newPills, key: 'pills',}));
+
+          dispatch(changeCourses({ mode: 'changeCourse', data: {_id: currentCourseId, prop: newPills}, key: 'pills',}));
+        };
+        
+        // change future 'reschedule' in statistic day
+        // dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'reschedule', dateNumber: selectedDay.toString(), value: true},},}));
+
+      // };
+
+    };
+    
+  },[rescPress]);
   
   useEffect(() => {
 
@@ -319,11 +419,11 @@ const CourseDashboard: FC = () => {
 
           // auto set after reselevt 'pillName'
           setSelectedDay(Number(pill.startDay));
-        } 
+        }; 
 
-      }
+      };
 
-    }
+    };
 
     // first start load statistic
     dispatch(allStatisticAPI({token: tokenSelector}));
@@ -369,16 +469,17 @@ const CourseDashboard: FC = () => {
           return {status: false, value: startPills[data as keyof Pill]};
         };
 
-      }
-    } 
+      };
+    }; 
   };
 
   const calcEnd = () => {
     const tempEnd = statisticSelector[selectedPillName];
 
     if(tempEnd !== undefined) {
-    return tempEnd.days.filter(element => element.month === month).filter(element => element.dateNumber !== '').length;
-    }
+      return tempEnd.days.filter(element => element.month === month).filter(element => element.dateNumber !== '').length;
+    };
+
   };
 
   const calcStart = () => {
@@ -387,7 +488,7 @@ const CourseDashboard: FC = () => {
    
     let result: PillDate[] = [{position: '',
       dateNumber: '0',
-      month: '', done: 0, status: false}];
+      month: '', done: 0, status: false, reschedule: false}];
 
     if(tempStart !== undefined) {
      
@@ -396,7 +497,7 @@ const CourseDashboard: FC = () => {
       if(tempDay !== undefined && tempDay.length !== 0) {
        
         result = tempDay;
-      }
+      };
 
     };
    
@@ -414,8 +515,8 @@ const CourseDashboard: FC = () => {
       if(day !== undefined) {
         
         return day.done;
-      }
-    }
+      };
+    };
 
   };
 
@@ -430,8 +531,8 @@ const CourseDashboard: FC = () => {
         
         return day.done;
 
-      }
-    }
+      };
+    };
 
   };
 
@@ -456,7 +557,7 @@ const CourseDashboard: FC = () => {
         dispatch(changePressEdit({ data: true}));
         break;
       case 'reload':
-        setReload(state => !state);  
+        setReload(true);  
         break;
       case 'up':
       
@@ -496,7 +597,7 @@ const CourseDashboard: FC = () => {
             if(selectedDay > Number(getStartDown) + 1 && selectedDay <= Number(moLength)) {
              
               setSelectedDay(state => state -= 1);
-            }
+            };
           };
           
         };
@@ -509,7 +610,9 @@ const CourseDashboard: FC = () => {
         // setStartMonth(month);
         break;
       case 'reschedule':
-        setStartPointDay(selectedDay);
+
+        setRescPress(true);
+        
         break;
       case 'count':
 
@@ -685,7 +788,7 @@ const CourseDashboard: FC = () => {
 
     // generate pill days array
     for(let f=0; f < Number(daysQuantity); f += 1) {
-      days = [...days, {position: (f + 1).toString(), dateNumber: '', month: '', done: 0, status: false}];
+      days = [...days, {position: (f + 1).toString(), dateNumber: '', month: '', done: 0, status: false, reschedule: false}];
     };
 
     // ...and fill his
@@ -695,6 +798,9 @@ const CourseDashboard: FC = () => {
 
       howMonthsInDays(days).then(value => {
 
+        // then write how monthes
+        dispatch(changeActualMonthes({data: value}));
+        
         for(let m=0; m < value.length; m += 1) {
 
           // generate length for current month from value (howMonth -> see 523 row)
@@ -703,7 +809,7 @@ const CourseDashboard: FC = () => {
           // generate full month days array
           for(let fm=0; fm < Number(monthLength); fm += 1) {
            
-            fullMonth = [...fullMonth, {position: (fm + 1).toString(), dateNumber: '', month: value[m], done: 0, status: false}];
+            fullMonth = [...fullMonth, {position: (fm + 1).toString(), dateNumber: '', month: value[m], done: 0, status: false, reschedule: false}];
           
           };
         
@@ -725,13 +831,14 @@ const CourseDashboard: FC = () => {
 
   const dayStyle = (data: string) => {
 
+    const currentCours = statisticSelector[selectedPillName]?.days.find(element => Number(element.dateNumber) === selectedDay)?.reschedule;
     const today = new Date().getDate();
 
     let result = {};
 
     const getDone = getDateDone();
     const perDay = coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay;
-    
+  
     if(getDone !== undefined) {
 
       const gradientDone = 360 / Number(perDay) * getDone;
@@ -758,7 +865,12 @@ const CourseDashboard: FC = () => {
           if(data !== '') {
 
             if(Number(data) < today) {
-              result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: 'tomato'};
+              if(!currentCours) {
+                result = {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: 'tomato'};
+              } else {
+                result = {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', background: 'linear-gradient(-45deg, tomato 50%, #FDB12D 50%)'};
+              };
+               
             } else {
               result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#FDB12D'};
             };
@@ -804,6 +916,20 @@ const CourseDashboard: FC = () => {
     
   };
 
+  const isDone = () => {
+
+    let result = false;
+    
+    const getDone = getDateDone();
+    const perDay = coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay;
+
+    if(getDone === Number(perDay)) {
+      result = true;
+    }
+
+    return result;
+  };
+
   const getStatus = () => {
 
     const today = new Date().getDate();
@@ -825,8 +951,14 @@ const CourseDashboard: FC = () => {
 
         if(!currentStatisticDay.status) {
 
-          around.count = true;
-          around.reschedule = false;
+          if(currentStatisticDay.reschedule){
+            around.count = true;
+            around.reschedule = true;
+          } else {
+            around.count = true;
+            around.reschedule = false;
+          };
+          
 
         } else {
 
@@ -899,87 +1031,107 @@ const CourseDashboard: FC = () => {
         </div>
 
         {modalToggle && <PillsModal openClose={openModal} selectedDayDrive={setSelectedDay} pillNameReset={setSelectedPillName}>
-
+ 
           <div className={cd.modalContainer}>
 
-            <div className={cd.dashContainer}>
+            <div className={cd.infoZone}>
 
-              <div className={cd.dashSelect}>
-                <PillImage width={'25px'} height={'25px'}/>
-                <Select
-                  options={takeContentCourse()}
-                  className={cd.select}
-                  style={{borderRadius: '8px'}}
-                  name='course'
-                  values={[]}
-                  onChange={(value) => {               
+              <p className={cd.today}><span>TODAY: </span> <span>{new Date().getDate()}</span> <span>{monthes[new Date().getMonth()]}</span></p>
 
-                      setSelectedPillName(value[0].label)
-                      
-                    }
-                  }
-                />
-              </div>
-
-              <div className={cd.dashSelect}>
-                <Calendar width={'25px'} height={'25px'}/>
-                <Select
-                  options={takeContentMonth()}
-                  className={cd.select}
-                  style={{borderRadius: '8px'}}
-                  name='month'
-                  values={[]} //only [[{}...]...] format
-                  onChange={(value) => {
-                      
-                      setMonth(value[0].label);
-
-                      // go to 153 row
-                    }
-                  }
-                />
-              </div>
-
-              <div className={cd.currentDay}>
-                <button type='button' className={cd.currentDayButton} id='down' onClick={courseActions}></button>
-                <div className={cd.currentDayData}>{selectedDay.toString()}</div>
-                <button type='button' className={cd.currentDayButton} id='up' onClick={courseActions}></button>
-
-                <div className={cd.modalDashbord}>
-                  {startPointDay === 0 ? <button type='button' id='start' className={cd.startButton} onClick={courseActions} disabled={getPillValue('startDay')?.status ? true: false}><span>Start</span></button> : ''}
+              <div className={cd.infoSymbols}>
+                {actualMonthesSelector !== undefined ? <p className={cd.actualMonths}>{`Course months: ${actualMonthesSelector.join(" ")}`}</p> : 'no months'}
+                <div className={cd.infoBall}>
+                  <div className={cd.ballContainer}><div className={cd.infoRed}></div><p className={cd.text}>Not done or/and miss</p></div>
+                  <div className={cd.ballContainer}><div className={cd.infoRedOrange}></div><p className={cd.text}>Reschedule</p></div>
+                  <div className={cd.ballContainer}><div className={cd.infoOrange}></div><p className={cd.text}>Not done or in future</p></div>
+                  <div className={cd.ballContainer}><div className={cd.infoGreen}></div><p className={cd.text}>Done</p></div>
                 </div>
-
               </div>
 
-              <div className={cd.days}>
-
-                <ul className={cd.modalList}>
-
-                  {getPillValue('startDay')?.status && Object.keys(statisticSelector).includes(selectedPillName) ? statisticSelector[selectedPillName].days.map(element => {
-                    return(
-                      month === element.month ? <li className={cd.item} key={nanoid()} id={element.position} style={dayStyle(element.dateNumber)}>{element.position}</li> : ''
-                    )
-                  }): ''}
-
-                </ul>
-                
-              </div>
-     
             </div>
+            
+            <div className={cd.workZone}>
 
-            <div className={cd.dayContainer}>
+              <div className={cd.dashContainer}>
 
-              <div className={cd.dayDone} style={doneStyle()}>
+                <div className={cd.dashSelect}>
+                  <PillImage width={'25px'} height={'25px'}/>
+                  <Select
+                    options={takeContentCourse()}
+                    className={cd.select}
+                    style={{borderRadius: '8px'}}
+                    name='course'
+                    values={[]}
+                    onChange={(value) => {               
 
-                <div className={cd.dayDoneContent}>
-        
-                  {getDoneVisible() !== undefined ? <p><span className={cd.doneDay}>{`${getDoneVisible()} /`}</span> <span className={cd.perDay}>{`${coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay}`}</span> </p> : ''}  
+                        setSelectedPillName(value[0].label)
+                        
+                      }
+                    }
+                  />
+                </div>
+
+                <div className={cd.dashSelect}>
+                  <Calendar width={'25px'} height={'25px'}/>
+                  <Select
+                    options={takeContentMonth()}
+                    className={cd.select}
+                    style={{borderRadius: '8px'}}
+                    name='month'
+                    values={[]} //only [[{}...]...] format
+                    onChange={(value) => {
+                        
+                        setMonth(value[0].label);
+
+                        // go to 153 row
+                      }
+                    }
+                  />
+                </div>
+
+                <div className={cd.currentDay}>
+                  <button type='button' className={cd.currentDayButton} id='down' onClick={courseActions}></button>
+                  <div className={cd.currentDayData}>{selectedDay.toString()}</div>
+                  <button type='button' className={cd.currentDayButton} id='up' onClick={courseActions}></button>
+
+                  <div className={cd.modalDashbord}>
+                    {startPointDay === 0 ? <button type='button' id='start' className={cd.startButton} onClick={courseActions} disabled={getPillValue('startDay')?.status ? true: false}><span>Start</span></button> : ''}
+                  </div>
 
                 </div>
-               
+
+                <div className={cd.days}>
+
+                  <ul className={cd.modalList}>
+
+                    {getPillValue('startDay')?.status && Object.keys(statisticSelector).includes(selectedPillName) ? statisticSelector[selectedPillName].days.map(element => {
+                      return(
+                        month === element.month ? <li className={cd.item} key={nanoid()} id={element.position} style={dayStyle(element.dateNumber)}>{element.position}</li> : ''
+                      )
+                    }): ''}
+
+                  </ul>
+                  
+                </div>
+      
               </div>
 
-              <button type='button' id='count' className={cd.countButton} onClick={courseActions} disabled={getStatus().count ? true : false}><span>Count</span></button>
-              <button type='button' id='reschedule' className={cd.rescheduleButton} onClick={courseActions} disabled={getStatus().reschedule ? true : false}><span>Reschedule</span></button>
+              <div className={cd.dayContainer}>
+
+                <div className={cd.dayDone} style={doneStyle()}>
+
+                  <div className={cd.dayDoneContent}>
+          
+                    {getDoneVisible() !== undefined ? !isDone() ? <p><span className={cd.doneDay}>{`${getDoneVisible()} /`}</span> <span className={cd.perDay}>{`${coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay}`}</span> </p> : <Done width='50px' height='50px'/> : ''}  
+
+                  </div>
+                
+                </div>
+
+                <button type='button' id='count' className={cd.countButton} onClick={courseActions} disabled={getStatus().count ? true : false}><span>Count</span></button>
+                <button type='button' id='reschedule' className={cd.rescheduleButton} onClick={courseActions} disabled={getStatus().reschedule ? true : false}><span>Reschedule</span></button>
+
+              </div>
 
             </div>
 

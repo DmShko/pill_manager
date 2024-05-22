@@ -10,7 +10,7 @@ const URL='http://localhost:3000/api/statistic/';
 export const addStatisticAPI = createAsyncThunk<any, addStatisticArgs, {rejectValue: string}>(
   'addStatistic/addStatisticAPI', 
   async function (arg, {rejectWithValue}) {
-
+    
     const config = {
 
       headers: {'Authorization':`Bearer ${arg.token}`},
@@ -21,7 +21,7 @@ export const addStatisticAPI = createAsyncThunk<any, addStatisticArgs, {rejectVa
    // axios.post<URL type, response type, config type>
    return await axios.post<string, any>(URL, config)
     .then((res) => {
-   
+     
       return res;
       // ...
     })

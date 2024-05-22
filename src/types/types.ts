@@ -86,6 +86,11 @@ export interface StartDateEction {
   data: string 
 };
 
+// type for ActualMonthes action argument
+export interface ActualMonthesEction {
+  data: string[] 
+};
+
 // type for pressEdit action argument
 export interface PressEditEction {
   data: boolean 
@@ -119,6 +124,7 @@ export interface Course {
     pillsIsChange: string []
     editCourse: Course
     statistic: {[key: string]: {start: string, days: PillDate[]}}
+    actualMonthes: string[]
     isLoading: boolean
     isEdit: boolean
     pressEdit: boolean
@@ -151,4 +157,5 @@ export interface Course {
     month: string
     done: number
     status: boolean
+    reschedule: boolean
   };
