@@ -116,6 +116,22 @@ const CourseDashboard: FC = () => {
 
   };
 
+  const detectPillisEmpty = () => {
+
+    const currentCourse = coursesSelector.find(element => element.selected === true);
+
+    let result = false;
+
+    if(currentCourse !== undefined) {
+
+      if(currentCourse.pills.length === 0) result = true;
+
+    };
+
+    return result;
+
+  };
+
   // get course has 'selected' field as 'true'
   const getSelectedCourse = () => {
 
@@ -228,7 +244,8 @@ const CourseDashboard: FC = () => {
     // then rewrite 'Pills' in current course
     dispatch(changeCourses({mode: 'changeStartDay', data: {_id: editCoursesSelector._id, prop: {name: selectedPillName, value: startPointDay.toString()},}, key: 'pills',})); 
 
-    dispatch(changeCourses({mode: 'changeStartMounth', data: {_id: editCoursesSelector._id, prop: {name: selectedPillName, value: month.toString()},}, key: 'pills',})); 
+    // flag is need, that 'startMonth' don't clear. 'startMonth' write only, when press 'start'
+    if(month !== '') dispatch(changeCourses({mode: 'changeStartMounth', data: {_id: editCoursesSelector._id, prop: {name: selectedPillName, value: month.toString()},}, key: 'pills',})); 
     
   },[startPointDay]);
 
@@ -240,6 +257,17 @@ const CourseDashboard: FC = () => {
     if(search !== undefined)  dispatch(changeEditCourse({mode: 'addEditCourse', data: search,}));
     
   },[isEdit]);
+
+  useEffect(() => {
+
+    if(!modalToggle) {
+
+      setSelectedPillName('');
+      setMonth('');
+
+    };
+    
+  },[modalToggle]);
 
   useEffect(() => {
 
@@ -440,6 +468,12 @@ const CourseDashboard: FC = () => {
     if(startPointDay !== 0) takePillDays();
     
   },[month, coursesPillsSelector]);
+
+  // useEffect(() => {
+
+  //  dispatch(changeCourses({mode: 'changeStartMounth', data: {_id: editCoursesSelector._id, prop: {name: selectedPillName, value: month.toString()},}, key: 'pills',})); 
+    
+  // },[month]);
 
   const openAddBoard = () => {
 
@@ -819,7 +853,7 @@ const CourseDashboard: FC = () => {
 
         // ...and fill his
         addDateLable(days, fullMonth, true);
- 
+       
         // write days;
         dispatch(changeStatistic({mode: 'changePillsDay', data:{prop: {name: selectedPillName, value: fullMonth, start: getPillValue('startDay')?.value as string}},}));
 
@@ -1020,10 +1054,10 @@ const CourseDashboard: FC = () => {
           </div>
             
           <div className={cd.coursesDrive}>
-            <button className={cd.coursesButton} id='edit' onClick={courseActions} type='button' disabled={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? false : true : true}><ChangeImg width={'25px'} height={'25px'} stroke={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? '#646cff' : 'lightgray' : '#646cff'}/></button>
+            <button className={cd.coursesButton} id='edit' onClick={courseActions} type='button' disabled={!isAddBoard ? detectSelected() == 1 ? false : true : true}><ChangeImg width={'25px'} height={'25px'} stroke={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? '#646cff' : 'lightgray' : '#646cff'}/></button>
             <button className={cd.coursesButton} id='delete' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() !== 0 ? '#646cff' : 'lightgray'}/></button>
             <button className={cd.coursesButton} id='reload' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><Reload width={'25px'} height={'25px'}/></button>
-            <button className={cd.coursesButton} id='details' onClick={openModal} type='button' disabled={detectSelected() !== 0 ? false : true}><Details width={'25px'} height={'25px'} fill={detectSelected() !== 0 ? '#646cff' : 'lightgray'}/></button>
+            <button className={cd.coursesButton} id='details' onClick={openModal} type='button' disabled={detectSelected() == 1 && !detectPillisEmpty() ? false : true}><Details width={'25px'} height={'25px'} fill={detectSelected() == 1 && !detectPillisEmpty() ? '#646cff' : 'lightgray'}/></button>
           </div>
 
           <div className={cd.coursesInfo}>
@@ -1038,10 +1072,10 @@ const CourseDashboard: FC = () => {
 
             <div className={cd.infoZone}>
 
-              <p className={cd.today}><span>TODAY: </span> <span>{new Date().getDate()}</span> <span>{monthes[new Date().getMonth()]}</span></p>
+              <p className={cd.today}><span className={cd.todayTitle}>TODAY: </span> <span className={cd.todayDate}>{new Date().getDate()}</span> <span className={cd.todayMonth}>{monthes[new Date().getMonth()]}</span></p>
 
               <div className={cd.infoSymbols}>
-                {actualMonthesSelector !== undefined ? <p className={cd.actualMonths}>{`Course months: ${actualMonthesSelector.join(" ")}`}</p> : 'no months'}
+                {actualMonthesSelector !== undefined ? <p className={cd.actualMonths}>{`Course months: [${actualMonthesSelector.join(" ")}]`}</p> : 'no months'}
                 <div className={cd.infoBall}>
                   <div className={cd.ballContainer}><div className={cd.infoRed}></div><p className={cd.text}>Not done or/and miss</p></div>
                   <div className={cd.ballContainer}><div className={cd.infoRedOrange}></div><p className={cd.text}>Reschedule</p></div>
@@ -1091,7 +1125,7 @@ const CourseDashboard: FC = () => {
                   />
                 </div>
 
-                <div className={cd.currentDay}>
+                {month !== '' ? <div className={cd.currentDay}>
                   <button type='button' className={cd.currentDayButton} id='down' onClick={courseActions}></button>
                   <div className={cd.currentDayData}>{selectedDay.toString()}</div>
                   <button type='button' className={cd.currentDayButton} id='up' onClick={courseActions}></button>
@@ -1100,7 +1134,7 @@ const CourseDashboard: FC = () => {
                     {startPointDay === 0 ? <button type='button' id='start' className={cd.startButton} onClick={courseActions} disabled={getPillValue('startDay')?.status ? true: false}><span>Start</span></button> : ''}
                   </div>
 
-                </div>
+                </div> : ''}
 
                 <div className={cd.days}>
 

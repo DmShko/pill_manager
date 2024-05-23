@@ -33,7 +33,8 @@ const getStatisticSlice = createSlice({
 
         state.isLoading = false;
         state.isLoad = true;
-        state.statistics = action.payload.data;
+
+        state.statistics = action.payload;
         // some actions with 'action'...
       });
             

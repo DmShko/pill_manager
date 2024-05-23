@@ -21,7 +21,7 @@ export const allStatisticAPI = createAsyncThunk<any, allStatisticArgs, {rejectVa
    return await axios.get<string, any>(URL, config)
     .then((res) => {
    
-      return res;
+      return res.data;
       // ...
     })
     .catch((error) => {
