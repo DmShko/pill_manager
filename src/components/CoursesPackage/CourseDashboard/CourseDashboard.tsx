@@ -61,6 +61,7 @@ const CourseDashboard: FC = () => {
   const isAddStatistic = useAppSelector(state => state.addStatistic.isLoad);
   const isGetStatistic = useAppSelector(state => state.getStatistic.isLoad);
   const isPatchStatistic = useAppSelector(state => state.patchStatistic.isLoad);
+  const coursesPillsSelector = useAppSelector(state => state.pm.courses.find(element => element.selected === true)?.pills);
 
   // search cours value
   const [isEdit, setIsEdit] = useState(false);
@@ -438,7 +439,7 @@ const CourseDashboard: FC = () => {
     // if start button click
     if(startPointDay !== 0) takePillDays();
     
-  },[month]);
+  },[month, coursesPillsSelector]);
 
   const openAddBoard = () => {
 
@@ -781,8 +782,9 @@ const CourseDashboard: FC = () => {
     
     const year = new Date().getFullYear();
 
-    const daysQuantity = editCoursesSelector.pills.find(element => element.pillName === selectedPillName)?.duration;
-    
+    const daysQuantity = pills.find(element => element.pillName === selectedPillName)?.duration;
+    //                  ^editCoursesSelector.
+  
     let days: PillDate[] = [];
     let fullMonth: PillDate[] = [];
 
@@ -831,7 +833,7 @@ const CourseDashboard: FC = () => {
 
   const dayStyle = (data: string) => {
 
-    const currentCours = statisticSelector[selectedPillName]?.days.find(element => Number(element.dateNumber) === selectedDay)?.reschedule;
+    const pillReschedule = statisticSelector[selectedPillName]?.days.find(element => Number(element.dateNumber) === selectedDay)?.reschedule;
     const today = new Date().getDate();
 
     let result = {};
@@ -865,7 +867,7 @@ const CourseDashboard: FC = () => {
           if(data !== '') {
 
             if(Number(data) < today) {
-              if(!currentCours) {
+              if(!pillReschedule) {
                 result = {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: 'tomato'};
               } else {
                 result = {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', background: 'linear-gradient(-45deg, tomato 50%, #FDB12D 50%)'};

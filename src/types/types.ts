@@ -58,7 +58,6 @@ export interface ActionPills {
 
 enum CourseStatus {
     'done', 
-    'suspended', 
     'not done',
     'not active',
 };
