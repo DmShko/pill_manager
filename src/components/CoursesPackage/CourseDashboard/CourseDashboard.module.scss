@@ -15,6 +15,8 @@
 
    .courses {
 
+      height: 90vh;
+
       padding: 10px;
 
       box-shadow: 1px 1px 4px 3px #A1A1A1;
@@ -34,7 +36,7 @@
       
       padding: 10px 5px;
 
-      height: 200px;
+      height: 80%;
 
       border-top: 2px solid lightgray;
       border-bottom: 2px solid lightgray;
@@ -92,7 +94,7 @@
 
          margin-bottom: 5px;
 
-         box-shadow: 1px 1px 4px 3px lightgray;
+         // box-shadow: 1px 1px 4px 3px lightgray;
 
          .text {
 
@@ -213,7 +215,7 @@
             display: flex; 
             flex-direction: row;
             justify-content: space-around;
-            align-items: center;
+            align-items: flex-start;
 
             .infoBall {
 

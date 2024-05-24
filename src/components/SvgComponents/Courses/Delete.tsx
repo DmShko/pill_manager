@@ -1,7 +1,7 @@
 
 const Delete = (props: React.SVGProps<SVGSVGElement>) => {
   return (
-    <div>
+    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-beetwen'}}>
         <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
         <path d="M4 7H20" stroke="" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M6 10L7.70141 19.3578C7.87432 20.3088 8.70258 21 9.66915 21H14.3308C15.2974 21 16.1257 20.3087 16.2986 19.3578L18 10" stroke="" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

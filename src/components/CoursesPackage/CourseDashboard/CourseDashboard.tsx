@@ -26,6 +26,9 @@ import patchStatisticAPI from '../../../API/patchStatisticAPI';
 import patchCourseAPI from '../../../API/patchCourseAPI';
 
 // images
+
+import Add from '../../SvgComponents/Courses/Add'; 
+
 import DeleteImg from '../../SvgComponents/Courses/Delete'; 
 
 import ChangeImg from '../../SvgComponents/Courses/Edit'; 
@@ -345,11 +348,36 @@ const CourseDashboard: FC = () => {
   },[pillDone]);
   //         ^, countPress
 
+  const isIncrease = () => {
+
+    const currentStatistic = statisticSelector[selectedPillName];
+    let dayNumbers: string[] = [];
+
+    if(currentStatistic !== undefined) {
+      
+      for(const i of currentStatistic.days){
+
+        // pick up dateNumbers
+        if(i.dateNumber !== '') dayNumbers = [...dayNumbers, i.dateNumber];
+
+      };
+
+    };
+
+    return dayNumbers;
+
+  };
+ 
+
   useEffect(() => {
-   
+
+    
     if(rescPress) {
 
       setRescPress(false);
+
+      // before add reschedule day
+      const lastDayNumbers = isIncrease();
 
       const currentCourse = coursesSelector.find(element => element.selected === true);
       let currentCourseId = '';
@@ -421,7 +449,14 @@ const CourseDashboard: FC = () => {
 
           dispatch(changeCourses({ mode: 'changeCourse', data: {_id: currentCourseId, prop: newPills}, key: 'pills',}));
         };
-        
+
+        /** write done from reschedule day to new day */
+        // create new statistic day with 'done' from reschedule day to DB 
+          dispatch(addStatisticAPI({token: tokenSelector, data: {_id: nanoid(), pillName: selectedPillName, dateNumber: (Number(lastDayNumbers[lastDayNumbers.length - 1]) + 1).toString(),
+            month: scheduleDay.month,
+            done: scheduleDay.done,
+            status: scheduleDay.status, reschedule: false}}));  
+       
         // change future 'reschedule' in statistic day
         // dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'reschedule', dateNumber: selectedDay.toString(), value: true},},}));
 
@@ -893,6 +928,11 @@ const CourseDashboard: FC = () => {
           } else {
             result= {backgroundColor: '#F0F0F0'};
           };
+           
+          if(Number(data) === today) {
+
+            result= {backgroundColor: '#646cff'};
+          }
         };
     
       } else {
@@ -908,6 +948,7 @@ const CourseDashboard: FC = () => {
               };
                
             } else {
+             
               result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#FDB12D'};
             };
 
@@ -918,9 +959,16 @@ const CourseDashboard: FC = () => {
         } else {
           if(data !== '') {
             result= {backgroundColor: 'lightgray'};
+
           } else {
             result= {backgroundColor: '#F0F0F0'};
           };
+
+          if(Number(data) === today) {
+
+            result= {backgroundColor: '#646cff'};
+          }
+        
         };
     
       };
@@ -1025,11 +1073,15 @@ const CourseDashboard: FC = () => {
     return around;
   };
 
+  const addButtonStyle = () => {
+
+    
+    if(isAddBoard) return {transform: 'rotate(45deg)'};
+
+  };
+
   return (
     <>
-      
-      <button className={cd.newButton} type='button' onClick={openAddBoard}>{pressEditSelector ? 'Close' : isAddBoard ? 'Close' : 'New course'}</button>
-     
 
       <div className={cd.courses}>
 
@@ -1054,6 +1106,7 @@ const CourseDashboard: FC = () => {
           </div>
             
           <div className={cd.coursesDrive}>
+            <button className={cd.coursesButton} onClick={openAddBoard} type='button' disabled={detectSelected() !== 0 ? true : false}><Add style={addButtonStyle()} width={'30px'} height={'30px'} stroke={detectSelected() !== 0 ? 'lightgray' : '#646cff'}/></button>
             <button className={cd.coursesButton} id='edit' onClick={courseActions} type='button' disabled={!isAddBoard ? detectSelected() == 1 ? false : true : true}><ChangeImg width={'25px'} height={'25px'} stroke={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? '#646cff' : 'lightgray' : '#646cff'}/></button>
             <button className={cd.coursesButton} id='delete' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() !== 0 ? '#646cff' : 'lightgray'}/></button>
             <button className={cd.coursesButton} id='reload' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><Reload width={'25px'} height={'25px'}/></button>

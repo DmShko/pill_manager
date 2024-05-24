@@ -1,9 +1,10 @@
 .container {
 
-    background-image: url('../../images/courses/pills-svgrepo-com.svg');
-    background-position: center;
-    background-size: contain;
-    background-repeat: repeat-x;
+    padding: 50px 20px;
+
+    // background-image: url('../../images/courses/pills-3-svgrepo-com.svg');
+    // background-position: center;
+    // background-repeat: round;
 
     height: 100vh;
 
@@ -13,21 +14,118 @@
         justify-content: center;
         align-items: center;
 
-        width: 40%;
-        height: 200px;
+        gap: 10px;
+
+        width: 300px;
+        height: fit-content;
 
         padding: 20px;
         margin: 0 auto;
 
         background-color: white;
 
+        border-radius: 8px;
+
+        box-shadow: 1px 2px 3px 1px #C8C8CB;
+
+        .messageContainer {
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            height: 25px;
+            border-bottom: 1px solid lightgray;
+
+            .curtain {
+     
+                width: 230px;
+                height: 25px;
+
+                background-color: white;
+
+                p {
+                    width: 230px;
+                    margin: 0;
+                    height: 25px;
+
+                    color: goldenrod;
+
+                    transition: width 500ms;
+                }
+            }
+
+            transition: width 500ms;
+
+        }
+
+        .formTitle {
+
+            color: gray;
+            font-size: 18px;
+
+        }
+
+        .itemLabel {
+
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+
+            color: gray;
+
+            gap: 5px;
+
+            width: 230px;
+
+        }
+
+        .courseButton {
+
+            color: #646cff;
+            transition: background-color 400ms;
+
+            border: 0;
+
+        }
+
+        .courseButton:focus {
+          
+            outline: none;
+        }
+
+        .courseButton:active {
+
+            box-shadow: inset 1px 2px 3px 1px #C8C8CB;
+
+        }
+
+
     }
 
     input {
 
+        font-size: 18px;
+
+        text-align: center;
+
+        padding: 3px;
+
+        color: gray;
+
         border: none;
-        border-bottom: 2px solid lightgray;
+        border-bottom: 2px dashed lightgray;
 
     }
+    
+    input:focus {
 
+        text-align: center;
+ 
+        border-bottom: 2px solid lightgray;
+ 
+        outline: none;
+ 
+    };
 }

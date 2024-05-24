@@ -1,7 +1,7 @@
 
 const Details = (props: React.SVGProps<SVGSVGElement>) => {
     return (
-      <div>
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-beetwen'}}>
           <svg fill="#000000" width="800px" height="800px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" {...props}>
             <g fill="">
             <path d="M8 16a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm0-1a7 7 0 0 0 7-7 7 7 0 0 0-7-7 7 7 0 0 0-7 7 7 7 0 0 0 7 7z"/>
