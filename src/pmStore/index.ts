@@ -1,11 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
-import { persistStore, persistReducer, FLUSH,
-    REHYDRATE,
-    PAUSE,
-    PERSIST,
-    PURGE,
-    REGISTER, } from 'redux-persist'
+import { persistStore, persistReducer,} from 'redux-persist'
+// FLUSH,
+// REHYDRATE,
+// PAUSE,
+// PERSIST,
+// PURGE,
+// REGISTER, 
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
 // my reducers
@@ -20,6 +21,7 @@ import pc from './patchCourseStore.js';
 import gs from './getStatisticStore.js';
 import ps from './patchStatisticStore.js';
 import as from './addStatisticStore.js';
+import rever from './reVerifyStore.js';
 
 const rootReducer = combineReducers({
   signUp: changeSingUp,
@@ -33,6 +35,7 @@ const rootReducer = combineReducers({
   getStatistic: gs,
   addStatistic: as,
   patchStatistic: ps,
+  reVerify: rever,
 });
 
 const persistConfig = {

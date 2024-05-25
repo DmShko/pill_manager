@@ -1,14 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import singUpAPI  from '../API/signUpAPI';
 
 // types
-import { singUpInitialState } from '../types/authTypes';
+import { SingUpInitialState } from '../types/authTypes';
+import { ActionSignUp } from '../types/authTypes';
 
-const singUpSliceInitialState: singUpInitialState = {
+const singUpSliceInitialState: SingUpInitialState = {
 
   isLoading: false,
-  error: '',
+  message: '',
   email:'',
   userName:'',
  
@@ -19,7 +20,7 @@ const singUpSlice = createSlice({
   initialState: singUpSliceInitialState,
 
   reducers: {
-    changeSingUp(state, action) {
+    changeSingUp(state, action: PayloadAction<ActionSignUp>) {
       switch(action.payload.operation){
         case 'changeUserName':
           state.userName = action.payload.data;
@@ -27,6 +28,9 @@ const singUpSlice = createSlice({
         case 'changeUserEmail':
           state.email = action.payload.data;
           break;
+        case 'clearMessage':
+            state.message = '';
+            break;
         default: break;
       }
     },
@@ -35,21 +39,21 @@ const singUpSlice = createSlice({
   extraReducers:  
     builder => {
       builder.addCase(singUpAPI.pending, (state) => {
-        state.isLoading = true; state.error = '';
+        state.isLoading = true; state.message = '';
       });
             
       builder.addCase(singUpAPI.fulfilled, (state, action) => {
 
         state.isLoading = false;
         state.email = action.payload.data.user.email;
-
+        state.message = 'Account created successfully';
         // some actions with 'action'...
       });
             
       builder.addCase(singUpAPI.rejected, (state, action) => {
                     
         state.isLoading = false;
-        state.error = action.payload as string;
+        state.message = action.payload as string;
         
       });
     },

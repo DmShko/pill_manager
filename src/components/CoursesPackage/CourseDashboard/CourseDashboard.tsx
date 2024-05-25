@@ -1,4 +1,7 @@
-import { FC, useState, useEffect, } from 'react';
+import { FC, useState, useEffect } from 'react';
+
+import { Navigate, useNavigate } from 'react-router-dom'; 
+
 import { nanoid } from 'nanoid';
 
 import Select from 'react-dropdown-select';
@@ -17,6 +20,10 @@ import CourseAddBoard from '../CourseAddBoard/CourseAddBoard';
 import { changeCourses, changeEditCourse, changeIsEdit, changeTempPills, changePressEdit, changeStatistic, changeStartDay, changeActualMonthes } from '../../../pmStore/pmSlice';
 
 import PillsModal from '../../PillsModal/PillsModal';
+import PillsModalAlert from '../../PillsModalAlert/PillsModalAlert';
+
+import { changeLogout } from "../../../pmStore/logoutStore";  
+import { changeSingIn } from "../../../pmStore/signInStore"; 
 
 import getCoursesAPI from '../../../API/getCoursesAPI';
 import updateByIdAPI from '../../../API/deleteCourseAPI';
@@ -43,6 +50,8 @@ import PillImage from '../../SvgComponents/Courses/pillItem/PillImage';
 
 import Done from '../../SvgComponents/Courses/Modal/Success'; 
 
+import Horn from '../../SvgComponents/Courses/Modal/Horn'; 
+
 // types
 import { Content, Pill, PillDate, } from '../../../types/types';
 
@@ -51,6 +60,8 @@ const monthes = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
 const CourseDashboard: FC = () => {
 
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   const coursesSelector = useAppSelector(state => state.pm.courses);
   const startDateSelector = useAppSelector(state => state.pm.startDate);
@@ -65,6 +76,11 @@ const CourseDashboard: FC = () => {
   const isGetStatistic = useAppSelector(state => state.getStatistic.isLoad);
   const isPatchStatistic = useAppSelector(state => state.patchStatistic.isLoad);
   const coursesPillsSelector = useAppSelector(state => state.pm.courses.find(element => element.selected === true)?.pills);
+  const logOutMessageSelector = useAppSelector(state => state.logout.message);
+  const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
+
+  // open/close alert modal window
+  const [alertModalToggle, setAlertModalToggle] = useState(false);
 
   // search cours value
   const [isEdit, setIsEdit] = useState(false);
@@ -147,6 +163,43 @@ const CourseDashboard: FC = () => {
 
   };
 
+  useEffect(() => {
+  
+    if(isLogOutSelector) {
+
+      dispatch(changeSingIn({operation: 'clearToken', data: ''}));
+      navigate('/signin');
+
+    };
+    
+  },[isLogOutSelector]);
+
+  useEffect(() => {
+  
+    if(logOutMessageSelector !== '') {
+
+      setAlertModalToggle(true);
+
+      // clear timer and close modalAlert window
+      const alertHandler = () => {
+
+        // close modalAlert window 
+        setAlertModalToggle(false);
+
+        clearTimeout(timout);
+
+        // dispatch(changeLogout({operation: 'changeIsLogout', data: false}));
+        dispatch(changeLogout({operation: 'clearMessage', data: ''}));
+
+      };
+
+      // start timer and open modalAlert window
+      const timout = window.setTimeout(alertHandler, 3000);
+
+    };
+    
+  },[logOutMessageSelector]);
+  
   useEffect(() => {
   
     if((modalToggle && isAddStatistic) || (modalToggle && isPatchStatistic)) dispatch(allStatisticAPI({token: tokenSelector}));
@@ -1128,7 +1181,7 @@ const CourseDashboard: FC = () => {
               <p className={cd.today}><span className={cd.todayTitle}>TODAY: </span> <span className={cd.todayDate}>{new Date().getDate()}</span> <span className={cd.todayMonth}>{monthes[new Date().getMonth()]}</span></p>
 
               <div className={cd.infoSymbols}>
-                {actualMonthesSelector !== undefined ? <p className={cd.actualMonths}>{`Course months: [${actualMonthesSelector.join(" ")}]`}</p> : 'no months'}
+                {actualMonthesSelector !== undefined ? <p className={cd.actualMonths}>{`Pill months: [${actualMonthesSelector.join(" ")}]`}</p> : 'no months'}
                 <div className={cd.infoBall}>
                   <div className={cd.ballContainer}><div className={cd.infoRed}></div><p className={cd.text}>Not done or/and miss</p></div>
                   <div className={cd.ballContainer}><div className={cd.infoRedOrange}></div><p className={cd.text}>Reschedule</p></div>
@@ -1227,6 +1280,12 @@ const CourseDashboard: FC = () => {
           </div>
           
         </ PillsModal>}
+
+        {alertModalToggle && <PillsModalAlert>
+
+          {logOutMessageSelector ? <div className={cd.messageContainer}> <Horn width={'35px'} height={'35px'}/> <p>{logOutMessageSelector}</p></div>: ''}
+                
+        </ PillsModalAlert>}
 
         <ul className={cd.coursesList}>
           {coursesSelector.length !== 0 ? coursesSelector.map(element => 

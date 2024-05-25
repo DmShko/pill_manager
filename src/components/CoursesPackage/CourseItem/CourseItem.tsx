@@ -134,8 +134,9 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
    
       <div className={ci.courseItem}>
 
-          {courses.courseName !== '' ? <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span><span className={ci.nameText}>{courses.courseName?.toLocaleUpperCase()} </span><span className={ci.visit}>Date of visit: {courses.visitDate}</span></p>:
-           <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span><span className={ci.nameText}>{'unnamed'}</span><span className={ci.visit}>Date of visit: {''}</span></p>}
+          {courses.courseName !== '' ? <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span><span className={ci.nameText} style={courses.selected ? {backgroundColor:'white'} : {backgroundColor:'pink',}}>{courses.courseName?.toLocaleUpperCase()} </span><span className={ci.visit}>Date of visit: {courses.visitDate}</span></p>:
+           <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span><span className={ci.nameText}
+              style={courses.selected ? {backgroundColor:'white'} : {backgroundColor:'rgb(255, 179, 0, 0.8)'}}>{'unnamed'}</span><span className={ci.visit}>Date of visit: {''}</span></p>}
 
           <div className={ci.courseSubcontainer}>
             <div className={ci.registryInfo}>

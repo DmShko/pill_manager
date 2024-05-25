@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 import { useFormik } from "formik"; 
 
 import * as Yup from 'yup';
@@ -8,16 +10,74 @@ import su from './SignUpPackage.module.scss'
 import singUpAPI from "../../API/signUpAPI";
 
 // own dispatch hook
-import { useAppDispatch } from "../../app.hooks";
+import { useAppDispatch, useAppSelector } from "../../app.hooks";
+
+import PillsModalAlert from '../PillsModalAlert/PillsModalAlert';
+
+import reVerifyAPI from '../../API/reVerifyAPI';
+
+import { changeSingIn } from "../../pmStore/signInStore"; 
+import { changeSingUp } from "../../pmStore/signUpStore";  
+import { changeLogout } from "../../pmStore/logoutStore";  
+import { changeReVerify } from "../../pmStore/reVerifyStore";
 
 // images
 import User from "../SvgComponents/Courses/User";
 import Mail from "../SvgComponents/Courses/Mail";
 import Lock from "../SvgComponents/Courses/Lock";
+import Compare from "../SvgComponents/Courses/Compare";
+import Horn from '../SvgComponents/Courses/Modal/Horn'; 
 
 const SignUp = () => {
 
   const dispatch = useAppDispatch();
+
+  const signInMessageSelector = useAppSelector(state => state.signIn.message);
+  const signUpMessageSelector = useAppSelector(state => state.signUp.message);
+  const logOutMessageSelector = useAppSelector(state => state.logout.message);
+  const reVerifyMessageSelector = useAppSelector(state => state.reVerify.message);
+  const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
+
+  // open/close alert modal window
+  const [alertModalToggle, setAlertModalToggle] = useState(false);
+
+  const [reVerifyMessage, setReVerifyMessage] = useState('');
+
+  useEffect(() => {
+  
+    if(isLogOutSelector) dispatch(changeSingIn({operation: 'clearToken', data: ''}));
+    
+  },[isLogOutSelector]);
+
+  useEffect(() => {
+  
+    if(signUpMessageSelector !== '' || reVerifyMessageSelector !== '' || logOutMessageSelector !== '' || reVerifyMessage != '' || reVerifyMessageSelector !== '') {
+
+      setAlertModalToggle(true);
+
+      // clear timer and close modalAlert window
+      const alertHandler = () => {
+
+        // close modalAlert window 
+        setAlertModalToggle(false);
+
+        clearTimeout(timout);
+
+        dispatch(changeSingIn({operation: 'clearMessage', data: ''}));
+        dispatch(changeSingUp({operation: 'clearMessage', data: ''}));
+        dispatch(changeLogout({operation: 'clearMessage', data: ''}));
+        dispatch(changeReVerify({operation: 'clearMessage', data: ''}));
+
+        setReVerifyMessage('');
+
+      };
+
+      // start timer and open modalAlert window
+      const timout = window.setTimeout(alertHandler, 3000);
+
+    };
+    
+  },[signUpMessageSelector, logOutMessageSelector, reVerifyMessage, reVerifyMessageSelector]);
 
   const formik = useFormik({
 
@@ -46,7 +106,7 @@ const SignUp = () => {
       password: '',
       repeatPassword: '',
     },
-    onSubmit: values => {
+    onSubmit: (values, { resetForm }) => {
 
       if(values.password === values.repeatPassword) {
         dispatch(singUpAPI({
@@ -55,13 +115,40 @@ const SignUp = () => {
           password: values.password
         }));
       };
+
+      resetForm();
       
     },
   });
 
+  const reverify = () => {
+
+    if(formik.values.email !== '') {
+
+      // if(tokenSelector !== '') {
+        dispatch(reVerifyAPI({email: formik.values.email}));
+      // }else {
+
+      //   setReVerifyMessage('You need to authentifycate');
+
+      // };
+
+    }else {
+      setReVerifyMessage('Email not found');
+    };
+
+  };
+
   return (
 
     <div className={su.container}>
+
+      {alertModalToggle && <PillsModalAlert>
+
+        <div className={su.messageContainer}> <Horn width={'35px'} height={'35px'}/> <p>{signInMessageSelector ? signInMessageSelector: signUpMessageSelector? signUpMessageSelector: logOutMessageSelector ? logOutMessageSelector : reVerifyMessage? reVerifyMessage : reVerifyMessageSelector ? reVerifyMessageSelector : ''}</p></div>
+                
+      </ PillsModalAlert>}
+      
       <form onSubmit={formik.handleSubmit}>
 
       <div className={su.messageContainer} style={formik.errors.email || formik.errors.password || formik.errors.repeatPassword? {width: '230px', } : {width: '0'}}>
@@ -103,7 +190,7 @@ const SignUp = () => {
           value={formik.values.password}
         />
 
-        <div className={su.itemLabel}> <Lock width={'20px'} height={'20px'} /> <Lock width={'20px'} height={'20px'} /> <label htmlFor="repeatPassword">Repeat Password</label> </div>
+        <div className={su.itemLabel}> <Compare width={'21px'} height={'21px'} /> <label htmlFor="repeatPassword">Repeat Password</label> </div>
         <input
           id="repeatPassword"
           name="repeatPassword"
@@ -114,7 +201,10 @@ const SignUp = () => {
     
         <button type="submit" className={su.courseButton}>Submit</button>
 
+        <a className={su.verify} onClick={reverify}>{'Repeat verification letter'}</a>
+
       </form>
+
     </div>
   )
 }

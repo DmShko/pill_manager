@@ -49,6 +49,8 @@
                     margin: 0;
                     height: 25px;
 
+                    font-style: italic;
+
                     color: goldenrod;
 
                     transition: width 500ms;
@@ -101,6 +103,12 @@
 
         }
 
+        .verify:hover {
+
+            cursor: pointer;
+
+        }
+
     }
 
     input {
@@ -127,5 +135,17 @@
        outline: none;
 
     };
+
+}
+
+.messageContainer {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 20px;
+
+    width: 100%;
 
 }

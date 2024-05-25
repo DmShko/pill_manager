@@ -110,8 +110,6 @@
 
    }
 
-   
-
    .coursesButton {
 
       display: flex;
@@ -148,7 +146,7 @@
    }
 
  
-   .modalContainer{
+   .modalContainer {
 
       display: flex; 
       flex-direction: column;
@@ -513,4 +511,16 @@
          }
 
       }
+   }
+
+   .messageContainer {
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      gap: 20px;
+
+      width: 100%;
+
    }

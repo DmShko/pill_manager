@@ -19,7 +19,7 @@ export const singInAPI = createAsyncThunk<SignInRes, SignInArgs, {rejectValue: s
       // ...
     })
     .catch((error) => {
-      return rejectWithValue(error.message)
+      return rejectWithValue(error.response.data.message)
     });
 });
 

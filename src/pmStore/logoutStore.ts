@@ -1,14 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import logoutAPI  from '../API/logoutAPI';
 
 // types
-import { logoutInitialState } from '../types/authTypes';
+import { LogoutInitialState } from '../types/authTypes';
+import { ActionLogout } from '../types/authTypes';
 
-const singInSliceInitialState: logoutInitialState = {
+const singInSliceInitialState: LogoutInitialState = {
 
+  isLogout: false,
   isLoading: false,
-  error: '',
   message: '',
  
 };
@@ -18,19 +19,32 @@ const logoutSlice = createSlice({
   initialState: singInSliceInitialState,
 
   reducers: {
-    
+
+    changeLogout(state, action: PayloadAction<ActionLogout>) {
+      switch(action.payload.operation){
+        case 'clearMessage':
+            state.message = '';
+            break;
+        case 'changeIsLogout':
+            state.isLogout = (action.payload.data as boolean);
+            break;
+        default: break;
+      }
+    },
+
   },
 
   extraReducers:  
     builder => {
       builder.addCase(logoutAPI.pending, (state) => {
-        state.isLoading = true; state.error = '';
+        state.isLoading = true; state.message = ''; state.isLogout = false;
       });
             
-      builder.addCase(logoutAPI.fulfilled, (state, action) => {
+      builder.addCase(logoutAPI.fulfilled, (state) => {
 
         state.isLoading = false;
-        state.message = action.payload.message;
+        state.isLogout = true;
+        state.message = 'Come in again';
 
         // some actions with 'action'...
       });
@@ -38,11 +52,16 @@ const logoutSlice = createSlice({
       builder.addCase(logoutAPI.rejected, (state, action) => {
                     
         state.isLoading = false;
-        state.error = action.payload as string;
+        state.isLogout = false;
+        state.message = action.payload as string;
         
       });
     },
   }
 );
+
+export const {
+  changeLogout
+} = logoutSlice.actions;
 
 export default logoutSlice.reducer;

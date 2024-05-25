@@ -25,7 +25,7 @@ export const logoutAPI = createAsyncThunk<any, LogoutArgs,{rejectValue: string}>
     })
     .catch((error) => {
 
-      return rejectWithValue(error.message)
+      return rejectWithValue(error.response.data.message)
     });
 });
 

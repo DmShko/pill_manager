@@ -15,6 +15,7 @@ const SharedLayout: FC = () => {
   const dispatch = useAppDispatch();
 
   const tokenSelector = useAppSelector(state => state.signIn.token);
+  const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
 
   const logout = () => {
     dispatch(logoutAPI({token: tokenSelector,}));
@@ -23,34 +24,36 @@ const SharedLayout: FC = () => {
   return (
     <>
       <header>
+
         <div className={sh.headerContainer}>
-            <nav>
+
+            <nav className={sh.nav}>
 
               <div className={sh.logoContainer}>
                 <NavLink className={sh.logo} to="/">MEDICINE</NavLink>
               </div>
-            
-            <ul className={sh.navList}>
-                <li className={sh.navLink}>
-                <NavLink to="/courses">Courses</NavLink>
-                </li>
+              
+              {tokenSelector && <ul className={sh.navList}>
+                  <li className={sh.navLink}>
+                  <NavLink to="/courses">Courses</NavLink>
+                  </li>
 
-                <li className={sh.navLink}>
-                <NavLink to="/prescriptions">Prescriptions</NavLink>
-                </li>
-            </ul>
+                  <li className={sh.navLink}>
+                  <NavLink to="/prescriptions">Prescriptions</NavLink>
+                  </li>
+              </ul>}
 
-            <ul className={sh.authList}>
-                <li className={sh.authLink}>
-                <NavLink to="/signin">SignIn</NavLink>
-                </li>
+              {isLogOutSelector && <ul className={sh.authList}>
+                  <li className={sh.authLink}>
+                  <NavLink to="/signin">SignIn</NavLink>
+                  </li>
 
-                <li className={sh.authLink}>
-                <NavLink to="/signup">SignUp</NavLink>
-                </li>
-            </ul>
+                  <li className={sh.authLink}>
+                  <NavLink to="/signup">SignUp</NavLink>
+                  </li>
+              </ul>}
 
-                <button onClick={logout}>Logout</button>
+              {!isLogOutSelector && <button onClick={logout}>Logout</button>}
 
             </nav>
         </div>

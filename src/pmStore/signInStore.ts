@@ -1,14 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction  } from '@reduxjs/toolkit'
 
 import singInAPI  from '../API/signInAPI';
 
 // types
-import { singInInitialState } from '../types/authTypes';
+import { SingInInitialState } from '../types/authTypes';
+import { ActionSignIn } from '../types/authTypes';
 
-const singInSliceInitialState: singInInitialState = {
+const singInSliceInitialState: SingInInitialState = {
 
   isLoading: false,
-  error: '',
+  isLogiIn: false,
+  message: '',
   token: '',
  
 };
@@ -18,31 +20,49 @@ const singInSlice = createSlice({
   initialState: singInSliceInitialState,
 
   reducers: {
-    
+    changeSingIn(state, action: PayloadAction<ActionSignIn>) {
+      switch(action.payload.operation){
+        case 'clearMessage':
+            state.message = '';
+            break;
+        case 'clearToken':
+            state.token = '';
+            break;
+        case 'changeIsLogiIn':
+            state.isLogiIn = (action.payload.data as boolean);
+            break;
+        default: break;
+      }
+    },
   },
 
   extraReducers:  
     builder => {
       builder.addCase(singInAPI.pending, (state) => {
-        state.isLoading = true; state.error = '';
+        state.isLoading = true; state.message = '';
       });
             
       builder.addCase(singInAPI.fulfilled, (state, action) => {
 
         state.isLoading = false;
         state.token = action.payload.data.token;
-
+        state.isLogiIn = true;
+        state.message = 'User is logined';
         // some actions with 'action'...
       });
             
       builder.addCase(singInAPI.rejected, (state, action) => {
                     
         state.isLoading = false;
-        state.error = action.payload as string;
+        state.message = action.payload as string;
         
       });
     },
   }
 );
+
+export const {
+  changeSingIn,
+} = singInSlice.actions;
 
 export default singInSlice.reducer;
