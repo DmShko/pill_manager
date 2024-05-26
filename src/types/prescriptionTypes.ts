@@ -1,4 +1,4 @@
-import { Course, Pill, PillDate } from './types';
+import { Course, Pill, } from './types';
 
 export interface addCourseArgs {
     data: Course

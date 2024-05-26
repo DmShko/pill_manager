@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 
-import { Navigate, useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom'; 
 
 import { nanoid } from 'nanoid';
 
@@ -1134,8 +1134,7 @@ const CourseDashboard: FC = () => {
   };
 
   return (
-    <>
-
+    
       <div className={cd.courses}>
 
         {isAddBoard && <CourseAddBoard openClose={openAddBoard}/>}
@@ -1296,7 +1295,7 @@ const CourseDashboard: FC = () => {
           ) : 'There are no courses'}
         </ul> 
       </div>
-    </>  
+   
   )
 };
 

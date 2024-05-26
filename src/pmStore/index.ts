@@ -22,6 +22,10 @@ import gs from './getStatisticStore.js';
 import ps from './patchStatisticStore.js';
 import as from './addStatisticStore.js';
 import rever from './reVerifyStore.js';
+import ad from './addDescription.js';
+import gd from './getDescriptions.js';
+import dd from './deleteDescription.js';
+import pd from './putDescriptionStore.js';
 
 const rootReducer = combineReducers({
   signUp: changeSingUp,
@@ -36,6 +40,10 @@ const rootReducer = combineReducers({
   addStatistic: as,
   patchStatistic: ps,
   reVerify: rever,
+  addDescription: ad,
+  getDescriptions: gd,
+  deleteDescription: dd,
+  putDescription: pd,
 });
 
 const persistConfig = {

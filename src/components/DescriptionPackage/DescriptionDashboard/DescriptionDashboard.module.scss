@@ -1,0 +1,214 @@
+.container {
+
+    display: flex;
+    flex-direction: column;
+
+    height: 90vh;
+
+    padding: 10px;
+
+    box-shadow: 1px 1px 4px 3px #A1A1A1;
+
+    .form {
+
+        height: 50%;
+        
+        .drive {
+
+            display: flex;
+            justify-content: center;
+
+            gap: 10px;
+
+            padding: 10px;
+            margin-bottom: 5px;
+
+            .button {
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                width: 30px;
+                height: 30px;
+
+                border: none;
+                outline: none;
+
+                border-radius: 50px;
+
+                background-color: transparent;
+
+            }
+
+            .button:active {
+
+                box-shadow: inset 1px 1px 3px 3px lightgray;
+            }
+        
+            .button:focus {
+        
+                outline: none;
+        
+            }
+        
+            .button:hover {
+        
+                outline: none;
+                background-color: #f9f9f9;
+            }
+
+        }
+
+        .inputContainer {
+
+            display: flex;
+
+            gap: 10px;
+ 
+            width: 90%;
+
+            margin-right: auto;
+
+            margin-bottom: 20px;
+
+            .nameInput {
+                padding: 0 10px;
+            }
+
+            .nameInput:focus {
+                outline: none;
+            }
+            
+        }
+
+        .areaContainer {
+
+            display: flex;
+            flex-direction: row;
+
+            height: 60%;
+
+            .area {
+
+                width: 50%;
+    
+                padding: 10px;
+    
+                font-size: 14px;
+    
+                resize: none;
+    
+                border: 1px dashed gray;
+    
+            }
+
+            .area:focus {
+                outline: none;
+            }
+    
+        }
+ 
+    }
+
+    .list {
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 10px;
+
+        height: 50%;
+
+        border: 2px solid lightgray;
+        border-left: none;
+        border-right: none;
+
+        padding: 20px 10px;
+
+        overflow-y: scroll;
+
+        .item {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            list-style: none;
+
+            height: 150px;
+            width: 90%;
+
+            margin: 0 auto;
+            padding: 10px;
+
+            box-shadow: 1px 1px 4px 1px #A1A1A1;
+
+            border: none;
+            
+            border-radius: 8px;
+      
+            cursor: pointer;
+
+            .nameWrapper {
+
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                padding: 10px;
+
+                border-radius: 8px 8px 0 0 ;
+
+                .name {
+
+                    text-align: center;
+                    font-weight: 600;
+
+                    margin: 0;
+
+                    padding: 0 5px;
+
+                    width: fit-content;
+
+                    background-color: pink; 
+
+                    border-radius: 8px;
+        
+                }
+
+                p {
+
+                    margin: 0;
+                    
+                }
+
+            }
+    
+            .description {
+
+               height: 80px;
+
+               font-style: italic;
+
+               word-wrap: break-word;
+
+               margin: 0;
+               padding: 10px 5px;
+
+               overflow-y: scroll;
+
+               border: 2px solid lightgray;
+               border-top: 2px dashed lightgray;
+
+               background-color: white;
+
+               border-radius: 0 0 0 8px;
+          
+            }
+
+        }
+
+    }
+
+}

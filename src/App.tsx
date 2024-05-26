@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 // import component pages
 import SharedLayout from './components/SharedLayout/SharedLayout.tsx';
 import Courses from './pages/Courses/Courses.tsx';
-import Prescriptions from './pages/Prescriptions/Prescriptions.tsx';
+import Prescriptions from './pages/Description/Description.tsx';
 import Home from './pages/Home/Home.tsx';
 import SignIn from './pages/SignIn/SignIn.tsx';
 import SignUp from './pages/SignUp/SignUp.tsx';

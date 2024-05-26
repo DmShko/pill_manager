@@ -103,8 +103,8 @@ const SignIp = () => {
       password: Yup.string()
         .min(8, 'Min 8 characters')
         .required('Password field is required'),
-    }
-  ),
+      }
+    ),
     initialValues: {
       email: '',
       password: '',
