@@ -1,6 +1,10 @@
 export type Desc = {
     _id: string
+    descriptionPillName: string
     descriptionName: string
+    descriptionPer: string
+    descriptionQuan: string
+    descriptionDur: string
     description: string
     selected: boolean
 };
@@ -39,6 +43,7 @@ export interface deleteDescriptionInitialState {
 
 export interface putDescriptionInitialState {
 
+    isChange: boolean
     isLoading: boolean
     message: string
 }

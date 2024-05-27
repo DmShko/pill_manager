@@ -9,77 +9,233 @@
 
     box-shadow: 1px 1px 4px 3px #A1A1A1;
 
-    .form {
+    .dashboard {
 
-        height: 50%;
-        
-        .drive {
+        display: flex;
+        flex-direction: row;
+
+        .form {
 
             display: flex;
-            justify-content: center;
-
-            gap: 10px;
-
-            padding: 10px;
-            margin-bottom: 5px;
-
-            .button {
+            flex-direction: column;
+            justify-content: space-between;
+            
+            .drive {
 
                 display: flex;
                 justify-content: center;
-                align-items: center;
 
-                width: 30px;
-                height: 30px;
+                gap: 10px;
 
-                border: none;
-                outline: none;
+                padding: 10px;
+                margin-bottom: 20px;
 
-                border-radius: 50px;
+                .button {
 
-                background-color: transparent;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
 
-            }
+                    width: 30px;
+                    height: 30px;
 
-            .button:active {
+                    border: none;
+                    outline: none;
 
-                box-shadow: inset 1px 1px 3px 3px lightgray;
-            }
-        
-            .button:focus {
-        
-                outline: none;
-        
-            }
-        
-            .button:hover {
-        
-                outline: none;
-                background-color: #f9f9f9;
-            }
+                    border-radius: 50px;
 
-        }
+                    background-color: transparent;
 
-        .inputContainer {
+                }
 
-            display: flex;
+                .button:active {
 
-            gap: 10px;
- 
-            width: 90%;
+                    box-shadow: inset 1px 1px 3px 3px lightgray;
+                }
+            
+                .button:focus {
+            
+                    outline: none;
+            
+                }
+            
+                .button:hover {
+            
+                    outline: none;
+                    background-color: #f9f9f9;
+                }
 
-            margin-right: auto;
-
-            margin-bottom: 20px;
-
-            .nameInput {
-                padding: 0 10px;
-            }
-
-            .nameInput:focus {
-                outline: none;
             }
             
+            .inputs {
+
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                height: 50%;
+            
+                .inputContainer {
+
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
+
+                    display: flex;
+
+                    gap: 10px;
+        
+                    width: 50%;
+
+                    height: 100%;
+
+                    .descriptionPillName {
+
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-start;
+
+                        text-align: start;
+
+                        input {
+                            width: 100px;
+                            text-align: center;
+                        }
+
+                    }
+
+                    .descriptionName {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-start;
+
+                        text-align: start;
+
+                        input {
+                            width: 100px;
+                            text-align: center;
+                        }
+                    }
+
+                    .descriptionDetails {
+
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+
+                        gap: 10px;
+
+                        .descriptionPer {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: flex-start;
+
+                            text-align: start;
+
+                            input {
+                                width: 100px;
+                                text-align: center;
+                            }
+                        }
+
+                        .descriptionQuan {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: flex-start;
+
+                            text-align: start;
+
+                            input {
+                                width: 100px;
+                                text-align: center;
+                            }
+                        }
+
+                        .descriptionDur {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: flex-start;
+
+                            text-align: start;
+
+                            input {
+                                width: 100px;
+                                text-align: center;
+                            }
+                        }
+
+                    }
+
+                    .nameInput {
+                        padding: 0 10px;
+                    }
+
+                    .nameInput:focus {
+                        outline: none;
+                    }
+                    
+                }
+
+                .createCourse {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    width: 70px;
+                    height: 70px;
+
+                    border-radius: 8px;
+                }
+
+                .createCourse:active {
+
+                    box-shadow: inset 1px 1px 3px 3px lightgray;
+                }
+            
+                .createCourse:focus {
+            
+                    outline: none;
+            
+                }
+            
+                .createCourse:hover {
+            
+                    outline: none;
+                    background-color: #f9f9f9;
+                }
+
+                .writeToArea {
+
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    width: 70px;
+                    height: 70px;
+
+                    border-radius: 8px;
+                }
+
+                .writeToArea:active {
+
+                    box-shadow: inset 1px 1px 3px 3px lightgray;
+                }
+            
+                .writeToArea:focus {
+            
+                    outline: none;
+            
+                }
+            
+                .writeToArea:hover {
+            
+                    outline: none;
+                    background-color: #f9f9f9;
+                }
+
+                
+            }
+    
         }
 
         .areaContainer {
@@ -87,29 +243,32 @@
             display: flex;
             flex-direction: row;
 
-            height: 60%;
+            width: 50%;
+
+            height: 100%;
 
             .area {
 
-                width: 50%;
-    
+                width: 100%;
+
                 padding: 10px;
-    
+
                 font-size: 14px;
-    
+
                 resize: none;
-    
+
                 border: 1px dashed gray;
-    
+
+                overflow-y: scroll;
+
             }
 
             .area:focus {
                 outline: none;
             }
-    
+
         }
- 
-    }
+    }   
 
     .list {
 
@@ -187,11 +346,13 @@
     
             .description {
 
+               text-align: start;
+
                height: 80px;
 
                font-style: italic;
 
-               word-wrap: break-word;
+               white-space: pre;
 
                margin: 0;
                padding: 10px 5px;

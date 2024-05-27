@@ -1,0 +1,15 @@
+@keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: space-beetwen;
+    animation: rotation 2s infinite linear;
+}

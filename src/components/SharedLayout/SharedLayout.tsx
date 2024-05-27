@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation  } from "react-router-dom";
 import { Suspense } from "react";
 
 // styles
@@ -13,6 +13,8 @@ import { useAppDispatch, useAppSelector  } from "../../app.hooks";
 const SharedLayout: FC = () => {
 
   const dispatch = useAppDispatch();
+
+  let location = useLocation();
 
   const tokenSelector = useAppSelector(state => state.signIn.token);
   const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
@@ -35,20 +37,20 @@ const SharedLayout: FC = () => {
               
               {tokenSelector && <ul className={sh.navList}>
                   <li className={sh.navLink}>
-                  <NavLink to="/courses">Courses</NavLink>
+                  <NavLink to="/courses" style={location.pathname === '/courses' ? {borderBottom: '2px solid gray'} : {borderBottom: 'none'}}>Courses</NavLink>
                   </li>
 
                   <li className={sh.navLink}>
-                  <NavLink to="/prescriptions">Prescriptions</NavLink>
+                  <NavLink to="/prescriptions" style={location.pathname === '/prescriptions' ? {borderBottom: '2px solid gray'} : {borderBottom: 'none'}}>Prescriptions</NavLink>
                   </li>
               </ul>}
 
               {isLogOutSelector && <ul className={sh.authList}>
-                  <li className={sh.authLink}>
+                  <li className={sh.authLink} style={location.pathname === '/signin' ? {borderBottom: '2px solid gray'} : {borderBottom: 'none'}}>
                   <NavLink to="/signin">SignIn</NavLink>
                   </li>
 
-                  <li className={sh.authLink}>
+                  <li className={sh.authLink} style={location.pathname === '/signup' ? {borderBottom: '2px solid gray'} : {borderBottom: 'none'}}>
                   <NavLink to="/signup">SignUp</NavLink>
                   </li>
               </ul>}

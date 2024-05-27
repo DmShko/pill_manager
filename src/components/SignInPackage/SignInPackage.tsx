@@ -23,6 +23,7 @@ import { changeLogout } from "../../pmStore/logoutStore";
 import Mail from "../SvgComponents/Courses/Mail";
 import Lock from "../SvgComponents/Courses/Lock";
 import Horn from '../SvgComponents/Courses/Modal/Horn'; 
+import Loading from '../SvgComponents/Courses/Loading/Loading';
 
 const SignIp = () => {
 
@@ -36,6 +37,7 @@ const SignIp = () => {
   const logOutMessageSelector = useAppSelector(state => state.logout.message);
   const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
   const isLogInSelector = useAppSelector(state => state.signIn.isLogiIn);
+  const isLoadingSelector = useAppSelector(state => state.signIn.isLoading);
 
   // open/close alert modal window
   const [alertModalToggle, setAlertModalToggle] = useState(false);
@@ -162,7 +164,7 @@ const SignIp = () => {
           value={formik.values.password}
         />
 
-        <button type="submit" className={si.courseButton}>Submit</button>
+        <button type="submit" className={si.courseButton}>{!isLoadingSelector ? 'Submit' : <Loading width={'30px'} height={'30px'}/>}</button>
 
       </form>
     </div>

@@ -27,6 +27,7 @@ import Mail from "../SvgComponents/Courses/Mail";
 import Lock from "../SvgComponents/Courses/Lock";
 import Compare from "../SvgComponents/Courses/Compare";
 import Horn from '../SvgComponents/Courses/Modal/Horn'; 
+import Loading from '../SvgComponents/Courses/Loading/Loading';
 
 const SignUp = () => {
 
@@ -37,6 +38,7 @@ const SignUp = () => {
   const logOutMessageSelector = useAppSelector(state => state.logout.message);
   const reVerifyMessageSelector = useAppSelector(state => state.reVerify.message);
   const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
+  const isLoadingSelector = useAppSelector(state => state.signUp.isLoading);
 
   // open/close alert modal window
   const [alertModalToggle, setAlertModalToggle] = useState(false);
@@ -199,7 +201,7 @@ const SignUp = () => {
           value={formik.values.repeatPassword}
         />
     
-        <button type="submit" className={su.courseButton}>Submit</button>
+        <button type="submit" className={su.courseButton}>{!isLoadingSelector ? 'Submit' : <Loading width={'30px'} height={'30px'}/>}</button>
 
         <a className={su.verify} onClick={reverify}>{'Repeat verification letter'}</a>
 
