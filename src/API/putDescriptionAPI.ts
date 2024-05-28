@@ -21,7 +21,7 @@ export const putDescriptionAPI = createAsyncThunk<any, putDescriptionArgs, {reje
    // axios.post<URL type, response type, config type>
    return await axios.put<string, any>(`${URL}?id=${arg.id}`, config)
     .then((res) => {
-      
+   
       return res;
       // ...
     })

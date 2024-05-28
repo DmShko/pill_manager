@@ -39,7 +39,7 @@ const PillsModal: FC<PropsWithChildren<PillsModalProps>> = ({ children, openClos
   };
 
 return createPortal(
-    <div className={pm.backdrop} onClick={clickBackdrob}>
+    <div className={pm.backdrop} onClick={clickBackdrob} style={{top: `${window.scrollY}px`}}>
 
         <div className={pm.container}>
             { children }

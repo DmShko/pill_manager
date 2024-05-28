@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import addDescriptionAPI  from '../API/addDescriptionAPI';
 
 // types
-import { addDescriptionInitialState } from '../types/descriptionTypes';
+import { addDescriptionInitialState, ActionAddDescription } from '../types/descriptionTypes';
 
 const addDescriptionSliceInitialState: addDescriptionInitialState = {
 
@@ -19,6 +19,21 @@ const addDescriptionSlice = createSlice({
   initialState: addDescriptionSliceInitialState,
 
   reducers: {
+
+    changeAddDescription(state, action: PayloadAction<ActionAddDescription>) {
+      switch(action.payload.operation){
+        case 'clearMessage':
+            state.message = '';
+            break;
+        case 'changeMessage':
+            state.message = (action.payload.data as string);
+            break;
+        case 'isLoad':
+            state.isLoad = (action.payload.data as boolean);
+            break;
+        default: break;
+      }
+    },
     
   },
 
@@ -28,11 +43,11 @@ const addDescriptionSlice = createSlice({
         state.isLoading = true; state.isLoad = false; state.message = '';
       });
             
-      builder.addCase(addDescriptionAPI.fulfilled, (state) => {
+      builder.addCase(addDescriptionAPI.fulfilled, (state, action) => {
       
         state.isLoading = false;
         state.isLoad = true;
-        state.message = 'Description is loaded';
+        state.message = action.payload.data.message;
         // some actions with 'action'...
       });
             
@@ -46,5 +61,6 @@ const addDescriptionSlice = createSlice({
     },
   }
 );
-
+export const { changeAddDescription } =
+addDescriptionSlice.actions;
 export default addDescriptionSlice.reducer;

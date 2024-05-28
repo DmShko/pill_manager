@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import deleteDescriptionAPI  from '../API/deleteDescriptionAPI';
 
 // types
-import { deleteDescriptionInitialState } from '../types/descriptionTypes';
+import { deleteDescriptionInitialState, ActionDeleteDescription } from '../types/descriptionTypes';
 
 const deleteDescriptionInitialState: deleteDescriptionInitialState = {
 
@@ -18,6 +18,18 @@ const deleteDescriptionSlice = createSlice({
   initialState: deleteDescriptionInitialState,
 
   reducers: {
+
+    changeDeleteDescription(state, action: PayloadAction<ActionDeleteDescription>) {
+      switch(action.payload.operation){
+        case 'clearMessage':
+            state.message = '';
+            break;
+        case 'changeisDelete':
+            state.isDelete = (action.payload.data as boolean);
+            break;
+        default: break;
+      }
+    },
     
   },
 
@@ -46,5 +58,8 @@ const deleteDescriptionSlice = createSlice({
     },
   }
 );
+
+export const { changeDeleteDescription } = 
+deleteDescriptionSlice.actions;
 
 export default deleteDescriptionSlice.reducer;

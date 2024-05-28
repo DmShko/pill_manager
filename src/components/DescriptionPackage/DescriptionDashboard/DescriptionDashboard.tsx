@@ -23,9 +23,16 @@ import Add from '../../SvgComponents/Courses/Add';
 import DeleteImg from '../../SvgComponents/Courses/Delete'; 
 import Reload from '../../SvgComponents/Courses/Reload'; 
 import ChangeImg from '../../SvgComponents/Courses/Edit'; 
+import Horn from '../../SvgComponents/Courses/Modal/Horn'; 
 
-import { changeDescription } from '../../../pmStore/getDescriptions'
+import { changePutDescription } from '../../../pmStore/putDescriptionStore';
+import { changeDeleteDescription } from '../../../pmStore/deleteDescription';
+import { changeAddDescription } from '../../../pmStore/addDescription';
+import { changeDescription } from '../../../pmStore/getDescriptions';
 import { changeSingIn } from "../../../pmStore/signInStore"; 
+
+import PillsModalAlert from '../../PillsModalAlert/PillsModalAlert';
+import Loading from '../../SvgComponents/Courses/Loading/Loading';
 
 // own dispatch hook
 import { useAppDispatch, useAppSelector } from "../../../app.hooks";
@@ -44,12 +51,23 @@ const DescriptionDashboard = () => {
   const putDescriptionSelector = useAppSelector(state => state.putDescription.isChange);
   const descriptionSelector = useAppSelector(state => state.getDescriptions.description);
   const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
+  const putMessageSelector = useAppSelector(state => state.putDescription.message);
+  const deleteMessageSelector = useAppSelector(state => state.deleteDescription.message);
+  const addMessageSelector = useAppSelector(state => state.addDescription.message);
+  const addLoadingSelector = useAppSelector(state => state.addDescription.isLoading);
 
   const [ fresh, setFresh ] = useState(false);
   const [ allSelect, setAllSelect ] = useState(false);
   const [ areaContext, setAreaContext ] = useState<string[]>([]);
   const [ change, setChange ] = useState(false);
   const [ courseName, setSelectedCourseName ] = useState('');
+  const [ alertModalToggle, setAlertModalToggle] = useState(false);
+
+  useEffect(() => {
+
+    dispatch(allDescriptionAPI({token: tokenSelector}));
+
+  },[]);
 
   useEffect(() => {
   
@@ -137,19 +155,48 @@ const DescriptionDashboard = () => {
 
   useEffect(() => {
 
+    if(putMessageSelector !== '' || deleteMessageSelector !== '' || addMessageSelector !== '') {
+
+      setAlertModalToggle(true);
+
+      // clear timer and close modalAlert window
+      const alertHandler = () => {
+
+        // close modalAlert window 
+        setAlertModalToggle(false);
+
+        clearTimeout(timout);
+
+        dispatch(changePutDescription({operation: 'clearMessage', data: ''}));
+        dispatch(changeDeleteDescription({operation: 'clearMessage', data: ''}));
+        dispatch(changeAddDescription({operation: 'clearMessage', data: ''}));
+
+      };
+
+      // start timer and open modalAlert window
+      const timout = window.setTimeout(alertHandler, 3000);
+
+    };
+  
+  },[putMessageSelector, deleteMessageSelector, addMessageSelector]);
+  
+  useEffect(() => {
+
     if(change) {
       setChange(false);
-      for(const s of descriptionSelector) {
-        if(s.selected === true) dispatch(putDescriptionAPI({id: s._id, token: tokenSelector, data: { _id: s._id,
-          descriptionPillName: formik.values.descriptionPillName,
-          descriptionName: formik.values.descriptionName,
-          descriptionPer: formik.values.descriptionPer,
-          descriptionQuan: formik.values.descriptionQuan, 
-          descriptionDur: formik.values.descriptionDur,
-          description: areaContext.join('\n'),
-          selected: false},}));
-      };
-    }
+
+        for(const s of descriptionSelector) {
+          if(s.selected === true) dispatch(putDescriptionAPI({id: s._id, token: tokenSelector, data: { _id: s._id,
+            descriptionPillName: formik.values.descriptionPillName,
+            descriptionName: formik.values.descriptionName,
+            descriptionPer: formik.values.descriptionPer,
+            descriptionQuan: formik.values.descriptionQuan, 
+            descriptionDur: formik.values.descriptionDur,
+            description: areaContext.join('\n'),
+            selected: false},}));
+        };
+      
+    };
 
   },[change]);
 
@@ -166,19 +213,42 @@ const DescriptionDashboard = () => {
 
   };
 
+  const unique = (data: string) => {
+
+    let result = false;
+
+    const currentDescription = descriptionSelector.find(element => element.descriptionName === data);
+
+    if(currentDescription === undefined) result = true;
+
+    return result;
+
+  };
+
   const formik = useFormik({
 
     //yup stored own validate functions (for email, password...etc)
     validationSchema: Yup.object({
-        descriptionPillName: Yup.string().required('DescriptionPillName field is required').max(16, 'Max 16 simbols!'),
+        descriptionSearch: Yup.string().notRequired(),
+        descriptionPillName: Yup.string().required('PillName field is required').max(16, 'Max 16 simbols!'),
         descriptionName: Yup.string().required('DescriptionName field is required').max(16, 'Max 16 simbols!'),
-        descriptionQuan: Yup.string().required('DescriptionQuan field is required').max(2, 'Max 2 simbols!'),
-        descriptionDur: Yup.string().required('DescriptionQuan field is required').max(3, 'Max 3 simbols!'),
-        descriptionPer: Yup.string().required('DescriptionPer field is required').max(2, 'Max 2 simbols!'),
+        descriptionQuan: Yup.string().required('Quantity field is required').max(2, 'Max 2 simbols!').matches(
+          /\w{0}[0-9]/,
+          { message: 'Quantity should be number' }
+        ),
+        descriptionDur: Yup.string().required('Duration field is required').max(3, 'Max 3 simbols!').matches(
+          /\w{0}[0-9]/,
+          { message: 'Quantity should be number' }
+        ),
+        descriptionPer: Yup.string().required('Per day field is required').max(2, 'Max 2 simbols!').matches(
+          /\w{0}[0-9]/,
+          { message: 'Quantity should be number' }
+        ),
         description: Yup.string(),
       }
     ),
     initialValues: {
+      descriptionSearch: '',
       descriptionPillName: '',
       descriptionName: '',
       descriptionPer: '',
@@ -188,7 +258,12 @@ const DescriptionDashboard = () => {
     } ,
     onSubmit: (values, {resetForm}) => {
 
-      if(tokenSelector !== '') dispatch(addDescriptionAPI({token: tokenSelector, data: {_id: nanoid(), descriptionName: values.descriptionName, descriptionPer: values.descriptionPer, descriptionPillName: values.descriptionPillName,  descriptionQuan: values.descriptionQuan, descriptionDur: values.descriptionDur, description: areaContext.join('\n'), selected: false}}));
+      if(unique(values.descriptionName)) {
+        if(tokenSelector !== '') dispatch(addDescriptionAPI({token: tokenSelector, data: {_id: nanoid(), descriptionName: values.descriptionName, descriptionPer: values.descriptionPer, descriptionPillName: values.descriptionPillName,  descriptionQuan: values.descriptionQuan, descriptionDur: values.descriptionDur, description: areaContext.join('\n'), selected: false}}));
+      }else {
+        dispatch(changeAddDescription({operation: 'changeMessage', data: 'Such a course name already exists'}));
+      };
+
       resetForm();
 
     },
@@ -213,10 +288,17 @@ const DescriptionDashboard = () => {
       case 'all':
         setAllSelect(state => !state);
         break;
+      case 'clear':
+        formik.values.descriptionName = '';
+        formik.values.descriptionPillName = '';
+        formik.values.descriptionPer = '';
+        formik.values.descriptionQuan = '';
+        formik.values.descriptionDur = '';
+        setAreaContext([]);
+        break;
       case 'write':
 
-        if(Object.keys(formik.errors).length === 0 && formik.values.descriptionPillName !== '' 
-        && formik.values.descriptionPer !== '' && formik.values.descriptionQuan !== '' && formik.values.descriptionDur !== '') {
+        if(Object.keys(formik.errors).length === 0) {
         
           setAreaContext(state => state = [... state, `${state.length + 1}. ${formik.values.descriptionPillName.toUpperCase()} приймати ${formik.values.descriptionPer} рази на день, по ${formik.values.descriptionQuan} одній таблетці ${formik.values.descriptionDur} днів;`]);  
           
@@ -265,30 +347,55 @@ const DescriptionDashboard = () => {
 
           <div className={pd.drive}>
               <button className={pd.button} type='submit' disabled={detectSelected() !== 0 ? true : false}><Add width={'30px'} height={'30px'} stroke={detectSelected() !== 0 ? 'lightgray' : '#646cff'}/></button>
-              <button className={pd.button} type='button' id='change' onClick={descriptionActions} disabled={detectSelected() !== 0 ? false : true}><ChangeImg width={'25px'} height={'25px'} stroke={detectSelected() === 0 ? 'lightgray' : '#646cff'}/></button>
+              <button className={pd.button} type='button' id='change' onClick={descriptionActions} disabled={detectSelected() === 1 ? false : true}><ChangeImg width={'25px'} height={'25px'} stroke={detectSelected() !== 1 ? 'lightgray' : '#646cff'}/></button>
               <button className={pd.button} type='button' id='delete' onClick={descriptionActions} disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() === 0 ? 'lightgray' : '#646cff'}/></button>
               <button className={pd.button} type='button' id='reload' onClick={descriptionActions}><Reload width={'25px'} height={'25px'}/></button>
               <button className={pd.button} type='button' id='all' onClick={descriptionActions} disabled={descriptionSelector.length !== 0 ? false : true} style={descriptionSelector.length === 0 ? {stroke: 'lightgray'} : {stroke: '#646cff'}}>All</button>
           </div>
 
+          <div className={pd.messageContainer} style={formik.errors.descriptionPillName || formik.errors.descriptionPer || formik.errors.descriptionQuan || formik.errors.descriptionDur ? {width: '230px', } : {width: '0'}}>
+
+            <div className={pd.curtain}>
+
+              <p>{formik.errors.descriptionPillName ? formik.errors.descriptionPillName : formik.errors.descriptionPer ? formik.errors.descriptionPer
+               : formik.errors.descriptionQuan ? formik.errors.descriptionQuan : formik.errors.descriptionDur ? formik.errors.descriptionDur : ''}</p>
+
+            </div>
+
+          </div>
+
           <div className={pd.inputs}>
             <div className={pd.inputContainer}>
 
-                  <Select
-                    options={takeContentCourse()}
-                    className={pd.select}
-                    style={{borderRadius: '8px'}}
-                    name='course'
-                    values={[]}
-                    onChange={(value) => {               
-
-                        setSelectedCourseName(value[0].label)
-                        
-                      }
-                    }
-
-                    disabled={detectSelected() === 0 ? false : true}
+              
+                <div className={pd.descriptionSearch}>
+                  <label htmlFor="descriptionSearch">Search</label>
+                  <input
+                  id="descriptionSearch"
+                  name="descriptionSearch"
+                  type="text"
+                  className={pd.searchInput}
+                  onChange={formik.handleChange}
+                  value={formik.values.descriptionSearch}
                   />
+                </div>
+             
+                <Select
+                  options={takeContentCourse()}
+                  className={pd.select}
+                  style={{borderRadius: '8px'}}
+                  name='course'
+                  values={[]}
+                  onChange={(value) => {               
+
+                      setSelectedCourseName(value[0].label)
+                        
+                    }
+                  }
+
+                  disabled={detectSelected() === 0 ? false : true}
+                />
+
                 <div className={pd.descriptionName}>
                   <label htmlFor="descriptionName">Course Name</label>
                   <input
@@ -353,7 +460,10 @@ const DescriptionDashboard = () => {
                 </div>
             </div>
 
-            <button className={pd.writeToArea} type='button' id='write' onClick={descriptionActions}>Write</button>
+            <div className={pd.addButton}>
+              <button className={pd.writeToArea} type='button' id='clear' onClick={descriptionActions}>Clear</button>
+              <button className={pd.clearToArea} type='button' id='write' onClick={descriptionActions}>Write</button>
+            </div>
 
           </div>
 
@@ -375,16 +485,22 @@ const DescriptionDashboard = () => {
 
         </div>
         </div>
-        <ul className={pd.list}>
+        <ul className={pd.list} style={addLoadingSelector ? {justifyContent: 'center'} : {justifyContent: 'unset'}}>
 
-          {descriptionSelector.map(element => {
+          {!addLoadingSelector ? descriptionSelector.map(element => {
 
-            return <li className={pd.item} key={nanoid()} id={element._id} 
-            onClick={selectDescription}><div className={pd.nameWrapper} style={element.selected ? {backgroundColor:'rgb(255, 179, 0, 0.8)'} : {backgroundColor:''}}><div className={pd.name}>{element.descriptionName}</div><p>Description</p></div><p className={pd.description}>{element.description}</p></li>;
+            return element.descriptionName.toLocaleUpperCase().includes(formik.values.descriptionSearch.toLocaleUpperCase()) ? <li className={pd.item} key={nanoid()} id={element._id} 
+            onClick={selectDescription}><div className={pd.nameWrapper} style={element.selected ? {backgroundColor:'rgb(255, 179, 0, 0.8)'} : {backgroundColor:''}}><div className={pd.name}>{element.descriptionName}</div><p>Description</p></div><p className={pd.description}>{element.description}</p></li> : '';
 
-          })}
+          }) : <Loading width={'100px'} height={'100px'}/>}
 
         </ul>
+
+        {alertModalToggle && <PillsModalAlert>
+
+          <div className={pd.messageContainer}> <Horn width={'35px'} height={'35px'}/> <p>{putMessageSelector ? putMessageSelector: deleteMessageSelector ? deleteMessageSelector : addMessageSelector ? addMessageSelector : ''}</p></div>
+              
+        </ PillsModalAlert>}
         
     </div>
   )

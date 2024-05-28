@@ -9,6 +9,27 @@ export type Desc = {
     selected: boolean
 };
 
+export interface ActionPutDescription {
+
+    operation: string
+    data: string | boolean
+  
+};
+
+export interface ActionAddDescription {
+
+    operation: string
+    data: string | boolean
+  
+};
+
+export interface ActionDeleteDescription {
+
+    operation: string
+    data: string | boolean
+  
+};
+
 export interface addDescriptionArgs {
     data: Desc
     token: string

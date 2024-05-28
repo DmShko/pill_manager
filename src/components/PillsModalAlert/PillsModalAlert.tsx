@@ -9,7 +9,7 @@ const PillsModalAlert: FC<PropsWithChildren> = ({ children }) => {
 
 return createPortal(
 
-    <div className={pma.backdrop}>
+    <div className={pma.backdrop} style={{top: `${window.scrollY}px`}}>
 
         <div className={pma.container}>
             { children }
