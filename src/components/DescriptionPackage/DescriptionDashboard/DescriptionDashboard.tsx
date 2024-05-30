@@ -146,7 +146,8 @@ const DescriptionDashboard = () => {
 
   useEffect(() => {
 
-    if((addDescriptionLoadSelector && tokenSelector.length !== 0) || (fresh && tokenSelector.length !== 0)) {
+    if((addDescriptionLoadSelector && tokenSelector.length !== 0) || (fresh && tokenSelector.length !== 0)
+    || (deleteDescriptionSelector && tokenSelector.length !== 0) || (putDescriptionSelector && tokenSelector.length !== 0)) {
       setFresh(false);
       dispatch(allDescriptionAPI({token: tokenSelector}));
     }
@@ -375,6 +376,7 @@ const DescriptionDashboard = () => {
                   name="descriptionSearch"
                   type="text"
                   className={pd.searchInput}
+                  placeholder='Descriptions'
                   onChange={formik.handleChange}
                   value={formik.values.descriptionSearch}
                   />

@@ -15,6 +15,7 @@ export interface BoobleProps {
         top: string,
         border: string,
         borderRadius: string,
+        backgroundColor: string,
     }
 
 };

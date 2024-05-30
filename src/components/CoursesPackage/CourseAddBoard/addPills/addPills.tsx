@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from "../../../../app.hooks";
 // styles
 import ap from "./addPills.module.scss";
 
+import { deleteStatisticAPI } from '../../../../API/deleteStatisticAPI'
+
 // external funcions
 import { changeTempPills } from '../../../../pmStore/pmSlice';
 import { changeStatistic } from '../../../../pmStore/pmSlice';
@@ -15,10 +17,14 @@ import { changeStatistic } from '../../../../pmStore/pmSlice';
 const AddPills: FC = () => {
 
   const dispatch = useAppDispatch();
+
+  const coursesSelector = useAppSelector(state => state.pm.courses);
   const selectorTempPills = useAppSelector(state => state.pm.tempPills);
   const editCourseSelector = useAppSelector(state => state.pm.editCourse);
   const isEditSelector = useAppSelector(state => state.pm.isEdit);
   const pressEditSelector = useAppSelector(state => state.pm.pressEdit);
+  const tokenSelector = useAppSelector(state => state.signIn.token);
+  const statisticsSelector = useAppSelector(state => state.getStatistic.statistics);
 
   useEffect(() => {
     if(isEditSelector && pressEditSelector) dispatch(changeTempPills({ mode: 'freshTempPills', data: editCourseSelector.pills, key: '',}));
@@ -45,14 +51,18 @@ const AddPills: FC = () => {
       corrDuration: '',
     },
     onSubmit: values => {
+
+        const id = nanoid();
         
-        dispatch(changeTempPills({ mode: 'addPill', data: {id: nanoid(), pillName: values.pillName,
+        dispatch(changeTempPills({ mode: 'addPill', data: {id: id, pillName: values.pillName,
             perDay: values.perDay,
             quantity: values.quantity,
             duration: values.duration,
+            frozyDuration: values.duration,
             description: '', selectedPill: false, startMonth: '', startDay: '0', }, key: '',}));
 
     },
+    
   });
 
   const itemClick = (evt: React.MouseEvent<HTMLElement>)=> {
@@ -80,6 +90,17 @@ const AddPills: FC = () => {
         // delete pill from 'statistic'
         dispatch(changeStatistic({mode: 'deletePillsDay', data: currenElementId}));
 
+        let currentPillName = '';
+        const currentPill = selectorTempPills.find(element => element.id === evt.currentTarget.id);
+
+        if(currentPill !== undefined) currentPillName = currentPill.pillName;
+
+        for(const st of statisticsSelector) {
+            if(st.pillName === currentPillName) 
+                // delete pill from DB statistic
+                dispatch(deleteStatisticAPI({token: tokenSelector, id: st._id}));
+        };
+        
     };
 
     if((evt.target as HTMLButtonElement).name === 'save') {
@@ -102,9 +123,38 @@ const AddPills: FC = () => {
         if(formik.values.corrQuantity !== '') dispatch(changeTempPills({mode: 'changePill', data: {_id: currenElementId, prop: formik.values.corrQuantity}, key: 'quantity'})); 
         setItemQuantity(false);
        };
+
        if(itemDuration) {
         // write changes and reset itemDuration
-        if(formik.values.corrDuration !== '') dispatch(changeTempPills({mode: 'changePill', data: {_id: currenElementId, prop: formik.values.corrDuration}, key: 'duration'})); 
+
+        let diff = '';
+        const currentPill = coursesSelector.find(element => element.selected === true)?.pills.find(element => element.id === currenElementId);
+        let currentDuration = '';
+        let currentFrozyDuration = '';
+
+        if(currentPill !== undefined) {
+            currentDuration = currentPill.duration;
+            currentFrozyDuration = currentPill.frozyDuration;
+        };
+
+        if(currentFrozyDuration !== undefined) {
+       
+            if(formik.values.corrDuration > currentFrozyDuration) {
+                diff = (Number(currentDuration) + (Number(formik.values.corrDuration) - Number(currentFrozyDuration))).toString();
+            }
+        
+            if(formik.values.corrDuration < currentFrozyDuration) {
+                diff = (Number(currentDuration) - (Number(currentFrozyDuration) - Number(formik.values.corrDuration))).toString();    
+            }
+
+        };
+  
+        if(formik.values.corrDuration !== '') {
+
+            dispatch(changeTempPills({mode: 'changePill', data: {_id: currenElementId, prop: diff}, key: 'duration'}));
+            dispatch(changeTempPills({mode: 'changePill', data: {_id: currenElementId, prop: formik.values.corrDuration}, key: 'frozyDuration'}));  
+        }
+        
         setItemDuration(false);
        };
 
@@ -221,7 +271,7 @@ const AddPills: FC = () => {
 
                                 <p>durat.: </p> 
                                 { itemDuration && value.selectedPill ? <input className={ap.itemInput} type="text" id='corrDuration' value={formik.values.corrDuration} onChange={formik.handleChange}/> 
-                                    : <p className={ap.pillsText} id='itemDuration'> {value.duration} </p>}
+                                    : <p className={ap.pillsText} id='itemDuration'> {value.frozyDuration} </p>}
                                
                                 {itemActiveSave && value.selectedPill ? <button className={ap.itemButton} name='save'>Save</button> : ''}
                                 <button className={ap.itemButton} name='del'>Del</button>

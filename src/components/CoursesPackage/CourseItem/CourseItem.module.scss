@@ -113,19 +113,68 @@
 
          height: 10px;
 
-         gap: 3px;     
-
+         gap: 3px; 
+   
          .pillTitle {
 
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
       
             height: 10px;
       
             font-size: 10px;
-      
+
          }
+      }
+
+      
+      .durationText {
+               
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         justify-content: center;
+
+         .pillDurationTitle {
+         
+            font-weight: 600;
+            font-size: 18px;
+
+            margin: 0;
+
+            width: 100%;
+
+            color: blue;
+
+         }
+
+         .pillDurationTitleFrozy {
+         
+            font-weight: 600;
+            font-size: 18px;
+
+            margin: 0;
+
+            width: 100%;
+
+            color: white;
+
+         }
+      }
+
+      .pillTitleValue {
+         
+         font-weight: 600;
+         font-size: 18px;
+
+         margin: 0;
+
+         width: 100%;
+
+         color: blue;
+
       }
    }
 
@@ -233,18 +282,7 @@
       font-size: 12px;
    }
 
-   .pillTitleValue {
-      
-      font-weight: 600;
-      font-size: 18px;
-
-      margin: 0;
-
-      width: 100%;
-
-      color: blue;
-
-   }
+   
 
    .titleValue {
 

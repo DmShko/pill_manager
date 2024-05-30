@@ -7,6 +7,7 @@ export interface Pill {
     startDay: string
     quantity: string
     duration: string
+    frozyDuration: string
     description?: string
     selectedPill: boolean
 };
@@ -76,22 +77,22 @@ export interface EditActionCourse {
 };
 
 // type for isEdit action argument
-export interface IsEditEction {
+export interface IsEditAction {
   data: boolean 
 };
 
 // type for startDate action argument
-export interface StartDateEction {
+export interface StartDateAction {
   data: string 
 };
 
 // type for ActualMonthes action argument
-export interface ActualMonthesEction {
+export interface ActualMonthesAction {
   data: string[] 
 };
 
 // type for pressEdit action argument
-export interface PressEditEction {
+export interface PressEditAction {
   data: boolean 
 };
 
@@ -100,7 +101,6 @@ export interface StatisticAction {
   mode: string
   data: ChangeCoursePropST | ChangeFutureProp | string
 };
-
 
 // type for one courses item
 export interface Course { 
@@ -115,7 +115,7 @@ export interface Course {
     selected: boolean
     pills: Pill[]
   };
-  
+
   // type for itialState
   export interface PmInitialState {
     courses: Course[]

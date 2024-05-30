@@ -13,15 +13,15 @@ import {
   ChangeCoursePropA,
   ChangeCoursePropST,
   EditActionCourse,
-  IsEditEction,
-  PressEditEction,
+  IsEditAction,
+  PressEditAction,
   ChangePillPropB,
   ChangeCoursePropSD,
   StatisticAction,
-  StartDateEction,
+  StartDateAction,
   ChangeFutureProp,
   PillDate,
-  ActualMonthesEction,
+  ActualMonthesAction,
 
 } from "../types/types";
 
@@ -248,7 +248,7 @@ const pmSlice = createSlice({
                   currentDay[(action.payload.data as ChangeFutureProp).prop.futureName as keyof Pick<PillDate, 'status'>] = (action.payload.data as ChangeFutureProp).prop.value as boolean;
                   break;
                 case 'reschedule':
-                  currentDay[(action.payload.data as ChangeFutureProp).prop.futureName as keyof Pick<PillDate, 'reschedule'>] = (action.payload.data as ChangeFutureProp).prop.value as boolean;
+                  currentDay[(action.payload.data as ChangeFutureProp).prop.futureName as keyof Pick<PillDate, 'reschedule'>] = (action.payload.data as ChangeFutureProp).prop.value as boolean;               
                   break;
                 default:
                   break;
@@ -278,25 +278,25 @@ const pmSlice = createSlice({
       }
     },
 
-    changeIsEdit(state, action: PayloadAction<IsEditEction>) {
+    changeIsEdit(state, action: PayloadAction<IsEditAction>) {
       
       state.isEdit = action.payload.data;
 
     },
 
-    changeStartDay(state, action: PayloadAction<StartDateEction>) {
+    changeStartDay(state, action: PayloadAction<StartDateAction>) {
       
       state.startDate = action.payload.data;
 
     },
 
-    changeActualMonthes(state, action: PayloadAction<ActualMonthesEction>) {
+    changeActualMonthes(state, action: PayloadAction<ActualMonthesAction>) {
       
       state.actualMonthes = action.payload.data;
 
     },
 
-    changePressEdit(state, action: PayloadAction<PressEditEction>) {
+    changePressEdit(state, action: PayloadAction<PressEditAction>) {
       
       state.pressEdit = action.payload.data;
 
@@ -304,6 +304,6 @@ const pmSlice = createSlice({
   },
 });
 
-export const { changeCourses, changeTempPills, changeEditCourse, changeIsEdit, changePressEdit, changeStatistic, changeStartDay, changeActualMonthes } =
+export const { changeCourses, changeTempPills, changeEditCourse, changeIsEdit, changePressEdit, changeStatistic, changeStartDay, changeActualMonthes, } =
   pmSlice.actions;
 export default pmSlice.reducer;

@@ -26,6 +26,7 @@ import ad from './addDescription.js';
 import gd from './getDescriptions.js';
 import dd from './deleteDescription.js';
 import pd from './putDescriptionStore.js';
+import ds from './deleteStatisticStore.js';
 
 const rootReducer = combineReducers({
   signUp: changeSingUp,
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   getDescriptions: gd,
   deleteDescription: dd,
   putDescription: pd,
+  deleteStatistic: ds,
 });
 
 const persistConfig = {

@@ -75,14 +75,15 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
   function getAllDuration() {
 
     const currentCourse = coursesSelector.find(element => element._id === courses._id);
+
     let durationCount = 0;
 
     if(currentCourse !== undefined) {
 
       // sort all pills and get duration values from each
       for(const c of currentCourse.pills) {
-        
-        durationCount += Number(c.duration);
+
+        durationCount += Number(c.frozyDuration);
 
       };
 
@@ -130,6 +131,18 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
 
   };
 
+  const getFrozyDuration = ( data: string ) => {
+
+    const currentCourse = coursesSelector.find(element => element._id === courses._id);
+
+    if(currentCourse !== undefined) {
+
+      const currentPill = currentCourse.pills.find(element => element.id === data);
+      return currentPill?.frozyDuration;
+    }
+       
+  };
+
   return (
    
       <div className={ci.courseItem}>
@@ -168,7 +181,7 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
                     <div className={ci.pillTextContainer}>
                       <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>per/day</p><Part width={'12px'} height={'12px'}/></div><p className={ci.pillTitleValue}>{element.perDay}</p></div>
                       <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>quant.X</p><QuantityPill width={'15px'} height={'15px'}/></div><p className={ci.pillTitleValue}>{element.quantity}</p></div>
-                      <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>durat.</p><Time width={'15px'} height={'15px'}/></div><p className={ci.pillTitleValue}>{element.duration}</p></div>
+                      <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>durat.</p><Time width={'15px'} height={'15px'}/></div><div className={ci.durationText}><p className={ci.pillDurationTitleFrozy}>{getFrozyDuration(element.id)}{'/'}</p><p className={ci.pillDurationTitle}>{element.duration}</p></div></div>
                     </div>
                   </li>  
                 }

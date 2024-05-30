@@ -55,6 +55,13 @@ export interface putStatisticArgs {
 
 };
 
+export interface deleteStatisticArgs {
+
+    id: string
+    token: string
+
+};
+
 export interface allStatisticArgs {
     
     token: string
@@ -91,6 +98,13 @@ export interface allStatisticInitialState {
 export interface addStatisticInitialState {
  
     isLoad: boolean;
+    isLoading: boolean
+    error: string
+};
+
+export interface deleteStatisticInitialState {
+ 
+    isDelete: boolean;
     isLoading: boolean
     error: string
 };

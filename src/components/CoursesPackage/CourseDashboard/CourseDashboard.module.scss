@@ -80,6 +80,27 @@
          height: 50px;
 
          margin-bottom: 5px;
+         .search {
+
+            input {
+
+               font-size: 14px;
+
+               text-align: center;
+
+               padding: 0 5px;
+
+               height: 25px;
+               border: 1px solid lightgray;
+               border-radius: 8px;
+
+            }
+
+            input:focus {
+               outline: none;
+            } 
+
+         }
    
       }
 

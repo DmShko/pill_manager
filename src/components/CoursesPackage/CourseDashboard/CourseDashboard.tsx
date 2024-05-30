@@ -214,13 +214,13 @@ const CourseDashboard: FC = () => {
       const calendarStatDays = statisticSelector[selectedPillName];
         
       if(calendarStatDays !== undefined && statisticsSelector.length !== 0) {
-
+  
         for(const e of statisticsSelector) {
           
           for(const d of calendarStatDays.days) {
             
             if(d.dateNumber === e.dateNumber && e.pillName === selectedPillName) {
-
+             
               // change future 'done' in statistic day
               dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'done', dateNumber: d.dateNumber, value: e.done},},}));
 
@@ -421,10 +421,8 @@ const CourseDashboard: FC = () => {
 
   };
  
-
   useEffect(() => {
 
-    
     if(rescPress) {
 
       setRescPress(false);
@@ -442,6 +440,7 @@ const CourseDashboard: FC = () => {
         startDay: '',
         quantity: '',
         duration: '',
+        frozyDuration: '',
         description: '',
         selectedPill: false};
 
@@ -505,11 +504,24 @@ const CourseDashboard: FC = () => {
 
         /** write done from reschedule day to new day */
         // create new statistic day with 'done' from reschedule day to DB 
-          dispatch(addStatisticAPI({token: tokenSelector, data: {_id: nanoid(), pillName: selectedPillName, dateNumber: (Number(lastDayNumbers[lastDayNumbers.length - 1]) + 1).toString(),
-            month: scheduleDay.month,
-            done: scheduleDay.done,
-            status: scheduleDay.status, reschedule: false}}));  
-       
+        if(scheduleDay.done !== 0) {
+          const year = new Date().getFullYear();
+          // generate length for current month from value (howMonth -> see 523 row)
+          const monthLength = Number(new Date(year, monthes.indexOf(scheduleDay.month), 0).toString().split(' ')[2]);
+
+          // if next dateNumber > current month day length - next day start from '1' and month = current month + 1
+          if(Number(lastDayNumbers[lastDayNumbers.length - 1]) === monthLength) {
+            dispatch(addStatisticAPI({token: tokenSelector, data: {_id: nanoid(), pillName: selectedPillName, dateNumber: '1',
+              month: monthes[monthes.indexOf(scheduleDay.month) + 1],
+              done: scheduleDay.done,
+              status: scheduleDay.status, reschedule: false}}));  
+          }else {
+            dispatch(addStatisticAPI({token: tokenSelector, data: {_id: nanoid(), pillName: selectedPillName, dateNumber: (Number(lastDayNumbers[lastDayNumbers.length - 1]) + 1).toString(),
+              month: scheduleDay.month,
+              done: scheduleDay.done,
+              status: scheduleDay.status, reschedule: false}}));  
+          };
+        };
         // change future 'reschedule' in statistic day
         // dispatch(changeStatistic({mode: 'changePillsFutures', data:{prop: {pillName: selectedPillName, futureName: 'reschedule', dateNumber: selectedDay.toString(), value: true},},}));
 
@@ -818,15 +830,19 @@ const CourseDashboard: FC = () => {
     let pillMonth = month;
     const startMonth = coursesSelector.find(element => element.courseName === editCoursesSelector.courseName)?.pills.
     find(element => element.pillName === selectedPillName)?.startMonth;
-   
-    let monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
+    let monthLength = 0;
+
+    if(startMonth !== undefined) {
+      monthLength = Number(new Date(year, monthes.indexOf(startMonth), 0).toString().split(' ')[2]);
+    };
+    
     let counter = Number(getPillValue('startDay')?.value);
     let overCounter = 0;
 
     if(startMonth !== undefined) {
 
       if(isFull) {
-        
+     
         // load days array of full month 
         for(let dn = 0; dn < data.length; dn += 1) {
 
@@ -848,9 +864,9 @@ const CourseDashboard: FC = () => {
         };
 
       } else {
-
-        for(let dn = 0; dn < data.length; dn += 1) {
        
+        for(let dn = 0; dn < data.length; dn += 1) {
+        
             if(counter !== undefined && counter <= monthLength) {
               // write number of day
               data[dn].dateNumber = counter.toString();
@@ -862,12 +878,13 @@ const CourseDashboard: FC = () => {
           
                 // rewrite month (data don't fit to previous month)
                 pillMonth = monthes[(monthes.indexOf(startMonth) + 1)].toString();
-                
+               
                 // get length for new month
-                monthLength = Number(new Date(year, monthes.indexOf(startMonth), 0).toString().split(' ')[2]);
-
+                monthLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
+                                                                  //^startMonth
                 // write number of day
-                data[dn].dateNumber = overCounter.toString();
+                data[dn].dateNumber = (overCounter + 1).toString();
+                                    //^overCounter
                 // write month name
                 data[dn].month = pillMonth.toString();
 
@@ -900,6 +917,7 @@ const CourseDashboard: FC = () => {
 
     const searchCours = coursesSelector.find(element => element._id === editCoursesSelector._id);
     let pills: Pill[] = [];
+
     if(searchCours !== undefined) pills = searchCours.pills;
     
     const year = new Date().getFullYear();
@@ -917,7 +935,7 @@ const CourseDashboard: FC = () => {
 
     // ...and fill his
     addDateLable(days, [], false);
-   
+
     /**How months contain 'days' */
 
       howMonthsInDays(days).then(value => {
@@ -941,7 +959,7 @@ const CourseDashboard: FC = () => {
 
         // ...and fill his
         addDateLable(days, fullMonth, true);
-       
+    
         // write days;
         dispatch(changeStatistic({mode: 'changePillsDay', data:{prop: {name: selectedPillName, value: fullMonth, start: getPillValue('startDay')?.value as string}},}));
 
@@ -953,10 +971,11 @@ const CourseDashboard: FC = () => {
     
   };
 
-  const dayStyle = (data: string) => {
+  const dayStyle = (dataDay: string, dataMonth: string) => {
 
     const pillReschedule = statisticSelector[selectedPillName]?.days.find(element => Number(element.dateNumber) === selectedDay)?.reschedule;
     const today = new Date().getDate();
+    const todayMonth = new Date().getMonth() + 1;
 
     let result = {};
 
@@ -968,41 +987,70 @@ const CourseDashboard: FC = () => {
       const gradientDone = 360 / Number(perDay) * getDone;
 
       if(gradientDone === 360) {
-        if(selectedDay.toString() === data){
-          if(data !== '') {
+        if(selectedDay.toString() === dataDay){
+          if(dataDay !== '') {
             result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: 'yellowgreen'};
           } else {
             result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#F0F0F0'};
           };
           
         } else {
-          if(data !== '') {
+          if(dataDay !== '') {
             result= {boxShadow: 'lightgray'};
           } else {
             result= {backgroundColor: '#F0F0F0'};
           };
            
-          if(Number(data) === today) {
+          if(Number(dataDay) === today) {
 
             result= {backgroundColor: '#646cff'};
           }
         };
     
       } else {
-        if(selectedDay.toString() === data){
 
-          if(data !== '') {
+        if(selectedDay.toString() === dataDay){
 
-            if(Number(data) < today) {
+          if(dataDay !== '') {
+            
+            if(monthes.indexOf(dataMonth) + 1 < todayMonth) {
+
               if(!pillReschedule) {
+  
                 result = {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: 'tomato'};
+  
               } else {
+  
                 result = {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', background: 'linear-gradient(-45deg, tomato 50%, #FDB12D 50%)'};
               };
-               
-            } else {
-             
-              result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#FDB12D'};
+ 
+            };
+
+            if(monthes.indexOf(dataMonth) + 1 > todayMonth) {
+
+              if(Number(dataDay) < today) {
+                
+                result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#FDB12D'};
+
+              };
+
+            };
+
+            if(monthes.indexOf(dataMonth) + 1 === todayMonth) {
+              if(Number(dataDay) < today) {
+                if(!pillReschedule) {
+
+                  result = {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: 'tomato'};
+
+                } else {
+
+                  result = {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', background: 'linear-gradient(-45deg, tomato 50%, #FDB12D 50%)'};
+                };
+                
+              } else {
+              
+                result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#FDB12D'};
+              };
             };
 
           } else {
@@ -1010,14 +1058,14 @@ const CourseDashboard: FC = () => {
           };
           
         } else {
-          if(data !== '') {
+          if(dataDay !== '') {
             result= {backgroundColor: 'lightgray'};
 
           } else {
             result= {backgroundColor: '#F0F0F0'};
           };
 
-          if(Number(data) === today) {
+          if(Number(dataDay) === today) {
 
             result= {backgroundColor: '#646cff'};
           }
@@ -1068,7 +1116,8 @@ const CourseDashboard: FC = () => {
   };
 
   const getStatus = () => {
-
+    
+    const todayMonth = new Date().getMonth() + 1;
     const today = new Date().getDate();
 
     const currentStatisticPill = statisticSelector[selectedPillName];
@@ -1079,14 +1128,106 @@ const CourseDashboard: FC = () => {
 
       const currentStatisticDay = currentStatisticPill.days.find(element => Number(element.dateNumber) === selectedDay);
 
-      if(selectedDay > today) {
-        around.count = true;
-        around.reschedule = true;
+      if(selectedDay > today && currentStatisticDay !== undefined) {
+
+          if(todayMonth > monthes.indexOf(month) + 1) {
+
+            if(!currentStatisticDay.status) {
+
+              if(currentStatisticDay.reschedule){
+                around.count = true;
+                around.reschedule = true;
+              } else {
+                around.count = true;
+                around.reschedule = false;
+              };
+              
+    
+            } else {
+    
+              around.count = true;
+              around.reschedule = true;
+    
+            };
+           
+          }
+
+          if(todayMonth <= monthes.indexOf(month) + 1) {
+            around.count = true;
+            around.reschedule = true;
+          } 
+
       };
     
       if(selectedDay < today && currentStatisticDay !== undefined) {
 
-        if(!currentStatisticDay.status) {
+        if(todayMonth > monthes.indexOf(month) + 1) {
+
+          if(!currentStatisticDay.status) {
+
+            if(currentStatisticDay.reschedule){
+              around.count = true;
+              around.reschedule = true;
+            } else {
+              around.count = true;
+              around.reschedule = false;
+            };
+            
+  
+          } else {
+  
+            around.count = true;
+            around.reschedule = true;
+  
+          };
+         
+        }
+
+        if(todayMonth < monthes.indexOf(month) + 1) {
+          around.count = true;
+          around.reschedule = true;
+        } 
+
+        if(todayMonth === monthes.indexOf(month) + 1) {
+
+          if(currentStatisticDay.reschedule) {
+            around.count = true;
+            around.reschedule = true;
+          }else {
+            around.count = true;
+            around.reschedule = false;
+          };
+         
+        } 
+
+      };
+
+      if(selectedDay === today && currentStatisticDay !== undefined) {
+        
+        if(todayMonth > monthes.indexOf(month) + 1) {
+
+          if(!currentStatisticDay.status) {
+
+            if(currentStatisticDay.reschedule){
+              around.count = true;
+              around.reschedule = true;
+            } else {
+              around.count = true;
+              around.reschedule = false;
+            };
+            
+  
+          } else {
+  
+            around.count = true;
+            around.reschedule = true;
+  
+          };
+        };
+
+        if(todayMonth < monthes.indexOf(month) + 1) {
+          
+        
 
           if(currentStatisticDay.reschedule){
             around.count = true;
@@ -1095,30 +1236,25 @@ const CourseDashboard: FC = () => {
             around.count = true;
             around.reschedule = false;
           };
-          
-
-        } else {
-
-          around.count = true;
-          around.reschedule = true;
-
+        
         };
 
-      };
+        if(todayMonth === monthes.indexOf(month) + 1) {
+  
+          if(!currentStatisticDay.status) {
 
-      if(selectedDay === today && currentStatisticDay !== undefined) {
-
-        if(!currentStatisticDay.status) {
-
-          around.count = false;
-          around.reschedule = true;
-
-        } else {
-
-          around.count = true;
-          around.reschedule = true;
-
+            around.count = false;
+            around.reschedule = true;
+  
+          } else {
+  
+            around.count = true;
+            around.reschedule = true;
+  
+          };
+        
         };
+        
 
       };
     };
@@ -1247,7 +1383,7 @@ const CourseDashboard: FC = () => {
 
                     {getPillValue('startDay')?.status && Object.keys(statisticSelector).includes(selectedPillName) ? statisticSelector[selectedPillName].days.map(element => {
                       return(
-                        month === element.month ? <li className={cd.item} key={nanoid()} id={element.position} style={dayStyle(element.dateNumber)}>{element.position}</li> : ''
+                        month === element.month ? <li className={cd.item} key={nanoid()} id={element.position} style={dayStyle(element.dateNumber, element.month)}>{element.position}</li> : ''
                       )
                     }): ''}
 
@@ -1289,7 +1425,7 @@ const CourseDashboard: FC = () => {
         <ul className={cd.coursesList}>
           {coursesSelector.length !== 0 ? coursesSelector.map(element => 
             {
-              return <li className={cd.courseItem} key={nanoid()} id={element._id} 
+              return element.courseName?.toLocaleUpperCase().includes(searchCourse.toLocaleUpperCase()) && <li className={cd.courseItem} key={nanoid()} id={element._id} 
               style={element.selected ? {backgroundColor:'rgb(255, 179, 0, 0.8)'} : {backgroundColor:''}} onClick={selectCourse}><CourseItem courses={element}/></li> 
             }
           ) : 'There are no courses'}
