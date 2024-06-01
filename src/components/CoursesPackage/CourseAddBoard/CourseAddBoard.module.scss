@@ -6,10 +6,6 @@
       margin-bottom: 20px;
    }
 
-   input {
-      border: 1px dashed gray;
-   }
-
    .course {
       display: flex;
       flex-direction: column;
@@ -17,6 +13,90 @@
       justify-content: space-between;
 
       margin-bottom: 20px;
+
+      .coursInputs {
+
+         text-align: center;
+         border: 1px dashed gray;
+
+      }
+
+      .courseInputsContainer {
+
+               display: flex;
+               flex-direction: row;
+               justify-content: flex-start;
+               align-items: center;
+              
+               gap: 50px;
+
+               width: 100%;
+
+            .messageContainer {
+
+               display: flex;
+               justify-content: center;
+               align-items: center;
+
+               height: 25px;
+               border-bottom: 1px solid lightgray;
+
+               .curtain {
+
+                  height: 25px;
+
+                  background-color: white;
+
+                  p {
+                     
+                     width: 200px;
+
+                     margin: 0;
+                     height: 25px;
+
+                     font-style: italic;
+
+                     color: goldenrod;
+
+                     transition: width 500ms;
+                  }
+               }
+
+               transition: width 500ms;
+
+         }
+
+         .errorInfo {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+
+            height: 70px;
+
+            text-align: start;
+
+            font-size: 12px;
+
+            margin: 0;
+
+            color: lightgray;
+
+            .errorInfoItem {
+
+               width: 100%;
+               margin: 0;
+
+            }
+         }
+      }
+
+      .coursInputs:focus {
+
+         outline: none;
+
+      }
    }
 
    .infoContainer {
@@ -65,4 +145,15 @@
 
       box-shadow: 1px 1px 3px 3px #B2B2B3;
    }
+
+   .courseButton:focus {
+
+      outline: none;
+   }
+
+   .courseButton:active {
+
+      box-shadow: inset 1px 1px 3px 3px lightgray;
+
+  }
 

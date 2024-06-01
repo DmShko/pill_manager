@@ -1,5 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { FormikValues, useFormik } from "formik"; 
+
+import * as Yup from 'yup';
+
 import { nanoid } from "nanoid"; 
 
 // own dispatch hook
@@ -92,30 +95,64 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
     let result = {};
     
     if(editCourseSelector._id !== '' && pressEditSelector) {
-      result = {
+      result = { 
+
         courseName: editCourseSelector.courseName,
         doctorName: editCourseSelector.doctorName,
         docContacts: editCourseSelector.docContacts,
         clinicName: editCourseSelector.clinicName,
         clinicContacts: editCourseSelector.clinicContacts,
         visitDate: editCourseSelector.visitDate,
+        
       }
     } else {
       result = {
+       
         courseName: '',
         doctorName: '',
         docContacts: '',
         clinicName: '',
         clinicContacts: '',
         visitDate: '',
-      }
+      
+      };
     };
 
     return result;
   };
 
   const formik = useFormik({
-    initialValues: initial(),
+
+        initialValues: initial(),
+
+        validationSchema: Yup.object({
+
+          courseName: Yup.string().notRequired().max(20, 'Max 20 simbols!').matches(
+              /\w{0}[aA-zZаА-яЯ]/,
+              { message: 'CourseName should be string' }),
+              
+          doctorName: Yup.string().notRequired().max(20, 'Max 20 simbols!').matches(
+              /\w{0}[aA-zZаА-яЯ]/,
+              { message: 'DoctorName should be string' }),
+
+          docContacts: Yup.string().notRequired().max(13, 'Max 13 simbols!').matches(
+              /\w{2}[0-9]+\-\w{1}[0-9]+\-\w{1}[0-9]/,
+              { message: 'DocContacts format is 000-000-00-00' }),
+
+          clinicName: Yup.string().notRequired().max(20, 'Max 20 simbols!').matches(
+              /\w{0}[aA-zZаА-яЯ]/,
+              { message: 'ClinicName should be string' }), 
+              
+          clinicContacts: Yup.string().notRequired().max(13, 'Max 13 simbols!').matches(
+            /\w{2}[0-9]+-\w{1}[0-9]+\-\w{1}[0-9]/,
+              { message: 'ClinicContacts format is 000-000-00-00' }),  
+
+          visitDate: Yup.string().notRequired().max(10, 'Max 10 simbols!').matches(
+            /\w{1}[0-9]+\.\w{1}[0-9]+\.\w{3}[0-9]/,
+              { message: 'VisitDate format is 00.00.0000' }),  
+
+      }
+    ),
     onSubmit: values => {
 
       // reset newCourseId
@@ -127,7 +164,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
         // sort value in 'valuesKeys' and compare with search course future values in state
         // rewrite futures if not equal 
         for(const e of valuesKeys) {
-        
+          
           if(values[e] !== editCourseSelector[e as keyof Course]) {
     
             // rewrite not equal future
@@ -185,19 +222,42 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
             <form className={cb.course} onSubmit={formik.handleSubmit}>
               
               <label htmlFor="courseName">Course name</label>
-              <input
-                id="courseName"
-                name="courseName"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.courseName}
-              />
+
+              <div className={cb.courseInputsContainer}>
+
+                <input
+                  className={cb.coursInputs}
+                  id="courseName"
+                  name="courseName"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.courseName}
+                />
+
+                <div className={cb.messageContainer} style={formik.errors.courseName || formik.errors.doctorName || formik.errors.docContacts || formik.errors.clinicName || formik.errors.clinicContacts || formik.errors.visitDate ? {opacity: '1', } : {opacity: '0'}}>
+
+                  <div className={cb.curtain}>
+
+                    <p>'Invalid form data'</p>
+
+                  </div>
+
+                </div>
+
+                <div className={cb.errorInfo}>
+                  <p className={cb.errorInfoItem}>{'CourseName, ClinicName should be string'}</p>
+                  <p className={cb.errorInfoItem}>{'DocContacts, ClinicContacts format is 000-000-00-00'}</p>
+                  <p className={cb.errorInfoItem}>{'VisitDate format is 00.00.0000'}</p>
+                </div>
+
+              </div>
 
               <div className={cb.infoContainer}>
 
                 <div className={cb.docContainer}>
                   <label htmlFor="doctorName">Doctor</label>
                   <input
+                    className={cb.coursInputs}
                     id="doctorName"
                     name="doctorName"
                     type="text"
@@ -207,6 +267,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
 
                   <label htmlFor="docContacts">Doctor contacts</label>
                   <input
+                    className={cb.coursInputs}
                     id="docContacts"
                     name="docContacts"
                     type="text"
@@ -218,6 +279,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
                 <div className={cb.cliContainer}>
                   <label htmlFor="clinicName">Clinic</label>
                   <input
+                    className={cb.coursInputs}
                     id="clinicName"
                     name="clinicName"
                     type="text"
@@ -227,6 +289,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
 
                   <label htmlFor="clinicContacts">Clinic contacts</label>
                   <input
+                    className={cb.coursInputs}
                     id="clinicContacts"
                     name="clinicContacts"
                     type="text"
@@ -238,6 +301,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
                 <div className={cb.visitContainer}>
                   <label htmlFor="visitDate">Date of visit</label>
                   <input
+                    className={cb.coursInputs}
                     id="visitDate"
                     name="visitDate"
                     type="text"

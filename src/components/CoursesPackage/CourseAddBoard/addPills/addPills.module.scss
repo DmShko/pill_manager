@@ -20,6 +20,54 @@
 
         width: 40%;
         height: 100%;
+
+        .pillNameContainer {
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            width: 90%;
+
+            margin-bottom: 10px;
+
+            .messageContainer {
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                height: 25px;
+                border-bottom: 1px solid lightgray;
+    
+                .curtain {
+
+                    height: 25px;
+    
+                    background-color: white;
+    
+                    p {
+                        
+                        width: 200px;
+
+                        margin: 0;
+                        height: 25px;
+    
+                        font-style: italic;
+    
+                        color: goldenrod;
+    
+                        transition: width 500ms;
+                    }
+                }
+    
+                transition: width 500ms;
+    
+            }
+
+        }
+
    }
 
    .inputContainer {
@@ -42,9 +90,15 @@
 
    .pillInput {
 
+        text-align: center;
         width: 55px;
         border: 1px dashed gray;
    }
+
+   .pillInput:focus {
+
+        outline: none;
+    }
 
    .pillsButton {
 
@@ -58,6 +112,18 @@
         transform: skew(160deg); 
 
         box-shadow: 1px 1px 3px 3px #B2B2B3;
+
+    }
+
+    .pillsButton:focus {
+
+        outline: none;
+
+    }
+
+    .pillsButton:active {
+
+        box-shadow: inset 1px 1px 3px 3px lightgray;
 
     }
 

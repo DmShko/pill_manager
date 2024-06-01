@@ -123,6 +123,7 @@ const SignIp = () => {
   });
 
   return (
+    
     <div className={si.container}>
 
       {alertModalToggle && <PillsModalAlert>
@@ -167,6 +168,7 @@ const SignIp = () => {
         <button type="submit" className={si.courseButton}>{!isLoadingSelector ? 'Submit' : <Loading width={'30px'} height={'30px'}/>}</button>
 
       </form>
+
     </div>
   )
 }

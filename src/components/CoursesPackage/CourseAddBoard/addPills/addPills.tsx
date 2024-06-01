@@ -1,5 +1,7 @@
 import  { FC, useState, useEffect } from "react"; 
 import { useFormik } from "formik"; 
+import * as Yup from 'yup';
+
 import { nanoid } from "nanoid"; 
 
 // own dispatch hook
@@ -40,6 +42,42 @@ const AddPills: FC = () => {
   const [itemActiveSave, setItemActiveSave ] = useState<Boolean>(false);
 
   const formik = useFormik({
+
+    validationSchema: Yup.object({
+
+            pillName: Yup.string().required('PillName field is required').max(20, 'Max 20 simbols!').matches(
+                /\w{0}[aA-zZаА-яЯ]/,
+                { message: 'PillName should be string' }),
+                
+            corrName: Yup.string().notRequired().max(2, 'Max 2 simbols!').matches(
+                /\w{0}[aA-zZаА-яЯ]/,
+                { message: 'CorrName should be string' }),
+
+            perDay: Yup.string().required('PerDay field is required').max(2, 'Max 2 simbols!').matches(
+                /\w{0}[0-9]/,
+                { message: 'PerDay should be number' }),
+
+            corrPerDay: Yup.string().notRequired().max(2, 'Max 2 simbols!').matches(
+                /\w{0}[0-9]/,
+                { message: 'CorrPerDay should be number' }), 
+                
+            quantity: Yup.string().required('Quantity field is required').max(2, 'Max 2 simbols!').matches(
+                /\w{0}[0-9]/,
+                { message: 'Quantity should be number' }),  
+
+            corrQuantity: Yup.string().notRequired().max(2, 'Max 2 simbols!').matches(
+                /\w{0}[0-9]/,
+                { message: 'CorrQuantity should be number' }),  
+
+            duration: Yup.string().required('Duration field is required').max(3, 'Max 3 simbols!').matches(
+                /\w{0}[0-9]/,
+                { message: 'Duration should be number' }),  
+
+            corrDuration: Yup.string().notRequired().max(3, 'Max 3 simbols!').matches(
+                /\w{0}[0-9]/,
+                { message: 'CorrDuration should be number' }),   
+        }
+    ),
     initialValues: {
       pillName: '',
       corrName: '',
@@ -54,12 +92,16 @@ const AddPills: FC = () => {
 
         const id = nanoid();
         
-        dispatch(changeTempPills({ mode: 'addPill', data: {id: id, pillName: values.pillName,
-            perDay: values.perDay,
-            quantity: values.quantity,
-            duration: values.duration,
-            frozyDuration: values.duration,
-            description: '', selectedPill: false, startMonth: '', startDay: '0', }, key: '',}));
+        if(Object.keys(formik.errors).length === 0) {
+
+            dispatch(changeTempPills({ mode: 'addPill', data: {id: id, pillName: values.pillName,
+                perDay: values.perDay,
+                quantity: values.quantity,
+                duration: values.duration,
+                frozyDuration: values.duration,
+                description: '', selectedPill: false, startMonth: '', startDay: '0', }, key: '',}));
+
+        };
 
     },
     
@@ -201,15 +243,30 @@ const AddPills: FC = () => {
         <div className={ap.addPillsContainer}>
 
             <form className={ap.pills} onSubmit={formik.handleSubmit}>
-              
               <label htmlFor='pillName'>Pill name</label>
-                <input
-                    id="pillName"
-                    name="pillName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.pillName}
-                />
+              <div className={ap.pillNameContainer}>
+                
+                    <input       
+                        id="pillName"
+                        name="pillName"
+                        type="text"
+                        className={ap.pillInput}
+                        onChange={formik.handleChange}
+                        value={formik.values.pillName}
+                    />
+
+                
+                <div className={ap.messageContainer} style={formik.errors.pillName || formik.errors.perDay || formik.errors.quantity || formik.errors.duration ? {opacity: '1', } : {opacity: '0'}}>
+
+                    <div className={ap.curtain}>
+
+                        <p>{formik.errors.pillName ? formik.errors.pillName : formik.errors.perDay ? formik.errors.perDay : formik.errors.quantity ? formik.errors.quantity : formik.errors.duration ? formik.errors.duration : ''}</p>
+
+                    </div>
+
+                </div>
+
+              </div>
 
                 <div className={ap.pillsInfo}>
                     <div className={ap.inputContainer}>

@@ -236,7 +236,8 @@ const CourseDashboard: FC = () => {
       }; 
     };
     
-  },[isGetStatistic]);
+  },[isGetStatistic, statisticSelector]);
+  // be only isGetStatistic^
   
   useEffect(() => {
    

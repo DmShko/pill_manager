@@ -9,6 +9,8 @@ import logoutAPI from "../../API/logoutAPI";
 
 import PillOfBubble from './PillOfBubble/PillOfBubble';
 
+import Logout from '../SvgComponents/Courses/Logout';
+
 // own dispatch hook
 import { useAppDispatch, useAppSelector } from "../../app.hooks";
 
@@ -39,25 +41,25 @@ const SharedLayout: FC = () => {
 
                 {tokenSelector && <ul className={sh.navList}>
                     <li className={sh.navLink}>
-                    <NavLink to="/courses" style={location.pathname === '/courses' ? {borderBottom: '2px solid gray'} : {borderBottom: 'none'}}>Courses</NavLink>
+                    <NavLink to="/courses" style={location.pathname === '/courses' ? {borderBottom: '2px solid rgb(253, 242, 90)'} : {borderBottom: 'none'}}>Courses</NavLink>
                     </li>
 
                     <li className={sh.navLink}>
-                    <NavLink to="/prescriptions" style={location.pathname === '/prescriptions' ? {borderBottom: '2px solid gray'} : {borderBottom: 'none'}}>Prescriptions</NavLink>
+                    <NavLink to="/prescriptions" style={location.pathname === '/prescriptions' ? {borderBottom: '2px solid rgb(253, 242, 90)'} : {borderBottom: 'none'}}>Prescriptions</NavLink>
                     </li>
                 </ul>}
 
                 {!tokenSelector && <ul className={sh.authList}>
-                    <li className={sh.authLink} style={location.pathname === '/signin' ? {borderBottom: '2px solid gray'} : {borderBottom: 'none'}}>
+                    <li className={sh.authLink} style={location.pathname === '/signin' ? {borderBottom: '2px solid rgb(253, 242, 90)',} : {borderBottom: 'none'}}>
                     <NavLink to="/signin">SignIn</NavLink>
                     </li>
 
-                    <li className={sh.authLink} style={location.pathname === '/signup' ? {borderBottom: '2px solid gray'} : {borderBottom: 'none'}}>
+                    <li className={sh.authLink} style={location.pathname === '/signup' ? {borderBottom: '2px solid rgb(253, 242, 90)'} : {borderBottom: 'none'}}>
                     <NavLink to="/signup">SignUp</NavLink>
                     </li>
                 </ul>}
 
-              {tokenSelector && <button onClick={logout}>Logout</button>}
+              {tokenSelector && <button onClick={logout}><Logout width={'25px'} height={'25px'} /></button>}
 
             </nav>
         </div>
