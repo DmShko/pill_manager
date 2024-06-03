@@ -36,7 +36,7 @@ const SignIp = () => {
   const signUpMessageSelector = useAppSelector(state => state.signUp.message);
   const logOutMessageSelector = useAppSelector(state => state.logout.message);
   const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
-  const isLogInSelector = useAppSelector(state => state.signIn.isLogiIn);
+  const isLogInSelector = useAppSelector(state => state.signIn.isLogIn);
   const isLoadingSelector = useAppSelector(state => state.signIn.isLoading);
 
   // open/close alert modal window

@@ -12,7 +12,7 @@ export interface SingUpInitialState {
 export interface SingInInitialState {
 
   isLoading: boolean
-  isLogiIn: boolean
+  isLogIn: boolean
   message: string
   token: string
 

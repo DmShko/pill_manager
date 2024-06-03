@@ -1,11 +1,11 @@
    .addPillsContainer {
 
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: start;
       justify-content: space-between;
         
-      height: 100px;
+      height: fit-content;
 
       padding: 0;
 
@@ -19,16 +19,14 @@
         justify-content: space-between;
 
         width: 40%;
-        height: 100%;
+        height: fit-content;
 
         .pillNameContainer {
 
             display: flex;
-            flex-direction: row;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-start;
             justify-content: space-between;
-
-            width: 90%;
 
             margin-bottom: 10px;
 
@@ -40,6 +38,8 @@
 
                 height: 25px;
                 border-bottom: 1px solid lightgray;
+
+                margin-top: 10px;
     
                 .curtain {
 
@@ -52,6 +52,7 @@
                         width: 200px;
 
                         margin: 0;
+                    
                         height: 25px;
     
                         font-style: italic;
@@ -75,6 +76,8 @@
         flex-direction: column;
         align-items: start;
         justify-content: space-between;  
+
+        
    }
 
    .pillsInfo {
@@ -84,8 +87,21 @@
         align-items: center;
         justify-content: start;
 
-        gap: 10px;
+        margin-bottom: 20px;
 
+        gap: 9px;
+
+   }
+
+   .pillName {
+    width: 125px;
+    border: 1px dashed gray;
+    
+   }
+
+   .pillName:focus {
+
+    outline: none;
    }
 
    .pillInput {
@@ -107,10 +123,6 @@
 
         padding: 0 5px;
 
-        margin-left: 20px;
-
-        transform: skew(160deg); 
-
         box-shadow: 1px 1px 3px 3px #B2B2B3;
 
     }
@@ -129,7 +141,7 @@
 
     .pillsContainer {
 
-        width: 60%;
+        width: 99%;
         height: 100px;
         border: 1px solid gray;
 
@@ -148,10 +160,10 @@
         justify-content: start;
 
         gap: 5px;
-        width: 95%;
+        width: fit-content;
 
         padding: 5px 15px;
-        margin: auto 0;
+        margin: auto auto;
 
     }
 
@@ -162,6 +174,8 @@
         align-items: center;
         justify-content: space-around;
 
+        gap: 5px;
+
         height: 30px;
 
         padding: 5px;
@@ -169,6 +183,11 @@
         list-style: none;
        
         background-color: lightgray;
+
+        p {
+            margin: 0;
+        }
+
     }
 
     .pillsText {
@@ -183,6 +202,8 @@
         color: #646cff;
 
         transition: color 200m;
+
+        overflow-x: hidden;
     }
 
     .pillsText:hover {
@@ -201,3 +222,94 @@
         width: 20px;
         border: none;
     }
+
+//******************************@media rules************************************
+
+//-------------------(min-width: 768px) and (max-width: 1439px)-----------------
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+
+    .addPillsContainer {
+
+        flex-direction: row;
+
+        height: 100px;
+    }
+
+    .pillsContainer {
+
+        width: 60%;
+    }
+    
+    .pills{
+        .pillNameContainer {
+          
+            width: 90%;
+            flex-direction: row;
+
+            .messageContainer {
+                margin-top: 0;
+            }
+        }
+    }
+
+    .pillsInfo {
+
+       margin-bottom: 0;
+
+       gap: 10px;
+    }
+
+    .pillsList {
+
+        width: 90%;
+        padding: 5px 20px;
+        margin: auto 0;
+
+    }
+ }
+ 
+ //-------------------min-width: 1440px----------------------------
+ @media screen and (min-width: 1440px) {
+
+    .addPillsContainer {
+
+        flex-direction: row;
+
+        height: 100px;
+    }
+
+    .pillsContainer {
+
+        width: 60%;
+    }
+
+    .pills {
+        .pillNameContainer {
+
+            width: 90%;
+            flex-direction: row;
+
+            .messageContainer {
+                margin-top: 0;
+    
+            }
+        }
+    }
+
+    .pillsInfo {
+
+        margin-bottom: 0;
+
+        gap: 10px;
+    }
+
+    .pillsList {
+
+        width: 90%;
+        padding: 5px 20px;
+        margin: auto 0;
+
+    }
+    
+ }
+ //******************************end************************************

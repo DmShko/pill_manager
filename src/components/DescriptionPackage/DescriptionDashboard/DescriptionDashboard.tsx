@@ -463,8 +463,8 @@ const DescriptionDashboard = () => {
             </div>
 
             <div className={pd.addButton}>
-              <button className={pd.writeToArea} type='button' id='clear' onClick={descriptionActions}>Clear</button>
-              <button className={pd.clearToArea} type='button' id='write' onClick={descriptionActions}>Write</button>
+              <button className={pd.clearToArea} type='button' id='clear' onClick={descriptionActions}>Clear</button>
+              <button className={pd.writeToArea} type='button' id='write' onClick={descriptionActions}>Write</button>
             </div>
 
           </div>

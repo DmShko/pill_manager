@@ -9,7 +9,7 @@ import { ActionSignIn } from '../types/authTypes';
 const singInSliceInitialState: SingInInitialState = {
 
   isLoading: false,
-  isLogiIn: false,
+  isLogIn: false,
   message: '',
   token: '',
  
@@ -29,7 +29,7 @@ const singInSlice = createSlice({
             state.token = '';
             break;
         case 'changeIsLogiIn':
-            state.isLogiIn = (action.payload.data as boolean);
+            state.isLogIn = (action.payload.data as boolean);
             break;
         default: break;
       }
@@ -46,7 +46,7 @@ const singInSlice = createSlice({
 
         state.isLoading = false;
         state.token = action.payload.data.token;
-        state.isLogiIn = true;
+        state.isLogIn = true;
         state.message = 'User is logined';
         // some actions with 'action'...
       });

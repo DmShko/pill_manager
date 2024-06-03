@@ -141,6 +141,10 @@ export interface Course {
     pillNameReset: Function
   };
 
+  export interface MenuModalProps {
+    openClose: Function
+  };
+
   export interface addBoardProps {
     openClose: Function
   };

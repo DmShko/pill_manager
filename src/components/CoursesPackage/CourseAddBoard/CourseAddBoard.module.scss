@@ -4,8 +4,7 @@
       height: fit-content;
 
       margin-bottom: 20px;
-   }
-
+ 
    .course {
       display: flex;
       flex-direction: column;
@@ -14,23 +13,36 @@
 
       margin-bottom: 20px;
 
-      .coursInputs {
+      .courseName {
 
-         text-align: center;
-         border: 1px dashed gray;
+         text-align: start;
 
+         width: 90%;
+         margin: 0 auto;
       }
 
       .courseInputsContainer {
 
                display: flex;
-               flex-direction: row;
-               justify-content: flex-start;
-               align-items: center;
-              
-               gap: 50px;
+               flex-direction: column;
+               justify-content: center;
+               align-items: flex-start;
+
+               margin-bottom: 10px;
 
                width: 100%;
+
+               .coursInputs {
+
+                
+                  width: 90%;
+         
+                  margin: 0 auto;
+           
+                  text-align: center;
+                  border: 1px dashed gray;
+         
+               }
 
             .messageContainer {
 
@@ -38,8 +50,11 @@
                justify-content: center;
                align-items: center;
 
+               width: 90%;
+               margin: 0 auto;
+
                height: 25px;
-               border-bottom: 1px solid lightgray;
+               border-bottom: 1px solid gray;
 
                .curtain {
 
@@ -73,15 +88,17 @@
             justify-content: flex-start;
             align-items: flex-start;
 
+            width: 90%;
+
             height: 70px;
 
             text-align: start;
 
             font-size: 12px;
 
-            margin: 0;
+            margin: 0 auto 10px auto;
 
-            color: lightgray;
+            color: gray;
 
             .errorInfoItem {
 
@@ -97,63 +114,498 @@
          outline: none;
 
       }
+
+      .infoContainer {
+         display: flex;
+         flex-direction: column;
+         justify-content: space-between;
+
+         width: 100%;
+   
+         gap: 10px;
+
+         .docContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            input{
+               width: 90%;
+
+               margin: 0 auto;
+
+               border: 1px dashed gray;
+            }
+            
+            label{
+
+               text-align: start;
+
+               width: 90%;
+
+               margin: 0 auto;
+            }
+
+         }
+      
+         .cliContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            input{
+               width: 90%;
+
+               margin: 0 auto;
+
+               border: 1px dashed gray;
+            }
+            
+            label{
+
+               text-align: start;
+
+               width: 90%;
+
+               margin: 0 auto;
+            }
+         }
+      
+         .visitContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: end;
+
+            margin-bottom: 10px;
+
+            input{
+               width: 90%;
+
+               margin: 0 auto;
+
+               border: 1px dashed gray;
+            }
+            
+            label{
+
+               text-align: start;
+
+               width: 90%;
+
+               margin: 0 auto;
+            }
+         }
+      }
+   
+      .pillsContainer {
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         justify-content: start;
+   
+         gap: 10px;
+      }
+   
+      .courseButton {
+   
+         width: 50%;
+
+         margin: 0 auto;
+   
+         transform: skew(160deg); 
+   
+         box-shadow: 1px 1px 3px 3px #B2B2B3;
+      }
+   
+      .courseButton:focus {
+   
+         outline: none;
+      }
+   
+      .courseButton:active {
+   
+         box-shadow: inset 1px 1px 3px 3px lightgray;
+   
+     }
    }
+}
 
-   .infoContainer {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
+//******************************@media rules************************************
 
-      gap: 10px;
-   }
+//-------------------(min-width: 768px) and (max-width: 1439px)-----------------
+@media screen and (min-width: 768px) and (max-width: 1439px) {
 
-   .docContainer {
+   .courseAddboard {
+   .course {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       justify-content: space-between;
-   }
 
-   .cliContainer {
+      margin-bottom: 20px;
+
+      .courseName {
+
+         text-align: unset;
+         
+         width: unset;
+         margin: unset;
+      }
+
+      .courseInputsContainer {
+
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+
+            margin-bottom: 0;
+              
+            gap: 50px;
+
+            width: 100%;
+
+            .coursInputs {
+
+               width: unset;
+      
+               margin: unset;
+
+               margin-bottom: auto;
+
+               width: unset;
+
+               text-align: center;
+               border: 1px dashed gray;
+         
+            }
+
+            .messageContainer {
+
+               display: flex;
+               justify-content: center;
+               align-items: center;
+
+               width: unset;
+               margin: unset;
+
+               height: 25px;
+               border-bottom: 1px solid lightgray;
+
+               .curtain {
+
+                  height: 25px;
+
+                  background-color: white;
+
+                  p {
+                     
+                     width: 150px;
+
+                     margin: 0;
+                     height: 25px;
+
+                     font-style: italic;
+
+                     color: goldenrod;
+
+                     transition: width 500ms;
+                  }
+               }
+
+               transition: width 500ms;
+
+         }
+
+         .errorInfo {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+         
+            width: unset;
+
+            height: 70px;
+
+            text-align: start;
+
+            font-size: 11px;
+
+            margin: 0;
+
+            color: gray;
+
+            .errorInfoItem {
+
+               width: 100%;
+               margin: 0;
+
+            }
+         }
+         
+      }
+
+      .coursInputs:focus {
+
+         outline: none;
+
+      }
+
+      .infoContainer {
+    
+         width: unset;
+         flex-direction: row;
+
+         .docContainer {
+
+            input{
+               width: unset;
+
+               margin: unset;
+            }
+            
+            label{
+
+               text-align: unset;
+               
+               width: unset;
+
+               margin: unset;
+            }
+
+         }
+
+         .cliContainer {
+
+            input{
+               width: unset;
+
+               margin: unset;
+            }
+            
+            label{
+
+               text-align: unset;
+               
+               width: unset;
+
+               margin: unset;
+            }
+
+         }
+
+         .visitContainer {
+
+            margin-bottom: 0;
+
+            input{
+               width: unset;
+
+               margin: unset;
+            }
+            
+            label{
+
+               text-align: unset;
+               
+               width: unset;
+
+               margin: unset;
+            }
+
+         }
+      }
+
+      .courseButton {
+   
+         margin-left: 30px;
+      }
+   }
+}
+}
+
+//-------------------min-width: 1440px----------------------------
+@media screen and (min-width: 1440px) {
+
+   .courseAddboard {
+   .course {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       justify-content: space-between;
+
+      margin-bottom: 20px;
+
+      .courseInputsContainer {
+
+               display: flex;
+               flex-direction: row;
+               justify-content: flex-start;
+               align-items: center;
+
+               margin-bottom: 0;
+              
+               gap: 50px;
+
+               width: 100%;
+
+               .coursInputs {
+
+                  width: unset;
+               
+                  margin: unset;
+
+                  margin-bottom: auto;
+         
+                  border: 1px dashed gray;
+                  
+               }
+
+            .messageContainer {
+
+               display: flex;
+               justify-content: center;
+               align-items: center;
+
+               width: unset;
+               margin: unset;
+
+               height: 25px;
+               border-bottom: 1px solid lightgray;
+
+               .curtain {
+
+                  height: 25px;
+
+                  background-color: white;
+
+                  p {
+                     
+                     width: 150px;
+
+                     margin: 0;
+                     height: 25px;
+
+                     font-style: italic;
+
+                     color: goldenrod;
+
+                     transition: width 500ms;
+                  }
+               }
+
+               transition: width 500ms;
+
+         }
+
+         .errorInfo {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+
+            height: 70px;
+
+            text-align: start;
+
+            font-size: 11px;
+
+            margin: 0;
+
+            color: gray;
+
+            .errorInfoItem {
+
+               width: 100%;
+               margin: 0;
+
+            }
+          
+         }
+      }
+
+      .coursInputs:focus {
+
+         outline: none;
+
+      }
+
+      .infoContainer {
+
+         width: unset;
+         flex-direction: row;
+
+         .docContainer {
+
+            input{
+               width: unset;
+
+               margin: unset;
+            }
+            
+            label{
+
+               text-align: unset;
+               
+               width: unset;
+
+               margin: unset;
+            }
+
+         }
+
+         .cliContainer {
+
+            input{
+               width: unset;
+
+               margin: unset;
+            }
+            
+            label{
+
+               text-align: unset;
+               
+               width: unset;
+
+               margin: unset;
+            }
+
+         }
+
+         .visitContainer {
+
+            margin-bottom: 0;
+
+            input{
+               width: unset;
+
+               margin: unset;
+            }
+            
+            label{
+
+               text-align: unset;
+               
+               width: unset;
+
+               margin: unset;
+            }
+
+         }
+      }
+
+      .courseButton {
+   
+         margin-left: 30px;
+      }
    }
-
-   .visitContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: end;
-   }
-
-   .pillsContainer {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: start;
-
-      gap: 10px;
-   }
-
-   .courseButton {
-
-      margin-left: 100px;
-
-      transform: skew(160deg); 
-
-      box-shadow: 1px 1px 3px 3px #B2B2B3;
-   }
-
-   .courseButton:focus {
-
-      outline: none;
-   }
-
-   .courseButton:active {
-
-      box-shadow: inset 1px 1px 3px 3px lightgray;
-
-  }
+}
+}
+//******************************end************************************
 

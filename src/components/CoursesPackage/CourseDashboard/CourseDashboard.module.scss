@@ -15,9 +15,11 @@
 
    .courses {
 
-      height: 90vh;
+      width: 80%;
 
       padding: 10px;
+      margin: 0 auto;
+      margin-bottom: 20px;
 
       box-shadow: 1px 1px 4px 3px #A1A1A1;
 
@@ -33,10 +35,10 @@
       gap: 15px;
 
       margin: 0;
+
+      height: 350px;
       
       padding: 10px 5px;
-
-      height: fit-content;
 
       border-top: 2px solid lightgray;
       border-bottom: 2px solid lightgray;
@@ -52,7 +54,7 @@
    .searchContainer {
 
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
       justify-content: space-evenly;
 
@@ -74,6 +76,7 @@
       .courseDashboard {
 
          display: flex;
+         justify-content: center;
          align-items: center;
          
          width: 200px;
@@ -545,3 +548,69 @@
       width: 100%;
 
    }
+
+//******************************@media rules************************************
+
+//-------------------(min-width: 768px) and (max-width: 1439px)-----------------
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+
+   .courses {
+
+      height: 90vh;
+      width: 90%;
+
+      overflow-y: scroll;
+   }
+    
+   .searchContainer {
+
+      flex-direction: row;
+
+      .courseDashboard {
+
+         justify-content: flex-start;
+
+      }
+   
+   }
+
+   .coursesList {
+
+      height: 80%;
+
+      overflow-y: scroll;
+   }
+  
+}
+
+//-------------------min-width: 1440px----------------------------
+@media screen and (min-width: 1440px) {
+
+   .courses {
+
+      height: 90vh;
+      width: 90%;
+
+      overflow-y: scroll;
+   }
+  
+   .searchContainer {
+
+      flex-direction: row;
+
+      .courseDashboard {
+
+         justify-content: flex-start;
+
+      }
+     
+   }
+
+   .coursesList {
+
+      height: 80%;
+
+      overflow-y: scroll;
+   }
+}
+//******************************end************************************

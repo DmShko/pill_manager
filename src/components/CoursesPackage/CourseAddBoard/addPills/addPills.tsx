@@ -250,7 +250,7 @@ const AddPills: FC = () => {
                         id="pillName"
                         name="pillName"
                         type="text"
-                        className={ap.pillInput}
+                        className={ap.pillName}
                         onChange={formik.handleChange}
                         value={formik.values.pillName}
                     />

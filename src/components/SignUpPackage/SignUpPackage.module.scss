@@ -16,8 +16,8 @@
 
         gap: 10px;
 
-        width: 300px;
         height: fit-content;
+        width: 240px;
 
         padding: 20px;
         margin: 0 auto;
@@ -149,3 +149,31 @@
     width: 100%;
 
 }
+
+//******************************@media rules************************************
+
+//-------------------(min-width: 768px) and (max-width: 1439px)-----------------
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+    
+    .container {
+
+        form {
+            width: 350px;
+        }
+
+    }
+   
+}
+
+//-------------------min-width: 1440px----------------------------
+@media screen and (min-width: 1440px) {
+   
+    .container {
+
+        form {
+            width: 400px;
+        }
+
+    }
+}
+//******************************end************************************

@@ -22,6 +22,9 @@ import { changeEditCourse } from '../../../pmStore/pmSlice';
 import { addCourseAPI } from '../../../API/addCourseAPI';
 import { patchCourseAPI } from '../../../API/patchCourseAPI';
 
+// images
+import Attention from "../../SvgComponents/Courses/Attention";
+
 // my types
 import { Pill } from '../../../types/types';
 import { addBoardProps } from "../../../types/types"; 
@@ -221,7 +224,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
 
             <form className={cb.course} onSubmit={formik.handleSubmit}>
               
-              <label htmlFor="courseName">Course name</label>
+              <label className={cb.courseName} htmlFor="courseName">Course name</label>
 
               <div className={cb.courseInputsContainer}>
 
@@ -245,6 +248,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
                 </div>
 
                 <div className={cb.errorInfo}>
+                  <Attention width={'20px'} height={'20px'}/>
                   <p className={cb.errorInfoItem}>{'CourseName, ClinicName should be string'}</p>
                   <p className={cb.errorInfoItem}>{'DocContacts, ClinicContacts format is 000-000-00-00'}</p>
                   <p className={cb.errorInfoItem}>{'VisitDate format is 00.00.0000'}</p>

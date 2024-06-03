@@ -1035,6 +1035,16 @@ const CourseDashboard: FC = () => {
 
               };
 
+              if(Number(dataDay) === today) {
+
+                result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: 'yellowgreen', backgroundColor: '#646cff'};
+              }
+
+              if(Number(dataDay) > today) {
+
+                result= {outlineStyle: 'solid', outlineWidth: '2px', outlineColor: '#646cff', backgroundColor: '#FDB12D'};
+              }
+
             };
 
             if(monthes.indexOf(dataMonth) + 1 === todayMonth) {
@@ -1235,7 +1245,7 @@ const CourseDashboard: FC = () => {
             around.reschedule = true;
           } else {
             around.count = true;
-            around.reschedule = false;
+            around.reschedule = true;
           };
         
         };

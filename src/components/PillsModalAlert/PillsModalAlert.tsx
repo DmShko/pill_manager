@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { FC, useEffect, PropsWithChildren } from "react";
+import { FC, PropsWithChildren } from "react";
 
 const modalRoot = document.querySelector('#root-modal') as HTMLElement;
 

@@ -293,6 +293,23 @@
                         border-radius: 8px;
                     }
 
+                    .writeToArea:active {
+
+                        box-shadow: inset 1px 1px 3px 3px lightgray;
+                    }
+                
+                    .writeToArea:focus {
+                
+                        outline: none;
+                
+                    }
+                
+                    .writeToArea:hover {
+                
+                        outline: none;
+                        background-color: #f9f9f9;
+                    }
+
                     .clearToArea {
 
                         display: flex;
@@ -306,25 +323,24 @@
 
                         border-radius: 8px;
                     }
-                }
 
-                .writeToArea:active {
+                    .clearToArea:active {
 
-                    box-shadow: inset 1px 1px 3px 3px lightgray;
+                        box-shadow: inset 1px 1px 3px 3px lightgray;
+                    }
+                
+                    .clearToArea:focus {
+                
+                        outline: none;
+                
+                    }
+                
+                    .clearToArea:hover {
+                
+                        outline: none;
+                        background-color: #f9f9f9;
+                    }
                 }
-            
-                .writeToArea:focus {
-            
-                    outline: none;
-            
-                }
-            
-                .writeToArea:hover {
-            
-                    outline: none;
-                    background-color: #f9f9f9;
-                }
-
                 
             }
     
