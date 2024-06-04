@@ -53,12 +53,15 @@ const SharedLayout: FC = () => {
 
       case 'courses':
         navigate('/courses');
+        setMenuToggle(false);
         break;
       case 'prescriptions':
         navigate('/prescriptions');
+        setMenuToggle(false);
         break;
       case 'logout':
         dispatch(logoutAPI({token: tokenSelector,}));
+        setMenuToggle(false);
         break;
       default:
         break
@@ -114,7 +117,7 @@ const SharedLayout: FC = () => {
 
       </footer>
 
-      {menuToggle && <ModalMenu openClose={menuOpenClose}>
+      {menuToggle && <ModalMenu >
 
         <p className={sh.coursesItem} id="courses" onClick={BurgerNavigate} style={location.pathname === '/courses' ? {borderBottom: '2px solid #FDB12D',} : {borderBottom: '2px solid transparent'}}>Courses</p>
         <p className={sh.descriptionItem} id="prescriptions" onClick={BurgerNavigate} style={location.pathname === '/prescriptions' ? {borderBottom: '2px solid #FDB12D',} : {borderBottom: '2px solid transparent'}}>Prescriptions</p>

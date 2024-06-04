@@ -3,11 +3,9 @@ import { FC, useEffect, PropsWithChildren } from "react";
 
 const modalRoot = document.querySelector('#root-modal-burger') as HTMLElement;
 
-import { MenuModalProps } from '../../types/types';
-
 import mom from './BurgerModal.module.scss'
 
-const ModalMenu: FC<PropsWithChildren<MenuModalProps>> = ({ children }) => {
+const ModalMenu: FC<PropsWithChildren> = ({ children }) => {
 
     useEffect(() => {
 

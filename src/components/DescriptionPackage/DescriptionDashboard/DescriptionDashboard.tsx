@@ -487,6 +487,7 @@ const DescriptionDashboard = () => {
 
         </div>
         </div>
+        
         <ul className={pd.list} style={addLoadingSelector ? {justifyContent: 'center'} : {justifyContent: 'unset'}}>
 
           {!addLoadingSelector ? descriptionSelector.map(element => {
@@ -500,7 +501,7 @@ const DescriptionDashboard = () => {
 
         {alertModalToggle && <PillsModalAlert>
 
-          <div className={pd.messageContainer}> <Horn width={'35px'} height={'35px'}/> <p>{putMessageSelector ? putMessageSelector: deleteMessageSelector ? deleteMessageSelector : addMessageSelector ? addMessageSelector : ''}</p></div>
+          <div className={pd.alertMessageContainer}> <Horn width={'35px'} height={'35px'}/> <p>{putMessageSelector ? putMessageSelector: deleteMessageSelector ? deleteMessageSelector : addMessageSelector ? addMessageSelector : ''}</p></div>
               
         </ PillsModalAlert>}
         

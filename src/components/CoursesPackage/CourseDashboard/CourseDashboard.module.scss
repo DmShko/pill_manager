@@ -180,10 +180,14 @@
       width: 100%;
       height: 100%;
 
+      overflow-y: scroll;
+
       .infoZone {
 
          width: 100%;
-         height: 20%;
+         height: 50%;
+
+         margin-bottom: 20px;
 
          .today {
 
@@ -232,37 +236,44 @@
             margin: 0; 
 
          }
+
          .infoSymbols {
 
             display: flex; 
-            flex-direction: row;
+            flex-direction: column;
             justify-content: space-around;
-            align-items: flex-start;
+            align-items: center;
+
+            p {
+               margin-bottom: 10px;
+            }
 
             .infoBall {
 
                display: flex; 
-               flex-direction: column;
+               flex-direction: row;
                justify-content: space-between;
                align-items: center;
    
                gap: 5px;
 
-               width: 30%;
+               width: 100%;
 
                .ballContainer {
                   
                   display: flex; 
-                  flex-direction: row;
-                  justify-content: stretch;
+                  flex-direction: column;
+                  justify-content: flex-start;
                   align-items: center;
 
                   gap: 10px;
 
                   width: 100%;
+                  height: 100px;
 
                   .text {
 
+                     text-align: center;
                      margin: 0;
 
                   }
@@ -329,7 +340,7 @@
       .workZone {
 
          display: flex; 
-         flex-direction: row;
+         flex-direction: column;
          justify-content: space-around;
          align-items: center;
 
@@ -387,7 +398,7 @@
          
                padding: 0;
          
-               width: 70%;
+               width: 100%;
 
                margin: 0 auto;
 
@@ -580,7 +591,131 @@
 
       overflow-y: scroll;
    }
-  
+
+   .modalContainer {
+
+      overflow-y: unset;
+
+      .workZone {
+
+         flex-direction: row;
+
+         .dashContainer {
+
+          
+
+            .modalList {
+
+             
+               width: 70%;
+            }
+         }
+      }
+
+      .infoZone {
+
+         height: 20%;
+   
+         margin-bottom: unset;
+
+         .infoSymbols {
+
+            display: flex; 
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: flex-start;
+
+            p {
+               margin-bottom: unset;
+            }
+
+            .infoBall {
+
+               display: flex; 
+               flex-direction: column;
+               justify-content: space-between;
+               align-items: center;
+   
+               gap: 5px;
+
+               width: 30%;
+
+               .ballContainer {
+                  
+                  display: flex; 
+                  flex-direction: row;
+                  justify-content: stretch;
+                  align-items: center;
+
+                  gap: 10px;
+
+                  width: 100%;
+                  height: unset;
+
+                  .text {
+
+                     margin: 0;
+
+                  }
+               }
+
+               .infoRed {
+                  
+                  width: 15px;
+                  height: 15px;
+   
+                  background-color: tomato;
+   
+                  border: 2px solid #646cff;
+   
+                  border-radius: 50%;
+   
+               }
+   
+               .infoRedOrange {
+                  
+                  width: 15px;
+                  height: 15px;
+   
+                  background: linear-gradient(-45deg, tomato 50%, #FDB12D 50%);
+   
+                  border: 2px solid #646cff;
+   
+                  border-radius: 50%;
+   
+               }
+   
+               .infoOrange {
+                  
+                  width: 15px;
+                  height: 15px;
+   
+                  background-color: #FDB12D;
+   
+                  border: 2px solid #646cff;
+   
+                  border-radius: 50%;
+   
+               }
+   
+               .infoGreen {
+                  
+                  width: 15px;
+                  height: 15px;
+   
+                  background-color: yellowgreen;
+   
+                  border: 2px solid #646cff;
+   
+                  border-radius: 50%;
+   
+               }
+   
+            }
+           
+         }
+      }
+   }
 }
 
 //-------------------min-width: 1440px----------------------------
@@ -611,6 +746,131 @@
       height: 80%;
 
       overflow-y: scroll;
+   }
+
+   .modalContainer {
+
+      overflow-y: unset;
+
+      .workZone {
+
+         flex-direction: row;
+
+         .dashContainer {
+
+          
+
+            .modalList {
+
+             
+               width: 70%;
+            }
+         }
+      }
+
+      .infoZone {
+
+         height: 20%;
+   
+         margin-bottom: unset;
+         
+         .infoSymbols {
+
+            display: flex; 
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: flex-start;
+
+            p {
+               margin-bottom: unset;
+            }
+
+            .infoBall {
+
+               display: flex; 
+               flex-direction: column;
+               justify-content: space-between;
+               align-items: center;
+   
+               gap: 5px;
+
+               width: 30%;
+
+               .ballContainer {
+                  
+                  display: flex; 
+                  flex-direction: row;
+                  justify-content: stretch;
+                  align-items: center;
+
+                  gap: 10px;
+
+                  width: 100%;
+                  height: unset;
+
+                  .text {
+
+                     margin: 0;
+
+                  }
+               }
+
+               .infoRed {
+                  
+                  width: 15px;
+                  height: 15px;
+   
+                  background-color: tomato;
+   
+                  border: 2px solid #646cff;
+   
+                  border-radius: 50%;
+   
+               }
+   
+               .infoRedOrange {
+                  
+                  width: 15px;
+                  height: 15px;
+   
+                  background: linear-gradient(-45deg, tomato 50%, #FDB12D 50%);
+   
+                  border: 2px solid #646cff;
+   
+                  border-radius: 50%;
+   
+               }
+   
+               .infoOrange {
+                  
+                  width: 15px;
+                  height: 15px;
+   
+                  background-color: #FDB12D;
+   
+                  border: 2px solid #646cff;
+   
+                  border-radius: 50%;
+   
+               }
+   
+               .infoGreen {
+                  
+                  width: 15px;
+                  height: 15px;
+   
+                  background-color: yellowgreen;
+   
+                  border: 2px solid #646cff;
+   
+                  border-radius: 50%;
+   
+               }
+   
+            }
+           
+         }
+      }
    }
 }
 //******************************end************************************
