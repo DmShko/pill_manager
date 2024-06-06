@@ -152,6 +152,8 @@
                         width: 100%;
 
                         border-color: gray;
+
+                        color: gray;
                       
                     }
 
@@ -192,6 +194,10 @@
                         }
 
                     }
+
+                    ::placeholder {
+                        color: gray;
+                     }
 
                     .descriptionDetails {
 
@@ -511,7 +517,7 @@
 @media screen and (min-width: 500px) and (max-width: 768px) {
 
     .container {
-
+      
         .dashboard {
 
             .form {
@@ -532,7 +538,7 @@
 
     
  }
- 
+
  //-------------------(min-width: 768px) and (max-width: 1439px)-----------------
  @media screen and (min-width: 768px) and (max-width: 1439px) {
     .container {
@@ -544,12 +550,13 @@
             flex-direction: row;
 
             .form {
-
+                
                 width: unset;
 
                 .inputs {
 
                     flex-direction: row;
+                    justify-content: space-between;
                     width: unset;
 
                     .inputContainer {

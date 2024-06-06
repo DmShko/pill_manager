@@ -1,0 +1,67 @@
+.container {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    height: 30px;
+    width: 65px;
+
+    border-radius: 50px;
+
+    background-color: lightgray;
+
+    .day {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 18px;
+        width: 18px;
+        
+        border-radius: 50px;
+
+        box-shadow: 1px 0 3px 3px #b2b2b3, -1px -1px 1px 3px #f4f4f5;
+
+        transition: box-shadow 500ms;
+
+        background-color: #e2e2e2;
+
+        cursor: pointer;
+    }
+
+    .day:active {
+
+        box-shadow: inset 1px 0 3px 3px #b2b2b3, inset -1px -1px 1px 3px #f4f4f5;
+
+    }
+
+    .night {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 18px;
+        width: 18px;
+        
+        border-radius: 50px;
+
+        box-shadow: 1px 0 3px 3px #b2b2b3, -1px -1px 1px 3px #f4f4f5;
+
+        transition: box-shadow 500ms;
+
+        background-color: #e2e2e2;
+
+        cursor: pointer;
+    }
+
+    .night:active {
+        
+        box-shadow: inset 1px 0 3px 3px #b2b2b3, inset -1px -1px 1px 3px #f4f4f5;
+
+    }
+
+}

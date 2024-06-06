@@ -24,8 +24,12 @@ export const logoutAPI = createAsyncThunk<any, LogoutArgs,{rejectValue: string}>
       // ...
     })
     .catch((error) => {
-
-      return rejectWithValue(error.response.data.message)
+      if(error.response !== undefined) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      };
+      
     });
 });
 

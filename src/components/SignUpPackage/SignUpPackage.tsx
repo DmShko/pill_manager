@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik"; 
 
 import * as Yup from 'yup';
@@ -33,12 +33,16 @@ const SignUp = () => {
 
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
+
   const signInMessageSelector = useAppSelector(state => state.signIn.message);
   const signUpMessageSelector = useAppSelector(state => state.signUp.message);
+  const isSignUpSelector = useAppSelector(state => state.signUp.isSignUp);
   const logOutMessageSelector = useAppSelector(state => state.logout.message);
   const reVerifyMessageSelector = useAppSelector(state => state.reVerify.message);
   const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
   const isLoadingSelector = useAppSelector(state => state.signUp.isLoading);
+  const lightModeSelector = useAppSelector(state => state.pm.lightMode);
 
   // open/close alert modal window
   const [alertModalToggle, setAlertModalToggle] = useState(false);
@@ -118,7 +122,7 @@ const SignUp = () => {
         }));
       };
 
-      resetForm();
+      if(isSignUpSelector) resetForm();
       
     },
   });
@@ -150,62 +154,71 @@ const SignUp = () => {
         <div className={su.messageContainer}> <Horn width={'35px'} height={'35px'}/> <p>{signInMessageSelector ? signInMessageSelector: signUpMessageSelector? signUpMessageSelector: logOutMessageSelector ? logOutMessageSelector : reVerifyMessage? reVerifyMessage : reVerifyMessageSelector ? reVerifyMessageSelector : ''}</p></div>
                 
       </ PillsModalAlert>}
-      
-      <form onSubmit={formik.handleSubmit}>
+      <div className={su.formWrapper} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'white'}}>
+       
+        <form onSubmit={formik.handleSubmit} style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}>
 
-      <div className={su.messageContainer} style={formik.errors.email || formik.errors.password || formik.errors.repeatPassword? {width: '230px', } : {width: '0'}}>
+        <div className={su.messageContainer} style={formik.errors.email || formik.errors.password || formik.errors.repeatPassword? {width: '230px', } : {width: '0'}}>
 
-        <div className={su.curtain}>
+          <div className={su.curtain} style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}>
 
-          <p>{formik.errors.email ? formik.errors.email : formik.errors.password ? formik.errors.password : formik.errors.repeatPassword ? formik.errors.repeatPassword : ''}</p>
+            <p>{formik.errors.email ? formik.errors.email : formik.errors.password ? formik.errors.password : formik.errors.repeatPassword ? formik.errors.repeatPassword : signUpMessageSelector}</p>
+
+          </div>
 
         </div>
 
-      </div>
+          <h1 className={su.formTitle}>SignUp</h1>
 
-        <h1 className={su.formTitle}>SignUp</h1>
+          <div className={su.itemLabel}> <User width={'20px'} height={'20px'} /> <label htmlFor="name">Name</label> </div>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.name}
+            style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
+          />
+                  
+          <div className={su.itemLabel}> <Mail width={'20px'} height={'20px'} /> <label htmlFor="email">Email</label> </div>
+          <input
+            id="email"
+            name="email"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
+          />
 
-        <div className={su.itemLabel}> <User width={'20px'} height={'20px'} /> <label htmlFor="name">Name</label> </div>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.name}
-        />
-                
-        <div className={su.itemLabel}> <Mail width={'20px'} height={'20px'} /> <label htmlFor="email">Email</label> </div>
-        <input
-          id="email"
-          name="email"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-        />
+          <div className={su.itemLabel}> <Lock width={'20px'} height={'20px'} /> <label htmlFor="password">Password</label> </div>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
+          />
 
-        <div className={su.itemLabel}> <Lock width={'20px'} height={'20px'} /> <label htmlFor="password">Password</label> </div>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          onChange={formik.handleChange}
-          value={formik.values.password}
-        />
+          <div className={su.itemLabel}> <Compare width={'21px'} height={'21px'} /> <label htmlFor="repeatPassword">Repeat Password</label> </div>
+          <input
+            id="repeatPassword"
+            name="repeatPassword"
+            type="password"
+            onChange={formik.handleChange}
+            value={formik.values.repeatPassword}
+            style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
+          />
+      
+          <button type="submit" className={su.courseButton} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}>{!isLoadingSelector ? 'Submit' : <Loading width={'30px'} height={'30px'}/>}</button>
 
-        <div className={su.itemLabel}> <Compare width={'21px'} height={'21px'} /> <label htmlFor="repeatPassword">Repeat Password</label> </div>
-        <input
-          id="repeatPassword"
-          name="repeatPassword"
-          type="password"
-          onChange={formik.handleChange}
-          value={formik.values.repeatPassword}
-        />
-    
-        <button type="submit" className={su.courseButton}>{!isLoadingSelector ? 'Submit' : <Loading width={'30px'} height={'30px'}/>}</button>
+          <a className={su.verify} onClick={reverify}>{'Repeat verification letter'}</a>
 
-        <a className={su.verify} onClick={reverify}>{'Repeat verification letter'}</a>
+        </form>
 
-      </form>
+        <p className={su.switch} onClick={() => navigate('/signin')}>{'to SignIn'}</p>
+
+      </div>  
 
     </div>
   )

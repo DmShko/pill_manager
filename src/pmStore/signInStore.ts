@@ -52,9 +52,15 @@ const singInSlice = createSlice({
       });
             
       builder.addCase(singInAPI.rejected, (state, action) => {
-                    
+          
         state.isLoading = false;
-        state.message = action.payload as string;
+
+        if(action.payload) {
+          state.message = action.payload as string;
+        } else {
+          state.message = 'The server is not responding. Check your internet connection.';
+        };
+       
         
       });
     },

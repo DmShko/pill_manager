@@ -63,6 +63,11 @@ enum CourseStatus {
     'not active',
 };
 
+export enum LightModeType {
+  light = 'light', 
+  dark = 'dark',
+};
+
 // type for course action argument
 export interface ActionCourses {
   mode: string
@@ -79,6 +84,11 @@ export interface EditActionCourse {
 // type for isEdit action argument
 export interface IsEditAction {
   data: boolean 
+};
+
+// type for isEdit action argument
+export interface lightModeAction {
+  data: LightModeType 
 };
 
 // type for startDate action argument
@@ -129,6 +139,7 @@ export interface Course {
     pressEdit: boolean
     startDate: string
     error: boolean
+    lightMode: LightModeType
   };
 
   export interface CourseItemProps {

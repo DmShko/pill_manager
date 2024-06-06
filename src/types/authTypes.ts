@@ -2,6 +2,7 @@
 export interface SingUpInitialState {
 
     isLoading: boolean
+    isSignUp: boolean
     message: string
     email: string
     userName: string

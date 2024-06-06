@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";  
+import { useState, useEffect, } from "react";  
 
 import { useNavigate  } from 'react-router-dom';  
 
@@ -38,6 +38,7 @@ const SignIp = () => {
   const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
   const isLogInSelector = useAppSelector(state => state.signIn.isLogIn);
   const isLoadingSelector = useAppSelector(state => state.signIn.isLoading);
+  const lightModeSelector = useAppSelector(state => state.pm.lightMode);
 
   // open/close alert modal window
   const [alertModalToggle, setAlertModalToggle] = useState(false);
@@ -117,7 +118,7 @@ const SignIp = () => {
         password: values.password
       }));
 
-      resetForm();
+      if(isLogInSelector) resetForm();
 
     },
   });
@@ -132,42 +133,50 @@ const SignIp = () => {
               
       </ PillsModalAlert>}
 
-      <form onSubmit={formik.handleSubmit}>
+      <div className={si.formWrapper} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'white'}}>
 
-        <div className={si.messageContainer} style={formik.errors.email || formik.errors.password ? {width: '230px', } : {width: '0'}}>
+        <form onSubmit={formik.handleSubmit} style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}>
 
-          <div className={si.curtain}>
+          <div className={si.messageContainer} style={formik.errors.email || formik.errors.password ? {width: '230px', } : {width: '0'}}>
 
-            <p>{formik.errors.email ? formik.errors.email : formik.errors.password ? formik.errors.password : ''}</p>
+            <div className={si.curtain} style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}>
+
+              <p>{formik.errors.email ? formik.errors.email : formik.errors.password ? formik.errors.password : signInMessageSelector}</p>
+
+            </div>
 
           </div>
 
-        </div>
+          <h1 className={si.formTitle}>SignIn</h1>
+                  
+          <div className={si.itemLabel}> <Lock width={'20px'} height={'20px'} /> <label htmlFor="email">Email</label></div>
 
-        <h1 className={si.formTitle}>SignIn</h1>
-                
-        <div className={si.itemLabel}> <Lock width={'20px'} height={'20px'} /> <label htmlFor="email">Email</label></div>
+          <input
+            id="email"
+            name="email"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
+          />
 
-        <input
-          id="email"
-          name="email"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-        />
+          <div className={si.itemLabel}> <Mail width={'20px'} height={'20px'} /> <label htmlFor="password">Password</label> </div>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
+          />
 
-        <div className={si.itemLabel}> <Mail width={'20px'} height={'20px'} /> <label htmlFor="password">Password</label> </div>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          onChange={formik.handleChange}
-          value={formik.values.password}
-        />
+          <button type="submit" className={si.courseButton} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}>{!isLoadingSelector ? 'Submit' : <Loading width={'30px'} height={'30px'} />}</button>
 
-        <button type="submit" className={si.courseButton}>{!isLoadingSelector ? 'Submit' : <Loading width={'30px'} height={'30px'}/>}</button>
+        </form>
 
-      </form>
+        <p className={si.switch} onClick={() => navigate('/signup')}>{'to SignUp'}</p>
+
+      </div>
 
     </div>
   )

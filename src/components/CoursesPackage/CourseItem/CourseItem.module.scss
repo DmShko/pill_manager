@@ -180,11 +180,107 @@
       }
    }
 
+   .pillTextDuration {
+      
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      width: 40px;
+
+      height: 42px;
+
+      margin: 0;
+
+      transform: skew(160deg); 
+
+      border-left: 2px solid gray;
+
+      background-color: lightgray;
+
+      .itemIcon {
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         justify-content: center;
+
+         height: 10px;
+
+         gap: 3px; 
+   
+         .pillTitle {
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+      
+            height: 10px;
+
+            margin: 0;
+      
+            font-size: 10px;
+
+         }
+      }
+
+      
+      .durationText {
+               
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         justify-content: center;
+
+         .pillDurationTitle {
+         
+            font-weight: 600;
+            font-size: 16px;
+
+            margin: 0;
+
+            width: 100%;
+
+            color: blue;
+
+         }
+
+         .pillDurationTitleFrozy {
+         
+            font-weight: 600;
+            font-size: 16px;
+
+            margin: 0;
+
+            width: 100%;
+
+            color: white;
+
+         }
+      }
+
+      .pillTitleValue {
+         
+         font-weight: 600;
+         font-size: 14px;
+
+         margin: 0;
+
+         width: 100%;
+
+         color: blue;
+
+      }
+   }
+
    .pillName {
 
       margin: 0;
       font-style: italic;
       background-color: white;
+
+      overflow-x: scroll;
    }
 
    .title {
@@ -554,6 +650,58 @@
       }
    }
 
+
+   .pillTextDuration {
+      
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      width: 50px;
+
+      height: 42px;
+
+      margin: 0;
+
+      transform: skew(160deg); 
+
+      border-left: 2px solid gray;
+
+      background-color: lightgray;
+
+      .itemIcon {
+      
+         .pillTitle {
+
+            font-size: 10px;
+
+         }
+      }
+
+      
+      .durationText {
+
+         .pillDurationTitle {
+         
+            font-size: 18px;
+
+         }
+
+         .pillDurationTitleFrozy {
+        
+            font-size: 18px;
+
+         }
+      }
+
+      .pillTitleValue {
+  
+         font-size: 18px;
+
+      }
+   }
+
    .durationText {
                
       display: flex;
@@ -732,6 +880,58 @@
 
       }
    }
+
+   .pillTextDuration {
+      
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      width: 50px;
+
+      height: 42px;
+
+      margin: 0;
+
+      transform: skew(160deg); 
+
+      border-left: 2px solid gray;
+
+      background-color: lightgray;
+
+      .itemIcon {
+      
+         .pillTitle {
+
+            font-size: 10px;
+
+         }
+      }
+
+      
+      .durationText {
+
+         .pillDurationTitle {
+         
+            font-size: 18px;
+
+         }
+
+         .pillDurationTitleFrozy {
+        
+            font-size: 18px;
+
+         }
+      }
+
+      .pillTitleValue {
+  
+         font-size: 18px;
+
+      }
+   }
+
 
    .durationText {
                

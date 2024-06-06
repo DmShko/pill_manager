@@ -19,6 +19,8 @@ import Burger from '../SvgComponents/Courses/Burger';
 // own dispatch hook
 import { useAppDispatch, useAppSelector } from "../../app.hooks";
 
+import DayNight from "../DayNight/DayNight";
+
 const SharedLayout: FC = () => {
 
   const dispatch = useAppDispatch();
@@ -28,6 +30,7 @@ const SharedLayout: FC = () => {
 
   const tokenSelector = useAppSelector(state => state.signIn.token);
   const isLogoutSelector = useAppSelector(state => state.logout.isLogout);
+  const lightModeSelector = useAppSelector(state => state.pm.lightMode);
 
   const [ menuToggle, setMenuToggle ] = useState(false);
 
@@ -71,7 +74,7 @@ const SharedLayout: FC = () => {
 
   return (
     <>
-      <header>
+      <header style={lightModeSelector === 'dark' ? {borderBottom: '2px solid lightgray'} : {borderBottom: '2px solid rgba(16, 16, 24, 0.2)'}}>
 
         <div className={sh.headerContainer}>
 
@@ -91,19 +94,24 @@ const SharedLayout: FC = () => {
                     </li>
                 </ul>}
 
-                {!tokenSelector && <ul className={sh.authList}>
-                    <li className={sh.authLink} style={location.pathname === '/signin' ? {borderBottom: '2px solid #FDB12D',} : {borderBottom: '2px solid transparent'}}>
-                    <NavLink to="/signin">SignIn</NavLink>
-                    </li>
+                <div className={sh.settingsContainer}>
 
-                    <li className={sh.authLink} style={location.pathname === '/signup' ? {borderBottom: '2px solid #FDB12D'} : {borderBottom: '2px solid transparent'}}>
-                    <NavLink to="/signup">SignUp</NavLink>
-                    </li>
-                </ul>}
+                  <DayNight />
+
+                  {!tokenSelector && <ul className={sh.authList}>
+                      <li className={sh.authLink} style={location.pathname === '/signin' ? {borderBottom: '2px solid #FDB12D',} : {borderBottom: '2px solid transparent'}}>
+                      <NavLink to="/signin">SignIn</NavLink>
+                      </li>
+
+                      <li className={sh.authLink} style={location.pathname === '/signup' ? {borderBottom: '2px solid #FDB12D'} : {borderBottom: '2px solid transparent'}}>
+                      <NavLink to="/signup">SignUp</NavLink>
+                      </li>
+                  </ul>}
+                </div>
 
               {tokenSelector && <button className={sh.burgerButton} type="button" onClick={menuOpenClose}><Burger width={'25px'} height={'25px'}/></button>}
-
-              {tokenSelector && <button className={sh.logoutButton} type="button" onClick={logout}><Logout width={'25px'} height={'25px'} /></button>}
+              
+              {tokenSelector && <button className={sh.logoutButton} type="button" onClick={logout} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}><Logout width={'25px'} height={'25px'} /></button>}
 
             </nav>
         </div>

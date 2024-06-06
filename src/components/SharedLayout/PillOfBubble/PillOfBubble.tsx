@@ -3,12 +3,17 @@ import { NavLink } from "react-router-dom";
 import { useTransition, animated } from '@react-spring/web';
 import Booble  from './Booble';
 
+// own dispatch hook
+import { useAppSelector } from "../../../app.hooks";
+
 // types
 import { parameterItem } from '../../../types/animaTypes';
 
 import bu from './PillOfBubble.module.scss'
 
 const PillOfBubble: FC = () => {
+
+  const lightModeSelector = useAppSelector(state => state.pm.lightMode);
 
   const [parameters, setParameters] = useState<parameterItem[]>([]);
   const [logoStartY, setLogoStartY] = useState(0);
@@ -127,9 +132,13 @@ const PillOfBubble: FC = () => {
   };
 
   return (
-  
-      <div className={bu.container} ref={logoRef} onMouseOver={onAnimaOut} onMouseOut={onAnimaOver}>
-        <NavLink to="/" style={{color: 'rgb(201, 189, 20)', borderBottom:'2px solid white', 
+      <div className={bu.container} ref={logoRef} onMouseOver={onAnimaOut} onMouseOut={onAnimaOver}
+      style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', boxShadow: '1px 1px 4px 1px #A1A1A1, inset 1px 1px 2px 1px #c9b8b8, inset 1px 1px 3px 4px #4b51b9'}: {backgroundColor: 'rgb(253, 242, 90)', 
+      boxShadow: '1px 1px 4px 1px #A1A1A1, inset 1px 1px 2px 1px #c9b8b8, inset 1px 1px 3px 4px rgba(253, 177, 45, 0.7)'}}>
+        
+        <NavLink to="/" style={lightModeSelector === 'dark' ? {color: 'rgb(253, 177, 45)', borderBottom:'2px solid lightgray', 
+          borderRadius: '8px', borderTop:'2px solid lightgray', backgroundColor: 'gray'} :
+          {color: 'rgb(201, 189, 20)', borderBottom:'2px solid white', 
           borderRadius: '8px', borderTop:'2px solid white', backgroundColor: 'white'}}>Medicine</NavLink>
           { animaStart && transitions((style, item) => (
               <animated.div style={style} className={bu.anima}>

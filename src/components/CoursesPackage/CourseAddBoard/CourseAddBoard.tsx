@@ -188,7 +188,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
           const compare = comparePills<Pill[], Pill[]>(oldPills , tempPillsSelector);
 
           if(compare) {
-           
+          
             // rewrite not equal 'Pills'
             dispatch(changeCourses({mode: 'changeCourse', data: {_id: editCourseSelector._id, prop: tempPillsSelector,}, key: 'pills',})); 
 

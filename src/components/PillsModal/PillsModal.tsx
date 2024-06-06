@@ -3,11 +3,16 @@ import { FC, useEffect, PropsWithChildren } from "react";
 
 const modalRoot = document.querySelector('#root-modal') as HTMLElement;
 
+// own dispatch hook
+import { useAppSelector } from "../../app.hooks";
+
 import pm from './PillsModal.module.scss'
 
 import { PillsModalProps } from '../../types/types';
 
 const PillsModal: FC<PropsWithChildren<PillsModalProps>> = ({ children, openClose, selectedDayDrive, pillNameReset }) => {
+
+  const lightModeSelector = useAppSelector(state => state.pm.lightMode);
 
   useEffect(() => {
 
@@ -41,7 +46,7 @@ const PillsModal: FC<PropsWithChildren<PillsModalProps>> = ({ children, openClos
 return createPortal(
     <div className={pm.backdrop} onClick={clickBackdrob} style={{top: `${window.scrollY}px`}}>
 
-        <div className={pm.container}>
+        <div className={pm.container} style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)', border: '2px solid lightgray'} : {backgroundColor: 'white'}}>
             { children }
         </div>
         

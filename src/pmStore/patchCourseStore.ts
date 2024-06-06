@@ -26,7 +26,7 @@ const patchCourseSlice = createSlice({
         state.isLoading = true; state.error = '';
       });
             
-      builder.addCase(patchCoursesAPI.fulfilled, (state, action) => {
+      builder.addCase(patchCoursesAPI.fulfilled, (state) => {
 
         state.isLoading = false;
 

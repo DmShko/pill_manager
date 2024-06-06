@@ -28,8 +28,10 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
   const dispatch = useAppDispatch();
 
   const tokenSelector = useAppSelector(state => state.signIn.token);
+  const isLogInSelector = useAppSelector(state => state.signIn.isLogIn);
   const coursesSelector = useAppSelector(state => state.pm.courses);
   const statisticsSelector = useAppSelector(state => state.getStatistic.statistics);
+  const lightModeSelector = useAppSelector(state => state.pm.lightMode);
 
   useEffect(() => {
 
@@ -56,14 +58,14 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
 
       // done
       if(getAllDone() === getAllDuration()) {
-       
+        
         // rewrite in DB
         dispatch(patchCourseAPI({token: tokenSelector, id: courses._id, prop: 'done', key: 'status',}));
 
       } 
 
-      if(count !== 0 && getAllDone() !== getAllDuration()) {
-      
+      if(count !== 0 && getAllDone() !== getAllDuration() && isLogInSelector) {
+ 
         // rewrite in DB
         dispatch(patchCourseAPI({token: tokenSelector, id: courses._id, prop: 'not done', key: 'status',}));
       };
@@ -147,16 +149,16 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
    
       <div className={ci.courseItem}>
 
-          {courses.courseName !== '' ? <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span><span className={ci.nameText} style={courses.selected ? {backgroundColor:'white'} : {backgroundColor:'pink',}}>{courses.courseName?.toLocaleUpperCase()} </span><span className={ci.visit}>Date of visit: {courses.visitDate}</span></p>:
+          {courses.courseName !== '' ? <p className={ci.nameItem}><span className={ci.nameItemTitle} style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'blue'}}>Course: </span><span className={ci.nameText} style={courses.selected ? {backgroundColor:'white'} : {backgroundColor:'pink',}}>{courses.courseName?.toLocaleUpperCase()} </span><span className={ci.visit} style={lightModeSelector === 'dark' ? {color:'white'} : {color:'#4b51b9'}}>Date of visit: {courses.visitDate}</span></p>:
            <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span><span className={ci.nameText}
               style={courses.selected ? {backgroundColor:'white'} : {backgroundColor:'rgb(255, 179, 0, 0.8)'}}>{'unnamed'}</span><span className={ci.visit}>Date of visit: {''}</span></p>}
 
-          <div className={ci.courseSubcontainer}>
-            <div className={ci.registryInfo}>
-              <p className={ci.infoItem}><span className={ci.title}>Clinic</span><span className={ci.titleCalue}>{courses.clinicName}</span></p>
-              <p className={ci.infoItem}><span className={ci.title}>Clinic Cont.</span><span className={ci.titleCalue}>{courses.clinicContacts}</span></p>
-              <p className={ci.infoItem}><span className={ci.title}>Doctor</span><span className={ci.titleCalue}>{courses.doctorName}</span></p>
-              <p className={ci.infoItem}><span className={ci.title}>Doctor Cont.</span><span className={ci.titleCalue}>{courses.docContacts}</span></p>
+          <div className={ci.courseSubcontainer} style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'white'}}>
+            <div className={ci.registryInfo}  style={lightModeSelector === 'dark' ? {border: 'none'} : {border: '2px solid white'}}>
+              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>Clinic</span><span className={ci.titleCalue}>{courses.clinicName}</span></p>
+              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>Clinic Cont.</span><span className={ci.titleCalue}>{courses.clinicContacts}</span></p>
+              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>Doctor</span><span className={ci.titleCalue}>{courses.doctorName}</span></p>
+              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>Doctor Cont.</span><span className={ci.titleCalue}>{courses.docContacts}</span></p>
             </div>
 
             <div className={ci.status}>
@@ -172,16 +174,16 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
 
             </div>
 
-            <ul className={ci.coursesPills}>
+            <ul className={ci.coursesPills} style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'white'}}>
               {courses.pills.length !== 0 ? courses.pills.map(element => 
                 {
-                  return <li key={nanoid()} className={ci.pillItem} id={element.id}>
+                  return <li key={nanoid()} className={ci.pillItem} id={element.id} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'white'}}>
                     <div ><PillImage width={'24px'} height={'24px'}/></div>
-                    <p className={ci.pillName}>{element.pillName}</p>
+                    <p className={ci.pillName} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}>{element.pillName}</p>
                     <div className={ci.pillTextContainer}>
                       <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>per/day</p><Part width={'12px'} height={'12px'}/></div><p className={ci.pillTitleValue}>{element.perDay}</p></div>
                       <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>quant.X</p><QuantityPill width={'15px'} height={'15px'}/></div><p className={ci.pillTitleValue}>{element.quantity}</p></div>
-                      <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>durat.</p><Time width={'15px'} height={'15px'}/></div><div className={ci.durationText}><p className={ci.pillDurationTitleFrozy}>{getFrozyDuration(element.id)}{'/'}</p><p className={ci.pillDurationTitle}>{element.duration}</p></div></div>
+                      <div className={ci.pillTextDuration}><div className={ci.itemIcon}><p className={ci.pillTitle}>durat.</p><Time width={'15px'} height={'15px'}/></div><div className={ci.durationText}><p className={ci.pillDurationTitleFrozy}>{getFrozyDuration(element.id)}{'/'}</p><p className={ci.pillDurationTitle}>{element.duration}</p></div></div>
                     </div>
                   </li>  
                 }

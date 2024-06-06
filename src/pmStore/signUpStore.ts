@@ -9,6 +9,7 @@ import { ActionSignUp } from '../types/authTypes';
 const singUpSliceInitialState: SingUpInitialState = {
 
   isLoading: false,
+  isSignUp: false,
   message: '',
   email:'',
   userName:'',
@@ -39,12 +40,13 @@ const singUpSlice = createSlice({
   extraReducers:  
     builder => {
       builder.addCase(singUpAPI.pending, (state) => {
-        state.isLoading = true; state.message = '';
+        state.isLoading = true; state.message = ''; state.isSignUp = false;
       });
             
       builder.addCase(singUpAPI.fulfilled, (state, action) => {
 
         state.isLoading = false;
+        state.isSignUp = true;
         state.email = action.payload.data.user.email;
         state.message = 'Account created successfully';
         // some actions with 'action'...
@@ -52,9 +54,14 @@ const singUpSlice = createSlice({
             
       builder.addCase(singUpAPI.rejected, (state, action) => {
                     
-        state.isLoading = false;
-        state.message = action.payload as string;
-        
+        state.isLoading = false; state.isSignUp = false;
+       
+        if(action.payload) {
+          state.message = action.payload as string;
+        } else {
+          state.message = 'The server is not responding. Check your internet connection.';
+        };
+
       });
     },
   }
@@ -63,4 +70,3 @@ export const {
   changeSingUp
 } = singUpSlice.actions;
 export default singUpSlice.reducer;
-

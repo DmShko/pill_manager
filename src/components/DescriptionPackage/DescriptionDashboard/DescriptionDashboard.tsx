@@ -55,6 +55,8 @@ const DescriptionDashboard = () => {
   const deleteMessageSelector = useAppSelector(state => state.deleteDescription.message);
   const addMessageSelector = useAppSelector(state => state.addDescription.message);
   const addLoadingSelector = useAppSelector(state => state.addDescription.isLoading);
+  const logOutMessageSelector = useAppSelector(state => state.logout.message);
+  const lightModeSelector = useAppSelector(state => state.pm.lightMode);
 
   const [ fresh, setFresh ] = useState(false);
   const [ allSelect, setAllSelect ] = useState(false);
@@ -68,6 +70,17 @@ const DescriptionDashboard = () => {
     dispatch(allDescriptionAPI({token: tokenSelector}));
 
   },[]);
+
+  useEffect(() => {
+  
+    if(isLogOutSelector || logOutMessageSelector === 'Unauthorized' || logOutMessageSelector === 'Network Error') {
+
+      dispatch(changeSingIn({operation: 'clearToken', data: ''}));
+      navigate('/signin');
+
+    };
+    
+  },[isLogOutSelector, logOutMessageSelector]);
 
   useEffect(() => {
   
@@ -347,16 +360,16 @@ const DescriptionDashboard = () => {
         <form className={pd.form} onSubmit={formik.handleSubmit}>
 
           <div className={pd.drive}>
-              <button className={pd.button} type='submit' disabled={detectSelected() !== 0 ? true : false}><Add width={'30px'} height={'30px'} stroke={detectSelected() !== 0 ? 'lightgray' : '#646cff'}/></button>
+              <button className={pd.button} type='submit' id='submit' disabled={detectSelected() !== 0 ? true : false}><Add width={'30px'} height={'30px'} stroke={detectSelected() !== 0 ? 'lightgray' : '#646cff'}/></button>
               <button className={pd.button} type='button' id='change' onClick={descriptionActions} disabled={detectSelected() === 1 ? false : true}><ChangeImg width={'25px'} height={'25px'} stroke={detectSelected() !== 1 ? 'lightgray' : '#646cff'}/></button>
               <button className={pd.button} type='button' id='delete' onClick={descriptionActions} disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() === 0 ? 'lightgray' : '#646cff'}/></button>
               <button className={pd.button} type='button' id='reload' onClick={descriptionActions}><Reload width={'25px'} height={'25px'}/></button>
-              <button className={pd.button} type='button' id='all' onClick={descriptionActions} disabled={descriptionSelector.length !== 0 ? false : true} style={descriptionSelector.length === 0 ? {stroke: 'lightgray'} : {stroke: '#646cff'}}>All</button>
+              <button className={pd.button} type='button' id='all' onClick={descriptionActions} disabled={descriptionSelector.length !== 0 ? false : true} style={descriptionSelector.length === 0 ? {stroke: 'lightgray', color: 'lightgray'} : {stroke: '#646cff', color: '#646cff'}}>All</button>
           </div>
 
           <div className={pd.messageContainer} style={formik.errors.descriptionPillName || formik.errors.descriptionPer || formik.errors.descriptionQuan || formik.errors.descriptionDur ? {width: '230px', } : {width: '0'}}>
 
-            <div className={pd.curtain}>
+            <div className={pd.curtain} style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)', color:'lightgray'} : {backgroundColor: 'white'}}>
 
               <p>{formik.errors.descriptionPillName ? formik.errors.descriptionPillName : formik.errors.descriptionPer ? formik.errors.descriptionPer
                : formik.errors.descriptionQuan ? formik.errors.descriptionQuan : formik.errors.descriptionDur ? formik.errors.descriptionDur : ''}</p>
@@ -370,7 +383,7 @@ const DescriptionDashboard = () => {
 
               
                 <div className={pd.descriptionSearch}>
-                  <label htmlFor="descriptionSearch">Search</label>
+                  <label htmlFor="descriptionSearch" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>Search</label>
                   <input
                   id="descriptionSearch"
                   name="descriptionSearch"
@@ -379,27 +392,28 @@ const DescriptionDashboard = () => {
                   placeholder='Descriptions'
                   onChange={formik.handleChange}
                   value={formik.values.descriptionSearch}
+                  style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}
                   />
                 </div>
              
                 <Select
                   options={takeContentCourse()}
                   className={pd.select}
-                  style={{borderRadius: '8px'}}
+                  style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray', borderRadius: '8px'} : {backgroundColor: 'white', borderRadius: '8px'}}
                   name='course'
                   values={[]}
                   onChange={(value) => {               
 
-                      setSelectedCourseName(value[0].label)
+                      if(value[0] !== undefined) setSelectedCourseName(value[0].label)
                         
                     }
                   }
-
+          
                   disabled={detectSelected() === 0 ? false : true}
                 />
 
                 <div className={pd.descriptionName}>
-                  <label htmlFor="descriptionName">Course Name</label>
+                  <label htmlFor="descriptionName" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>Course Name</label>
                   <input
                   id="descriptionName"
                   name="descriptionName"
@@ -407,11 +421,12 @@ const DescriptionDashboard = () => {
                   className={pd.nameInput}
                   onChange={formik.handleChange}
                   value={formik.values.descriptionName}
+                  style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}
                   />
                 </div>
 
                 <div className={pd.descriptionPillName}>
-                    <label htmlFor="descriptionPillName">PillName</label>
+                    <label htmlFor="descriptionPillName" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>PillName</label>
                     <input
                     id="descriptionPillName"
                     name="descriptionPillName"
@@ -419,13 +434,14 @@ const DescriptionDashboard = () => {
                     className={pd.nameInput}
                     onChange={formik.handleChange}
                     value={formik.values.descriptionPillName}
+                    style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}
                     />
                 </div>
 
                 <div className={pd.descriptionDetails}>
 
                   <div className={pd.descriptionPer}>
-                    <label htmlFor="descriptionPer">Per day</label>
+                    <label htmlFor="descriptionPer" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>Per day</label>
                     <input
                     id="descriptionPer"
                     name="descriptionPer"
@@ -433,11 +449,12 @@ const DescriptionDashboard = () => {
                     className={pd.nameInput}
                     onChange={formik.handleChange}
                     value={formik.values.descriptionPer}
+                    style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}
                     />
                   </div>
 
                   <div className={pd.descriptionQuan}>
-                    <label htmlFor="descriptionQuan">Quantity</label>
+                    <label htmlFor="descriptionQuan" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>Quantity</label>
                     <input
                     id="descriptionQuan"
                     name="descriptionQuan"
@@ -445,11 +462,12 @@ const DescriptionDashboard = () => {
                     className={pd.nameInput}
                     onChange={formik.handleChange}
                     value={formik.values.descriptionQuan}
+                    style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}
                     />
                   </div>
 
                   <div className={pd.descriptionDur}>
-                    <label htmlFor="descriptionDur">Duration</label>
+                    <label htmlFor="descriptionDur" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>Duration</label>
                     <input
                     id="descriptionDur"
                     name="descriptionDur"
@@ -457,14 +475,17 @@ const DescriptionDashboard = () => {
                     className={pd.nameInput}
                     onChange={formik.handleChange}
                     value={formik.values.descriptionDur}
+                    style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}
                     />
                   </div>
                 </div>
             </div>
 
             <div className={pd.addButton}>
-              <button className={pd.clearToArea} type='button' id='clear' onClick={descriptionActions}>Clear</button>
-              <button className={pd.writeToArea} type='button' id='write' onClick={descriptionActions}>Write</button>
+              <button className={pd.clearToArea} type='button' id='clear' onClick={descriptionActions}
+              style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}>Clear</button>
+              <button className={pd.writeToArea} type='button' id='write' onClick={descriptionActions}
+              style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}>Write</button>
             </div>
 
           </div>
@@ -483,6 +504,7 @@ const DescriptionDashboard = () => {
                 setAreaContext([]);
               };}}
             value={areaContext.join('\n')}
+            style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray', borderRadius: '8px'} : {backgroundColor: 'white', borderRadius: '8px'}}
           />
 
         </div>
@@ -493,7 +515,9 @@ const DescriptionDashboard = () => {
           {!addLoadingSelector ? descriptionSelector.map(element => {
 
             return element.descriptionName.toLocaleUpperCase().includes(formik.values.descriptionSearch.toLocaleUpperCase()) ? <li className={pd.item} key={nanoid()} id={element._id} 
-            onClick={selectDescription}><div className={pd.nameWrapper} style={element.selected ? {backgroundColor:'rgb(255, 179, 0, 0.8)'} : {backgroundColor:''}}><div className={pd.name}>{element.descriptionName}</div><p>Description</p></div><p className={pd.description}>{element.description}</p></li> : '';
+            onClick={selectDescription} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', borderRadius: '8px'} : {backgroundColor: 'white', borderRadius: '8px'}}>
+              <div className={pd.nameWrapper} style={element.selected ? {backgroundColor:'rgb(255, 179, 0, 0.8)'} : {backgroundColor:''}}>
+              <div className={pd.name}>{element.descriptionName}</div><p>Description</p></div><p className={pd.description} style={lightModeSelector === 'dark' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white' }}>{element.description}</p></li> : '';
 
           }) : <Loading width={'100px'} height={'100px'}/>}
 

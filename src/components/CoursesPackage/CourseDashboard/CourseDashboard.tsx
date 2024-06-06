@@ -78,6 +78,7 @@ const CourseDashboard: FC = () => {
   const coursesPillsSelector = useAppSelector(state => state.pm.courses.find(element => element.selected === true)?.pills);
   const logOutMessageSelector = useAppSelector(state => state.logout.message);
   const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
+  const lightModeSelector = useAppSelector(state => state.pm.lightMode);
 
   // open/close alert modal window
   const [alertModalToggle, setAlertModalToggle] = useState(false);
@@ -164,15 +165,15 @@ const CourseDashboard: FC = () => {
   };
 
   useEffect(() => {
-  
-    if(isLogOutSelector) {
+ 
+    if(isLogOutSelector || logOutMessageSelector === 'Unauthorized' || logOutMessageSelector === 'Network Error') {
 
       dispatch(changeSingIn({operation: 'clearToken', data: ''}));
       navigate('/signin');
 
     };
     
-  },[isLogOutSelector]);
+  },[isLogOutSelector, logOutMessageSelector]);
 
   useEffect(() => {
   
@@ -1070,10 +1071,12 @@ const CourseDashboard: FC = () => {
           
         } else {
           if(dataDay !== '') {
-            result= {backgroundColor: 'lightgray'};
+           
+            lightModeSelector === 'dark' ? result = {backgroundColor: '#5c60ad'} : result = {backgroundColor: 'lightgray'};
 
           } else {
-            result= {backgroundColor: '#F0F0F0'};
+            lightModeSelector === 'dark' ? result = {backgroundColor: '#9da1fc'} : result = {backgroundColor: '#F0F0F0'};
+          
           };
 
           if(Number(dataDay) === today) {
@@ -1299,6 +1302,7 @@ const CourseDashboard: FC = () => {
                     autoComplete='false'
                     title="search"
                     placeholder='Courses...'
+                    style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'white'}}
                   />
               </label>  
 
@@ -1327,8 +1331,9 @@ const CourseDashboard: FC = () => {
               <p className={cd.today}><span className={cd.todayTitle}>TODAY: </span> <span className={cd.todayDate}>{new Date().getDate()}</span> <span className={cd.todayMonth}>{monthes[new Date().getMonth()]}</span></p>
 
               <div className={cd.infoSymbols}>
-                {actualMonthesSelector !== undefined ? <p className={cd.actualMonths}>{`Pill months: [${actualMonthesSelector.join(" ")}]`}</p> : 'no months'}
-                <div className={cd.infoBall}>
+                {actualMonthesSelector !== undefined ? 
+                <p className={cd.actualMonths} style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'gray'}}>{`Pill months: [${actualMonthesSelector.join(" ")}]`}</p> : 'no months'}
+                <div className={cd.infoBall} style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'white'}}>
                   <div className={cd.ballContainer}><div className={cd.infoRed}></div><p className={cd.text}>Not done or/and miss</p></div>
                   <div className={cd.ballContainer}><div className={cd.infoRedOrange}></div><p className={cd.text}>Reschedule</p></div>
                   <div className={cd.ballContainer}><div className={cd.infoOrange}></div><p className={cd.text}>Not done or in future</p></div>
@@ -1347,7 +1352,7 @@ const CourseDashboard: FC = () => {
                   <Select
                     options={takeContentCourse()}
                     className={cd.select}
-                    style={{borderRadius: '8px'}}
+                    style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc', borderRadius: '8px'} : {backgroundColor:'white', borderRadius: '8px'}}
                     name='course'
                     values={[]}
                     onChange={(value) => {               
@@ -1364,7 +1369,7 @@ const CourseDashboard: FC = () => {
                   <Select
                     options={takeContentMonth()}
                     className={cd.select}
-                    style={{borderRadius: '8px'}}
+                    style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc', borderRadius: '8px'} : {backgroundColor:'white', borderRadius: '8px'}}
                     name='month'
                     values={[]} //only [[{}...]...] format
                     onChange={(value) => {
@@ -1378,9 +1383,11 @@ const CourseDashboard: FC = () => {
                 </div>
 
                 {month !== '' ? <div className={cd.currentDay}>
-                  <button type='button' className={cd.currentDayButton} id='down' onClick={courseActions}></button>
+                  <button type='button' className={cd.currentDayButton} id='down' onClick={courseActions}
+                  style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc', borderRadius: '8px'} : {backgroundColor:'lightgray', borderRadius: '8px'}}></button>
                   <div className={cd.currentDayData}>{selectedDay.toString()}</div>
-                  <button type='button' className={cd.currentDayButton} id='up' onClick={courseActions}></button>
+                  <button type='button' className={cd.currentDayButton} id='up' onClick={courseActions}
+                  style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc', borderRadius: '8px'} : {backgroundColor:'lightgray', borderRadius: '8px'}}></button>
 
                   <div className={cd.modalDashbord}>
                     {startPointDay === 0 ? <button type='button' id='start' className={cd.startButton} onClick={courseActions} disabled={getPillValue('startDay')?.status ? true: false}><span>Start</span></button> : ''}
@@ -1408,7 +1415,7 @@ const CourseDashboard: FC = () => {
 
                 <div className={cd.dayDone} style={doneStyle()}>
 
-                  <div className={cd.dayDoneContent}>
+                  <div className={cd.dayDoneContent} style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'white'}}>
           
                     {getDoneVisible() !== undefined ? !isDone() ? <p><span className={cd.doneDay}>{`${getDoneVisible()} /`}</span> <span className={cd.perDay}>{`${coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay}`}</span> </p> : <Done width='50px' height='50px'/> : ''}  
 
@@ -1416,8 +1423,10 @@ const CourseDashboard: FC = () => {
                 
                 </div>
 
-                <button type='button' id='count' className={cd.countButton} onClick={courseActions} disabled={getStatus().count ? true : false}><span>Count</span></button>
-                <button type='button' id='reschedule' className={cd.rescheduleButton} onClick={courseActions} disabled={getStatus().reschedule ? true : false}><span>Reschedule</span></button>
+                <button type='button' id='count' className={cd.countButton} onClick={courseActions} disabled={getStatus().count ? true : false}
+                  style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'white'}}><span>Count</span></button>
+                <button type='button' id='reschedule' className={cd.rescheduleButton} onClick={courseActions} disabled={getStatus().reschedule ? true : false}
+                  style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'white'}}><span>Reschedule</span></button>
 
               </div>
 

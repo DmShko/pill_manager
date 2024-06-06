@@ -45,15 +45,15 @@ const AddPills: FC = () => {
 
     validationSchema: Yup.object({
 
-            pillName: Yup.string().required('PillName field is required').max(20, 'Max 20 simbols!').matches(
+            pillName: Yup.string().max(20, 'Max 20 simbols!').matches(
                 /\w{0}[aA-zZаА-яЯ]/,
                 { message: 'PillName should be string' }),
                 
-            corrName: Yup.string().notRequired().max(2, 'Max 2 simbols!').matches(
+            corrName: Yup.string().notRequired().max(20, 'Max 20 simbols!').matches(
                 /\w{0}[aA-zZаА-яЯ]/,
                 { message: 'CorrName should be string' }),
 
-            perDay: Yup.string().required('PerDay field is required').max(2, 'Max 2 simbols!').matches(
+            perDay: Yup.string().max(2, 'Max 2 simbols!').matches(
                 /\w{0}[0-9]/,
                 { message: 'PerDay should be number' }),
 
@@ -61,7 +61,7 @@ const AddPills: FC = () => {
                 /\w{0}[0-9]/,
                 { message: 'CorrPerDay should be number' }), 
                 
-            quantity: Yup.string().required('Quantity field is required').max(2, 'Max 2 simbols!').matches(
+            quantity: Yup.string().max(2, 'Max 2 simbols!').matches(
                 /\w{0}[0-9]/,
                 { message: 'Quantity should be number' }),  
 
@@ -69,7 +69,7 @@ const AddPills: FC = () => {
                 /\w{0}[0-9]/,
                 { message: 'CorrQuantity should be number' }),  
 
-            duration: Yup.string().required('Duration field is required').max(3, 'Max 3 simbols!').matches(
+            duration: Yup.string().max(3, 'Max 3 simbols!').matches(
                 /\w{0}[0-9]/,
                 { message: 'Duration should be number' }),  
 

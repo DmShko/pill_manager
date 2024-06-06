@@ -14,6 +14,7 @@ import {
   ChangeCoursePropST,
   EditActionCourse,
   IsEditAction,
+  lightModeAction,
   PressEditAction,
   ChangePillPropB,
   ChangeCoursePropSD,
@@ -22,6 +23,7 @@ import {
   ChangeFutureProp,
   PillDate,
   ActualMonthesAction,
+  LightModeType,
 
 } from "../types/types";
 
@@ -40,6 +42,7 @@ const pmInitialState: PmInitialState = {
   pressEdit: false,
   startDate: '',
   error: false,
+  lightMode: LightModeType.light,
 };
 
 const pmSlice = createSlice({
@@ -284,6 +287,12 @@ const pmSlice = createSlice({
 
     },
 
+    changeLightMode(state, action: PayloadAction<lightModeAction>) {
+      
+      state.lightMode = action.payload.data;
+
+    },
+
     changeStartDay(state, action: PayloadAction<StartDateAction>) {
       
       state.startDate = action.payload.data;
@@ -304,6 +313,7 @@ const pmSlice = createSlice({
   },
 });
 
-export const { changeCourses, changeTempPills, changeEditCourse, changeIsEdit, changePressEdit, changeStatistic, changeStartDay, changeActualMonthes, } =
+export const { changeCourses, changeTempPills, changeEditCourse, changeIsEdit,
+  changeLightMode, changePressEdit, changeStatistic, changeStartDay, changeActualMonthes, } =
   pmSlice.actions;
 export default pmSlice.reducer;

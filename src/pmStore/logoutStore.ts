@@ -54,7 +54,7 @@ const logoutSlice = createSlice({
         state.isLoading = false;
         state.isLogout = false;
         state.message = action.payload as string;
-        
+    
       });
     },
   }
