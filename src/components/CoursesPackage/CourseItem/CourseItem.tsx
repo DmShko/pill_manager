@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 import { useAppSelector, useAppDispatch} from "../../../app.hooks";
 
 // my types
-import { CourseItemProps } from '../../../types/types';
+import { CourseItemProps, CourseStatus } from '../../../types/types';
 
 import patchCourseAPI from '../../../API/patchCourseAPI';
 
@@ -32,6 +32,7 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
   const coursesSelector = useAppSelector(state => state.pm.courses);
   const statisticsSelector = useAppSelector(state => state.getStatistic.statistics);
   const lightModeSelector = useAppSelector(state => state.pm.lightMode);
+  const languageSelector = useAppSelector(state => state.pm.language);
 
   useEffect(() => {
 
@@ -145,20 +146,46 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
        
   };
 
+  const doneMessagesTrans = (data: CourseStatus) => { 
+
+    let message = '';
+
+    switch(data[0]) {
+
+      case 'done':
+        languageSelector === 'En' ? message = 'done' : message = 'завершено';
+      break;
+
+      case 'not done':
+        languageSelector === 'En' ? message = 'not done': message = "не завершено";
+      break;
+
+      case 'not active':
+        languageSelector === 'En' ? message = 'not active': message = "неактивний";
+      break;
+
+      default:
+        break;
+    }
+
+    return message;
+    
+  };
+
   return (
    
       <div className={ci.courseItem}>
 
-          {courses.courseName !== '' ? <p className={ci.nameItem}><span className={ci.nameItemTitle} style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'blue'}}>Course: </span><span className={ci.nameText} style={courses.selected ? {backgroundColor:'white'} : {backgroundColor:'pink',}}>{courses.courseName?.toLocaleUpperCase()} </span><span className={ci.visit} style={lightModeSelector === 'dark' ? {color:'white'} : {color:'#4b51b9'}}>Date of visit: {courses.visitDate}</span></p>:
-           <p className={ci.nameItem}><span className={ci.nameItemTitle}>Course: </span><span className={ci.nameText}
-              style={courses.selected ? {backgroundColor:'white'} : {backgroundColor:'rgb(255, 179, 0, 0.8)'}}>{'unnamed'}</span><span className={ci.visit}>Date of visit: {''}</span></p>}
+          {courses.courseName !== '' ? <p className={ci.nameItem}><span className={ci.nameItemTitle} style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'blue'}}>{languageSelector === 'En' ? 'Course:': 'Курс:'}</span><span className={ci.nameText} style={courses.selected ? {backgroundColor:'white'} : {backgroundColor:'pink',}}>{courses.courseName?.toLocaleUpperCase()} </span><span className={ci.visit} style={lightModeSelector === 'dark' ? {color:'white'} : {color:'#4b51b9'}}>{languageSelector === 'En' ? 'Date of visit:': 'Дата візиту:'}{courses.visitDate}</span></p>:
+           <p className={ci.nameItem}><span className={ci.nameItemTitle}>{languageSelector === 'En' ? 'Course:': 'Курс:'}</span><span className={ci.nameText}
+              style={courses.selected ? {backgroundColor:'white'} : {backgroundColor:'rgb(255, 179, 0, 0.8)'}}>{'unnamed'}</span><span className={ci.visit}>{languageSelector === 'En' ? 'Date of visit:': 'Дата візиту:'} {''}</span></p>}
 
           <div className={ci.courseSubcontainer} style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'white'}}>
             <div className={ci.registryInfo}  style={lightModeSelector === 'dark' ? {border: 'none'} : {border: '2px solid white'}}>
-              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>Clinic</span><span className={ci.titleCalue}>{courses.clinicName}</span></p>
-              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>Clinic Cont.</span><span className={ci.titleCalue}>{courses.clinicContacts}</span></p>
-              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>Doctor</span><span className={ci.titleCalue}>{courses.doctorName}</span></p>
-              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>Doctor Cont.</span><span className={ci.titleCalue}>{courses.docContacts}</span></p>
+              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>{languageSelector === 'En' ? 'Clinic': 'Клініка'}</span><span className={ci.titleCalue}>{courses.clinicName}</span></p>
+              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>{languageSelector === 'En' ? 'Clinic Cont.': 'Конт. клініки'}</span><span className={ci.titleCalue}>{courses.clinicContacts}</span></p>
+              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>{languageSelector === 'En' ? 'Doctor': 'Лікар'}</span><span className={ci.titleCalue}>{courses.doctorName}</span></p>
+              <p className={ci.infoItem} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}><span className={ci.title}>{languageSelector === 'En' ? 'Doctor Cont.': 'Конт. лікаря'}</span><span className={ci.titleCalue}>{courses.docContacts}</span></p>
             </div>
 
             <div className={ci.status}>
@@ -170,7 +197,7 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
 
               </div>
 
-              <p className={ci.statusText}>{courses.status}</p>
+              {courses.status !== undefined ? <p className={ci.statusText}>{doneMessagesTrans(courses.status)}</p> : ''}
 
             </div>
 
@@ -181,9 +208,9 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
                     <div ><PillImage width={'24px'} height={'24px'}/></div>
                     <p className={ci.pillName} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}>{element.pillName}</p>
                     <div className={ci.pillTextContainer}>
-                      <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>per/day</p><Part width={'12px'} height={'12px'}/></div><p className={ci.pillTitleValue}>{element.perDay}</p></div>
-                      <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>quant.X</p><QuantityPill width={'15px'} height={'15px'}/></div><p className={ci.pillTitleValue}>{element.quantity}</p></div>
-                      <div className={ci.pillTextDuration}><div className={ci.itemIcon}><p className={ci.pillTitle}>durat.</p><Time width={'15px'} height={'15px'}/></div><div className={ci.durationText}><p className={ci.pillDurationTitleFrozy}>{getFrozyDuration(element.id)}{'/'}</p><p className={ci.pillDurationTitle}>{element.duration}</p></div></div>
+                      <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>{languageSelector === 'En' ? 'per/day:': 'на/дн:'}</p><Part width={'12px'} height={'12px'}/></div><p className={ci.pillTitleValue}>{element.perDay}</p></div>
+                      <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>{languageSelector === 'En' ? 'quant.X:': 'кіл-ть:'}</p><QuantityPill width={'15px'} height={'15px'}/></div><p className={ci.pillTitleValue}>{element.quantity}</p></div>
+                      <div className={ci.pillTextDuration}><div className={ci.itemIcon}><p className={ci.pillTitle}>{languageSelector === 'En' ? 'durat.:': 'про-м:'}</p><Time width={'15px'} height={'15px'}/></div><div className={ci.durationText}><p className={ci.pillDurationTitleFrozy}>{getFrozyDuration(element.id)}{'/'}</p><p className={ci.pillDurationTitle}>{element.duration}</p></div></div>
                     </div>
                   </li>  
                 }

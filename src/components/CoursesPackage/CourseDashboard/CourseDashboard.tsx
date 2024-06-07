@@ -79,6 +79,7 @@ const CourseDashboard: FC = () => {
   const logOutMessageSelector = useAppSelector(state => state.logout.message);
   const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
   const lightModeSelector = useAppSelector(state => state.pm.lightMode);
+  const languageSelector = useAppSelector(state => state.pm.language);
 
   // open/close alert modal window
   const [alertModalToggle, setAlertModalToggle] = useState(false);
@@ -1301,7 +1302,7 @@ const CourseDashboard: FC = () => {
                     onChange={handleChange}
                     autoComplete='false'
                     title="search"
-                    placeholder='Courses...'
+                    placeholder={languageSelector === 'En' ? 'Courses...': 'Курси...'}
                     style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'white'}}
                   />
               </label>  
@@ -1424,9 +1425,9 @@ const CourseDashboard: FC = () => {
                 </div>
 
                 <button type='button' id='count' className={cd.countButton} onClick={courseActions} disabled={getStatus().count ? true : false}
-                  style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'white'}}><span>Count</span></button>
+                  style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}><span>Count</span></button>
                 <button type='button' id='reschedule' className={cd.rescheduleButton} onClick={courseActions} disabled={getStatus().reschedule ? true : false}
-                  style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'white'}}><span>Reschedule</span></button>
+                  style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}><span>Reschedule</span></button>
 
               </div>
 

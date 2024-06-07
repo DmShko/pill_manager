@@ -39,6 +39,7 @@ const SignIp = () => {
   const isLogInSelector = useAppSelector(state => state.signIn.isLogIn);
   const isLoadingSelector = useAppSelector(state => state.signIn.isLoading);
   const lightModeSelector = useAppSelector(state => state.pm.lightMode);
+  const languageSelector = useAppSelector(state => state.pm.language);
 
   // open/close alert modal window
   const [alertModalToggle, setAlertModalToggle] = useState(false);
@@ -93,6 +94,36 @@ const SignIp = () => {
     
   },[signInMessageSelector, logOutMessageSelector]);
 
+  const errorMessagesTrans = (data: string) => { 
+
+    let message = '';
+
+    switch(data) {
+
+      case 'email':
+        languageSelector === 'En' ? message = 'Invalid email' : message = 'Невірний формат пошти';
+      break;
+
+      case 'emailReq':
+        languageSelector === 'En' ? message = 'Email field is required': message = "Пошта обов'язкова";
+      break;
+
+      case 'passport':
+        languageSelector === 'En' ? message = 'Must be 8 characters or more': message = "Має бути від 8 символів";
+      break;
+
+      case 'passportReq':
+        languageSelector === 'En' ? message = 'Password field is required': message = "Пароль обов'язковий";
+      break;
+
+      default:
+        break;
+    }
+
+    return message;
+    
+  };
+
   const formik = useFormik({
 
     //yup stored own validate functions (for email, password...etc)
@@ -100,12 +131,12 @@ const SignIp = () => {
       email: Yup.string()
         .matches(
           /\w{0}[0-9a-zA-Za-яА-Я]+@\w{0}[a-zA-Za-яА-Я]+\.\w{0}[a-zA-Za-яА-Я]/,
-          { message: 'Invalid email' }
+          { message: errorMessagesTrans('email')}
         )
-        .required('Email field is required'),
+        .required(errorMessagesTrans('emailReq')),
       password: Yup.string()
-        .min(8, 'Min 8 characters')
-        .required('Password field is required'),
+        .min(8, errorMessagesTrans('passport'))
+        .required(errorMessagesTrans('passportReq')),
       }
     ),
     initialValues: {
@@ -147,9 +178,9 @@ const SignIp = () => {
 
           </div>
 
-          <h1 className={si.formTitle}>SignIn</h1>
+          <h1 className={si.formTitle}>{languageSelector === 'En' ? 'SignIn': 'Увійти'}</h1>
                   
-          <div className={si.itemLabel}> <Lock width={'20px'} height={'20px'} /> <label htmlFor="email">Email</label></div>
+          <div className={si.itemLabel}> <Lock width={'20px'} height={'20px'} /> <label htmlFor="email">{languageSelector === 'En' ? 'Email': 'Пошта'}</label></div>
 
           <input
             id="email"
@@ -160,7 +191,7 @@ const SignIp = () => {
             style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
           />
 
-          <div className={si.itemLabel}> <Mail width={'20px'} height={'20px'} /> <label htmlFor="password">Password</label> </div>
+          <div className={si.itemLabel}> <Mail width={'20px'} height={'20px'} /> <label htmlFor="password">{languageSelector === 'En' ? 'Password': 'Пароль'}</label> </div>
           <input
             id="password"
             name="password"
@@ -170,11 +201,11 @@ const SignIp = () => {
             style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
           />
 
-          <button type="submit" className={si.courseButton} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}>{!isLoadingSelector ? 'Submit' : <Loading width={'30px'} height={'30px'} />}</button>
+          <button type="submit" className={si.courseButton} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}>{!isLoadingSelector ? languageSelector === 'En' ? 'Submit': 'Увійти': <Loading width={'30px'} height={'30px'} />}</button>
 
         </form>
 
-        <p className={si.switch} onClick={() => navigate('/signup')}>{'to SignUp'}</p>
+        <p className={si.switch} onClick={() => navigate('/signup')}>{languageSelector === 'En' ? 'to SignUp': 'Створити'}</p>
 
       </div>
 

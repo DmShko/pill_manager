@@ -37,6 +37,8 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
   const pressEditSelector = useAppSelector(state => state.pm.pressEdit);
   const coursesSelector = useAppSelector(state => state.pm.courses);
   const tokenSelector = useAppSelector(state => state.signIn.token);
+  const lightModeSelector = useAppSelector(state => state.pm.lightMode);
+  const languageSelector = useAppSelector(state => state.pm.language);
 
   const [ newCourseId, setNewCourseId ] = useState('');
 
@@ -224,7 +226,8 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
 
             <form className={cb.course} onSubmit={formik.handleSubmit}>
               
-              <label className={cb.courseName} htmlFor="courseName">Course name</label>
+              <label className={cb.courseName}
+              style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}} htmlFor="courseName">{languageSelector === 'En' ? 'Course name' : 'Назва курсу'}</label>
 
               <div className={cb.courseInputsContainer}>
 
@@ -235,23 +238,42 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
                   type="text"
                   onChange={formik.handleChange}
                   value={formik.values.courseName}
+                  style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                 />
 
                 <div className={cb.messageContainer} style={formik.errors.courseName || formik.errors.doctorName || formik.errors.docContacts || formik.errors.clinicName || formik.errors.clinicContacts || formik.errors.visitDate ? {opacity: '1', } : {opacity: '0'}}>
 
                   <div className={cb.curtain}>
 
-                    <p>'Invalid form data'</p>
+                    <p style={lightModeSelector === 'dark' ? {backgroundColor: '#242424'} : {backgroundColor: 'white'}}>{languageSelector === 'En' ? 'Invalid form data' : 'Помилка форми'}</p>
 
                   </div>
 
                 </div>
 
                 <div className={cb.errorInfo}>
-                  <Attention width={'20px'} height={'20px'}/>
-                  <p className={cb.errorInfoItem}>{'CourseName, ClinicName should be string'}</p>
-                  <p className={cb.errorInfoItem}>{'DocContacts, ClinicContacts format is 000-000-00-00'}</p>
-                  <p className={cb.errorInfoItem}>{'VisitDate format is 00.00.0000'}</p>
+                  
+                  {languageSelector === 'En'  ? 
+                    <>
+                   <Attention width={'20px'} height={'20px'}/>
+                   <p className={cb.errorInfoItem}
+                   style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'gray'}}>{'CourseName, ClinicName should be string'}</p>
+                   <p className={cb.errorInfoItem}
+                   style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'gray'}}>{'DocContacts, ClinicContacts format is 000-000-00-00'}</p>
+                   <p className={cb.errorInfoItem}
+                   style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'gray'}}>{'VisitDate format is 00.00.0000'}</p>
+                    </>
+                    :
+                    <>
+                    <Attention width={'20px'} height={'20px'}/>
+                    <p className={cb.errorInfoItem}
+                    style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'gray'}}>{'Назва курсу, Наз. клін. мають бути строки'}</p>
+                    <p className={cb.errorInfoItem}
+                    style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'gray9'}}>{'Конт. лік., Конт. клін. формат 000-000-00-00'}</p>
+                    <p className={cb.errorInfoItem}
+                    style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'gray'}}>{'Дата візиту формат 00.00.0000'}</p>
+                    </>}
+                  
                 </div>
 
               </div>
@@ -259,7 +281,8 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
               <div className={cb.infoContainer}>
 
                 <div className={cb.docContainer}>
-                  <label htmlFor="doctorName">Doctor</label>
+                  <label htmlFor="doctorName"
+                  style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}}>{languageSelector === 'En' ? 'Doctor' : 'Лікар'}</label>
                   <input
                     className={cb.coursInputs}
                     id="doctorName"
@@ -267,9 +290,11 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
                     type="text"
                     onChange={formik.handleChange}
                     value={formik.values.doctorName}
+                    style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                   />
 
-                  <label htmlFor="docContacts">Doctor contacts</label>
+                  <label htmlFor="docContacts"
+                  style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}}>{languageSelector === 'En' ? 'Doctor contacts' : 'Конт. лікаря'}</label>
                   <input
                     className={cb.coursInputs}
                     id="docContacts"
@@ -277,11 +302,13 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
                     type="text"
                     onChange={formik.handleChange}
                     value={formik.values.docContacts}
+                    style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                   />
                 </div>
 
                 <div className={cb.cliContainer}>
-                  <label htmlFor="clinicName">Clinic</label>
+                  <label htmlFor="clinicName"
+                  style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}}>{languageSelector === 'En' ? 'Clinic' : 'Клініка'}</label>
                   <input
                     className={cb.coursInputs}
                     id="clinicName"
@@ -289,9 +316,11 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
                     type="text"
                     onChange={formik.handleChange}
                     value={formik.values.clinicName}
+                    style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                   />
 
-                  <label htmlFor="clinicContacts">Clinic contacts</label>
+                  <label htmlFor="clinicContacts"
+                  style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}}>{languageSelector === 'En' ? 'Clinic contacts' : 'Конт. кліники'}</label>
                   <input
                     className={cb.coursInputs}
                     id="clinicContacts"
@@ -299,11 +328,13 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
                     type="text"
                     onChange={formik.handleChange}
                     value={formik.values.clinicContacts}
+                    style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                   />
                 </div>
                 
                 <div className={cb.visitContainer}>
-                  <label htmlFor="visitDate">Date of visit</label>
+                  <label htmlFor="visitDate"
+                  style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}}>{languageSelector === 'En' ? 'Date of visit' : 'Дата візиту'}</label>
                   <input
                     className={cb.coursInputs}
                     id="visitDate"
@@ -311,10 +342,12 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
                     type="text"
                     onChange={formik.handleChange}
                     value={formik.values.visitDate}
+                    style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                   />
                 </div>
 
-                <button type="submit" className={cb.courseButton}>{pressEditSelector ? 'Save change' : 'Create'}</button>
+                <button type="submit" className={cb.courseButton}
+                style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}>{pressEditSelector ? languageSelector === 'En' ? 'Save change' : 'Зберегти зміни' : languageSelector === 'En' ? 'Create' : 'Створити'}</button>
 
               </div>
 

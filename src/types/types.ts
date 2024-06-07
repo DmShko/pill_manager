@@ -57,15 +57,20 @@ export interface ActionPills {
   key: string
 };
 
-enum CourseStatus {
-    'done', 
-    'not done',
-    'not active',
+export enum CourseStatus {
+    done = 'done', 
+    notDone = 'not done',
+    notActive = 'not active',
 };
 
 export enum LightModeType {
   light = 'light', 
   dark = 'dark',
+};
+
+export enum LangType {
+  en = 'En', 
+  ua = 'Ua',
 };
 
 // type for course action argument
@@ -86,9 +91,14 @@ export interface IsEditAction {
   data: boolean 
 };
 
-// type for isEdit action argument
-export interface lightModeAction {
+// type for lightMode action argument
+export interface LightModeAction {
   data: LightModeType 
+};
+
+// type for lightMode action argument
+export interface LangModeAction {
+  data: LangType 
 };
 
 // type for startDate action argument
@@ -140,6 +150,7 @@ export interface Course {
     startDate: string
     error: boolean
     lightMode: LightModeType
+    language: LangType
   };
 
   export interface CourseItemProps {

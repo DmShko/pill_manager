@@ -1,5 +1,7 @@
 import { FC, useState, useEffect } from 'react'; 
-import { useDispatch } from 'react-redux'; 
+
+// own dispatch hook
+import { useAppDispatch } from "../../app.hooks";
 
 import dn from './DayNight.module.scss';
 
@@ -15,7 +17,7 @@ import { LightModeType } from '../../types/types';
 
 const DayNight: FC = () => {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [ lightMode, setLightMode ] = useState<LightModeType>(LightModeType.light);
 

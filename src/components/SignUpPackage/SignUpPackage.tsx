@@ -43,6 +43,7 @@ const SignUp = () => {
   const isLogOutSelector = useAppSelector(state => state.logout.isLogout);
   const isLoadingSelector = useAppSelector(state => state.signUp.isLoading);
   const lightModeSelector = useAppSelector(state => state.pm.lightMode);
+  const languageSelector = useAppSelector(state => state.pm.language);
 
   // open/close alert modal window
   const [alertModalToggle, setAlertModalToggle] = useState(false);
@@ -85,6 +86,48 @@ const SignUp = () => {
     
   },[signUpMessageSelector, logOutMessageSelector, reVerifyMessage, reVerifyMessageSelector]);
 
+  const errorMessagesTrans = (data: string) => { 
+
+    let message = '';
+
+    switch(data) {
+
+      case 'email':
+        languageSelector === 'En' ? message = 'Invalid email': message = 'Невірний формат пошти';
+      break;
+
+      case 'emailReq':
+        languageSelector === 'En' ? message = 'Email field is required': message = "Пошта обов'язкова";
+      break;
+
+      case 'passport':
+        languageSelector === 'En' ? message = 'Must be 8 characters or more': message = "Має бути від 8 символів";
+      break;
+
+      case 'passportReq':
+        languageSelector === 'En' ? message = 'Password field is required': message = "Пароль обов'язковий";
+      break;
+
+      case 'passportRep':
+        languageSelector === 'En' ? message = 'Must be 8 characters or more': message = "Має бути від 8 символів";
+      break;
+
+      case 'passportRepReq':
+        languageSelector === 'En' ? message = 'RepeatPassword field is required': message = "Повторіть пароль";
+      break;
+
+      case 'passportMatch':
+        languageSelector === 'En' ? message = 'Passwords must match': message = "Паролі мають збігатися";
+      break;
+
+      default:
+        break;
+    }
+
+    return message;
+    
+  };
+
   const formik = useFormik({
 
     //yup stored own validate functions (for email, password...etc)
@@ -92,16 +135,16 @@ const SignUp = () => {
         email: Yup.string()
           .matches(
             /\w{0}[0-9a-zA-Za-яА-Я]+@\w{0}[a-zA-Za-яА-Я]+\.\w{0}[a-zA-Za-яА-Я]/,
-            { message: 'Invalid email' }
+            { message: errorMessagesTrans('email')}
           )
-          .required('Email field is required'),
+          .required(errorMessagesTrans('emailReq')),
         password: Yup.string()
-          .min(8, 'Must be 8 characters or more')
-          .required('Password field is required'),
+          .min(8, errorMessagesTrans('passport'))
+          .required(errorMessagesTrans('passportReq')),
         repeatPassword: Yup.string()
-          .min(8, 'Must be 8 characters or more')
-          .required('RepeatPassword field is required')
-          .oneOf([Yup.ref('password')], 'Passwords must match'),
+          .min(8, errorMessagesTrans('passportRep'))
+          .required(errorMessagesTrans('passportRepReq'))
+          .oneOf([Yup.ref('password')], errorMessagesTrans('passportMatch')),
                             // ,null^
       }
     ),
@@ -130,15 +173,9 @@ const SignUp = () => {
   const reverify = () => {
 
     if(formik.values.email !== '') {
-
-      // if(tokenSelector !== '') {
+    
         dispatch(reVerifyAPI({email: formik.values.email}));
-      // }else {
-
-      //   setReVerifyMessage('You need to authentifycate');
-
-      // };
-
+     
     }else {
       setReVerifyMessage('Email not found');
     };
@@ -168,9 +205,9 @@ const SignUp = () => {
 
         </div>
 
-          <h1 className={su.formTitle}>SignUp</h1>
+          <h1 className={su.formTitle}>{languageSelector === 'En' ? 'SignUp': 'Створити'}</h1>
 
-          <div className={su.itemLabel}> <User width={'20px'} height={'20px'} /> <label htmlFor="name">Name</label> </div>
+          <div className={su.itemLabel}> <User width={'20px'} height={'20px'} /> <label htmlFor="name">{languageSelector === 'En' ? 'Name': "Ім'я"}</label> </div>
           <input
             id="name"
             name="name"
@@ -180,7 +217,7 @@ const SignUp = () => {
             style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
           />
                   
-          <div className={su.itemLabel}> <Mail width={'20px'} height={'20px'} /> <label htmlFor="email">Email</label> </div>
+          <div className={su.itemLabel}> <Mail width={'20px'} height={'20px'} /> <label htmlFor="email">{languageSelector === 'En' ? 'Email': 'Пошта'}</label> </div>
           <input
             id="email"
             name="email"
@@ -190,7 +227,7 @@ const SignUp = () => {
             style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
           />
 
-          <div className={su.itemLabel}> <Lock width={'20px'} height={'20px'} /> <label htmlFor="password">Password</label> </div>
+          <div className={su.itemLabel}> <Lock width={'20px'} height={'20px'} /> <label htmlFor="password">{languageSelector === 'En' ? 'Password': 'Пароль'}</label> </div>
           <input
             id="password"
             name="password"
@@ -200,7 +237,7 @@ const SignUp = () => {
             style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
           />
 
-          <div className={su.itemLabel}> <Compare width={'21px'} height={'21px'} /> <label htmlFor="repeatPassword">Repeat Password</label> </div>
+          <div className={su.itemLabel}> <Compare width={'21px'} height={'21px'} /> <label htmlFor="repeatPassword">{languageSelector === 'En' ? 'Repeat Password': 'Повторити пароль'}</label> </div>
           <input
             id="repeatPassword"
             name="repeatPassword"
@@ -210,13 +247,13 @@ const SignUp = () => {
             style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
           />
       
-          <button type="submit" className={su.courseButton} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}>{!isLoadingSelector ? 'Submit' : <Loading width={'30px'} height={'30px'}/>}</button>
+          <button type="submit" className={su.courseButton} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}>{!isLoadingSelector ? languageSelector === 'En' ? 'Submit': 'Створити' : <Loading width={'30px'} height={'30px'}/>}</button>
 
-          <a className={su.verify} onClick={reverify}>{'Repeat verification letter'}</a>
+          <a className={su.verify} onClick={reverify}>{languageSelector === 'En' ? 'Repeat verification letter': 'Повторний лист верифікації'}</a>
 
         </form>
 
-        <p className={su.switch} onClick={() => navigate('/signin')}>{'to SignIn'}</p>
+        <p className={su.switch} onClick={() => navigate('/signin')}>{languageSelector === 'En' ? 'to SignIn': 'Увійти'}</p>
 
       </div>  
 

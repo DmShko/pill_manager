@@ -27,6 +27,8 @@ const AddPills: FC = () => {
   const pressEditSelector = useAppSelector(state => state.pm.pressEdit);
   const tokenSelector = useAppSelector(state => state.signIn.token);
   const statisticsSelector = useAppSelector(state => state.getStatistic.statistics);
+  const lightModeSelector = useAppSelector(state => state.pm.lightMode);
+  const languageSelector = useAppSelector(state => state.pm.language);
 
   useEffect(() => {
     if(isEditSelector && pressEditSelector) dispatch(changeTempPills({ mode: 'freshTempPills', data: editCourseSelector.pills, key: '',}));
@@ -41,41 +43,119 @@ const AddPills: FC = () => {
   // save button toggle
   const [itemActiveSave, setItemActiveSave ] = useState<Boolean>(false);
 
+  const errorMessagesTrans = (data: string) => { 
+
+    let message = '';
+
+    switch(data) {
+
+      case 'pillName':
+        languageSelector === 'En' ? message = 'PillName should be string' : message = 'Назв. лік - рядок';
+      break;
+
+      case 'maxPillName':
+        languageSelector === 'En' ? message = 'Max 20 simbols!' : message = 'Максимум 20 символів';
+      break;
+
+      case 'corrPillName':
+        languageSelector === 'En' ? message = 'CorrName should be string' : message = 'Назв. лік - рядок';
+      break;
+
+      case 'maxCorrPillName':
+        languageSelector === 'En' ? message = 'Max 20 simbols!' : message = 'Максимум 20 символів';
+      break;
+
+      case 'perDay':
+        languageSelector === 'En' ? message = 'PerDay should be number' : message = 'На/дн. - число';
+      break;
+
+      case 'maxPerDay':
+        languageSelector === 'En' ? message = 'Max 2 simbols!' : message = 'Максимум 2 символів';
+      break;
+
+      case 'corrPerDay':
+        languageSelector === 'En' ? message = 'PerDay should be number' : message = 'На/дн. - число';
+      break;
+
+      case 'maxCorrPerDay':
+        languageSelector === 'En' ? message = 'Max 2 simbols!' : message = 'Максимум 2 символів';
+      break;
+
+      case 'quantity':
+        languageSelector === 'En' ? message = 'Quantity should be number': message = "Кільк. - число";
+      break;
+
+      case 'maxQuantity':
+        languageSelector === 'En' ? message = 'Max 2 simbols!': message = "Максимум 2 символів";
+      break;
+
+      case 'corrQuantity':
+        languageSelector === 'En' ? message = 'Quantity should be number': message = "Кільк. - число";
+      break;
+
+      case 'maxCorrQuantity':
+        languageSelector === 'En' ? message = 'Max 2 simbols!': message = "Максимум 2 символів";
+      break;
+
+      case 'duration':
+        languageSelector === 'En' ? message = 'Duration should be number': message = "Про-м - число";
+      break;
+
+      case 'maxDuration':
+        languageSelector === 'En' ? message = 'Max 3 simbols!': message = "Максимум 3 символів";
+      break;
+
+      case 'corrDuration':
+        languageSelector === 'En' ? message = 'Duration should be number': message = "Про-м - число";
+      break;
+
+      case 'maxCorrDuration':
+        languageSelector === 'En' ? message = 'Max 3 simbols!': message = "Максимум 3 символів";
+      break;
+
+      default:
+        break;
+    }
+
+    return message;
+    
+  };
+
   const formik = useFormik({
 
     validationSchema: Yup.object({
 
-            pillName: Yup.string().max(20, 'Max 20 simbols!').matches(
+            pillName: Yup.string().max(20, errorMessagesTrans('maxpillName')).matches(
                 /\w{0}[aA-zZаА-яЯ]/,
-                { message: 'PillName should be string' }),
+                { message: errorMessagesTrans('pillName')}),
                 
-            corrName: Yup.string().notRequired().max(20, 'Max 20 simbols!').matches(
+            corrName: Yup.string().notRequired().max(20, errorMessagesTrans('maxCorrPillName')).matches(
                 /\w{0}[aA-zZаА-яЯ]/,
-                { message: 'CorrName should be string' }),
+                { message: errorMessagesTrans('corrPillName')}),
 
-            perDay: Yup.string().max(2, 'Max 2 simbols!').matches(
+            perDay: Yup.string().max(2, errorMessagesTrans('maxPerDay')).matches(
                 /\w{0}[0-9]/,
-                { message: 'PerDay should be number' }),
+                { message: errorMessagesTrans('perDay')}),
 
-            corrPerDay: Yup.string().notRequired().max(2, 'Max 2 simbols!').matches(
+            corrPerDay: Yup.string().notRequired().max(2, errorMessagesTrans('maxCorrPerDay')).matches(
                 /\w{0}[0-9]/,
-                { message: 'CorrPerDay should be number' }), 
+                { message: errorMessagesTrans('corrPerDay')}), 
                 
-            quantity: Yup.string().max(2, 'Max 2 simbols!').matches(
+            quantity: Yup.string().max(2, errorMessagesTrans('maxQuantity')).matches(
                 /\w{0}[0-9]/,
-                { message: 'Quantity should be number' }),  
+                { message: errorMessagesTrans('quantity')}),  
 
-            corrQuantity: Yup.string().notRequired().max(2, 'Max 2 simbols!').matches(
+            corrQuantity: Yup.string().notRequired().max(2, errorMessagesTrans('maxCorrQuantity')).matches(
                 /\w{0}[0-9]/,
-                { message: 'CorrQuantity should be number' }),  
+                { message: errorMessagesTrans('corrQuantity')}),  
 
-            duration: Yup.string().max(3, 'Max 3 simbols!').matches(
+            duration: Yup.string().max(3, errorMessagesTrans('maxDuration')).matches(
                 /\w{0}[0-9]/,
-                { message: 'Duration should be number' }),  
+                { message: errorMessagesTrans('duration')}),  
 
-            corrDuration: Yup.string().notRequired().max(3, 'Max 3 simbols!').matches(
+            corrDuration: Yup.string().notRequired().max(3, errorMessagesTrans('maxCorrDuration')).matches(
                 /\w{0}[0-9]/,
-                { message: 'CorrDuration should be number' }),   
+                { message: errorMessagesTrans('corrDuration')}),   
         }
     ),
     initialValues: {
@@ -243,7 +323,8 @@ const AddPills: FC = () => {
         <div className={ap.addPillsContainer}>
 
             <form className={ap.pills} onSubmit={formik.handleSubmit}>
-              <label htmlFor='pillName'>Pill name</label>
+              <label htmlFor='pillName'
+              style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}}>{languageSelector === 'En'  ? 'Pill name' : 'Назва ліків'}</label>
               <div className={ap.pillNameContainer}>
                 
                     <input       
@@ -253,6 +334,7 @@ const AddPills: FC = () => {
                         className={ap.pillName}
                         onChange={formik.handleChange}
                         value={formik.values.pillName}
+                        style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                     />
 
                 
@@ -260,7 +342,7 @@ const AddPills: FC = () => {
 
                     <div className={ap.curtain}>
 
-                        <p>{formik.errors.pillName ? formik.errors.pillName : formik.errors.perDay ? formik.errors.perDay : formik.errors.quantity ? formik.errors.quantity : formik.errors.duration ? formik.errors.duration : ''}</p>
+                        <p style={lightModeSelector === 'dark' ? {backgroundColor:'#242424'} : {backgroundColor:'white'}}>{formik.errors.pillName ? formik.errors.pillName : formik.errors.perDay ? formik.errors.perDay : formik.errors.quantity ? formik.errors.quantity : formik.errors.duration ? formik.errors.duration : ''}</p>
 
                     </div>
 
@@ -270,7 +352,8 @@ const AddPills: FC = () => {
 
                 <div className={ap.pillsInfo}>
                     <div className={ap.inputContainer}>
-                        <label htmlFor="perDay">Per day</label>
+                        <label htmlFor="perDay"
+                        style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}}>{languageSelector === 'En'  ? 'Per day' : 'На день'}</label>
                         <input
                             id="perDay"
                             name="perDay"
@@ -278,11 +361,13 @@ const AddPills: FC = () => {
                             className={ap.pillInput}
                             onChange={formik.handleChange}
                             value={formik.values.perDay}
+                            style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                         />
                     </div>
 
                     <div className={ap.inputContainer}>
-                        <label htmlFor="quantity">Quantity</label>
+                        <label htmlFor="quantity"
+                        style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}}>{languageSelector === 'En'  ? 'Quantity' : 'Кількість'}</label>
                         <input
                             id="quantity"
                             name="quantity"
@@ -290,11 +375,13 @@ const AddPills: FC = () => {
                             className={ap.pillInput}
                             onChange={formik.handleChange}
                             value={formik.values.quantity}
+                            style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                         />
                     </div>
 
                     <div className={ap.inputContainer}>
-                        <label htmlFor="duration">Duration</label>
+                        <label htmlFor="duration"
+                        style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}}>{languageSelector === 'En'  ? 'Duration' : 'Протягом'}</label>
                         <input
                             id="duration"
                             name="duration"
@@ -302,14 +389,15 @@ const AddPills: FC = () => {
                             className={ap.pillInput}
                             onChange={formik.handleChange}
                             value={formik.values.duration}
+                            style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                         />
                     </div>
                 
-                    <button type="submit" className={ap.pillsButton}>Add</button>
+                    <button type="submit" className={ap.pillsButton}>{languageSelector === 'En'  ? 'Add' : 'До-ти'}</button>
                 </div>
             </form>
 
-            <div className={ap.pillsContainer}>
+            <div className={ap.pillsContainer} style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}>
                 {selectorTempPills.length !== 0 ? 
                     <ul className={ap.pillsList}>
                         {selectorTempPills.map(value => {
@@ -336,7 +424,7 @@ const AddPills: FC = () => {
                             </li>
                         })}
                     </ul>
-                : 'There are no pills'}
+                : languageSelector === 'En' ? 'There are no pills' : 'Тут немає ліків'}
             </div>
         
         </div>

@@ -57,6 +57,7 @@ const DescriptionDashboard = () => {
   const addLoadingSelector = useAppSelector(state => state.addDescription.isLoading);
   const logOutMessageSelector = useAppSelector(state => state.logout.message);
   const lightModeSelector = useAppSelector(state => state.pm.lightMode);
+  const languageSelector = useAppSelector(state => state.pm.language);
 
   const [ fresh, setFresh ] = useState(false);
   const [ allSelect, setAllSelect ] = useState(false);
@@ -239,24 +240,91 @@ const DescriptionDashboard = () => {
 
   };
 
+  const errorMessagesTrans = (data: string) => { 
+
+    let message = '';
+
+    switch(data) {
+
+      case 'descriptionPillName':
+        languageSelector === 'En' ? message = 'PillName field is required' : message = "Ліки - обов'язкові";
+      break;
+
+      case 'maxDescriptionPillName':
+        languageSelector === 'En' ? message = 'Max 16 simbols!' : message = "Максимум 16 символів";
+      break;
+
+      case 'descriptionName':
+        languageSelector === 'En' ? message = 'PillName field is required' : message = "Ліки - обов'язкові";
+      break;
+
+      case 'maxDescriptionName':
+        languageSelector === 'En' ? message = 'Max 16 simbols!' : message = 'Максимум 16 символів';
+      break;
+
+      case 'descriptionQuan':
+        languageSelector === 'En' ? message = 'Quantity should be number' : message = "Кільк. - число";
+      break;
+
+      case 'descriptionQuanReq':
+        languageSelector === 'En' ? message = 'Quan. field is required' : message = "Кільк. - обов'язковий";
+      break;
+
+      case 'maxDescriptionQuan':
+        languageSelector === 'En' ? message = 'Max 2 simbols!' : message = 'Максимум 2 символи';
+      break;
+
+      case 'descriptionDur':
+        languageSelector === 'En' ? message = 'Duration should be number' : message = "Протягом - число";
+      break;
+
+      case 'descriptionDurReq':
+        languageSelector === 'En' ? message = 'Duration. field is required' : message = "Протягом - обов'язковий";
+      break;
+
+      case 'maxDescriptionDur':
+        languageSelector === 'En' ? message = 'Max 3 simbols!' : message = 'Максимум 3 символи';
+      break;
+
+      case 'descriptionPer':
+        languageSelector === 'En' ? message = 'Per/day should be number' : message = "На день - число";
+      break;
+
+      case 'descriptionPerReq':
+        languageSelector === 'En' ? message = 'Per/day field is required' : message = "На день - обов'язковий";
+      break;
+
+      case 'maxDescriptionPer':
+        languageSelector === 'En' ? message = 'Max 2 simbols!' : message = 'Максимум 2 символи';
+      break;
+
+
+      default:
+        break;
+    }
+
+    return message;
+    
+  };
+
   const formik = useFormik({
 
     //yup stored own validate functions (for email, password...etc)
     validationSchema: Yup.object({
         descriptionSearch: Yup.string().notRequired(),
-        descriptionPillName: Yup.string().required('PillName field is required').max(16, 'Max 16 simbols!'),
-        descriptionName: Yup.string().required('DescriptionName field is required').max(16, 'Max 16 simbols!'),
-        descriptionQuan: Yup.string().required('Quantity field is required').max(2, 'Max 2 simbols!').matches(
+        descriptionPillName: Yup.string().required(errorMessagesTrans('descriptionPillName')).max(16, errorMessagesTrans('maxDescriptionPillName')),
+        descriptionName: Yup.string().required(errorMessagesTrans('descriptionName')).max(16, errorMessagesTrans('maxDescriptionName')),
+        descriptionQuan: Yup.string().required(errorMessagesTrans('descriptionQuanReq')).max(2, errorMessagesTrans('maxDescriptionQuan')).matches(
           /\w{0}[0-9]/,
-          { message: 'Quantity should be number' }
+          { message: errorMessagesTrans('descriptionQuan') }
         ),
-        descriptionDur: Yup.string().required('Duration field is required').max(3, 'Max 3 simbols!').matches(
+        descriptionDur: Yup.string().required(errorMessagesTrans('descriptionDurReq')).max(3, errorMessagesTrans('maxDescriptionDur')).matches(
           /\w{0}[0-9]/,
-          { message: 'Quantity should be number' }
+          { message: errorMessagesTrans('descriptionDur')}
         ),
-        descriptionPer: Yup.string().required('Per day field is required').max(2, 'Max 2 simbols!').matches(
+        descriptionPer: Yup.string().required(errorMessagesTrans('descriptionPerReq')).max(2, errorMessagesTrans('maxDescriptionPer')).matches(
           /\w{0}[0-9]/,
-          { message: 'Quantity should be number' }
+          { message: errorMessagesTrans('descriptionPer')}
         ),
         description: Yup.string(),
       }
@@ -381,15 +449,14 @@ const DescriptionDashboard = () => {
           <div className={pd.inputs}>
             <div className={pd.inputContainer}>
 
-              
                 <div className={pd.descriptionSearch}>
-                  <label htmlFor="descriptionSearch" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>Search</label>
+                  <label htmlFor="descriptionSearch" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>{languageSelector === 'En' ? 'Search' : 'Пошук'}</label>
                   <input
                   id="descriptionSearch"
                   name="descriptionSearch"
                   type="text"
                   className={pd.searchInput}
-                  placeholder='Descriptions'
+                  placeholder={languageSelector === 'En' ? 'Descriptions...' : 'Рецепт...'}
                   onChange={formik.handleChange}
                   value={formik.values.descriptionSearch}
                   style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}
@@ -413,7 +480,7 @@ const DescriptionDashboard = () => {
                 />
 
                 <div className={pd.descriptionName}>
-                  <label htmlFor="descriptionName" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>Course Name</label>
+                  <label htmlFor="descriptionName" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>{languageSelector === 'En' ? 'Description' : 'Рецепт'}</label>
                   <input
                   id="descriptionName"
                   name="descriptionName"
@@ -426,7 +493,7 @@ const DescriptionDashboard = () => {
                 </div>
 
                 <div className={pd.descriptionPillName}>
-                    <label htmlFor="descriptionPillName" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>PillName</label>
+                    <label htmlFor="descriptionPillName" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>{languageSelector === 'En' ? 'PillName' : 'Назва ліків'}</label>
                     <input
                     id="descriptionPillName"
                     name="descriptionPillName"
@@ -441,7 +508,7 @@ const DescriptionDashboard = () => {
                 <div className={pd.descriptionDetails}>
 
                   <div className={pd.descriptionPer}>
-                    <label htmlFor="descriptionPer" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>Per day</label>
+                    <label htmlFor="descriptionPer" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>{languageSelector === 'En' ? 'Per day' : 'На день'}</label>
                     <input
                     id="descriptionPer"
                     name="descriptionPer"
@@ -454,7 +521,7 @@ const DescriptionDashboard = () => {
                   </div>
 
                   <div className={pd.descriptionQuan}>
-                    <label htmlFor="descriptionQuan" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>Quantity</label>
+                    <label htmlFor="descriptionQuan" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>{languageSelector === 'En' ? 'Quantity' : 'Кількість'}</label>
                     <input
                     id="descriptionQuan"
                     name="descriptionQuan"
@@ -467,7 +534,7 @@ const DescriptionDashboard = () => {
                   </div>
 
                   <div className={pd.descriptionDur}>
-                    <label htmlFor="descriptionDur" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>Duration</label>
+                    <label htmlFor="descriptionDur" style={lightModeSelector === 'dark' ? {color: '#4b51b9'} : {color: 'black'}}>{languageSelector === 'En' ? 'Duration' : 'Протягом'}</label>
                     <input
                     id="descriptionDur"
                     name="descriptionDur"
@@ -483,9 +550,9 @@ const DescriptionDashboard = () => {
 
             <div className={pd.addButton}>
               <button className={pd.clearToArea} type='button' id='clear' onClick={descriptionActions}
-              style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}>Clear</button>
+              style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: '#f9f9f9'}}>{languageSelector === 'En' ? 'Clear' : 'Очист.'}</button>
               <button className={pd.writeToArea} type='button' id='write' onClick={descriptionActions}
-              style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}>Write</button>
+              style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: '#f9f9f9'}}>{languageSelector === 'En' ? 'Write' : 'Запис'}</button>
             </div>
 
           </div>
@@ -517,7 +584,7 @@ const DescriptionDashboard = () => {
             return element.descriptionName.toLocaleUpperCase().includes(formik.values.descriptionSearch.toLocaleUpperCase()) ? <li className={pd.item} key={nanoid()} id={element._id} 
             onClick={selectDescription} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', borderRadius: '8px'} : {backgroundColor: 'white', borderRadius: '8px'}}>
               <div className={pd.nameWrapper} style={element.selected ? {backgroundColor:'rgb(255, 179, 0, 0.8)'} : {backgroundColor:''}}>
-              <div className={pd.name}>{element.descriptionName}</div><p>Description</p></div><p className={pd.description} style={lightModeSelector === 'dark' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white' }}>{element.description}</p></li> : '';
+              <div className={pd.name}>{element.descriptionName}</div><p>{languageSelector === 'En' ? 'Description' : 'Рецепт'}</p></div><p className={pd.description} style={lightModeSelector === 'dark' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white' }}>{element.description}</p></li> : '';
 
           }) : <Loading width={'100px'} height={'100px'}/>}
 

@@ -16,6 +16,8 @@ import Logout from '../SvgComponents/Courses/Logout';
 
 import Burger from '../SvgComponents/Courses/Burger';
 
+import LangToggle from '../LangToggle/LangToggle';
+
 // own dispatch hook
 import { useAppDispatch, useAppSelector } from "../../app.hooks";
 
@@ -31,6 +33,7 @@ const SharedLayout: FC = () => {
   const tokenSelector = useAppSelector(state => state.signIn.token);
   const isLogoutSelector = useAppSelector(state => state.logout.isLogout);
   const lightModeSelector = useAppSelector(state => state.pm.lightMode);
+  const languageSelector = useAppSelector(state => state.pm.language);
 
   const [ menuToggle, setMenuToggle ] = useState(false);
 
@@ -86,25 +89,28 @@ const SharedLayout: FC = () => {
 
                 {tokenSelector && <ul className={sh.navList}>
                     <li className={sh.navLink}>
-                    <NavLink to="/courses" style={location.pathname === '/courses' ? {borderBottom: '2px solid #FDB12D'} : {borderBottom: '2px solid transparent'}}>Courses</NavLink>
+                    <NavLink to="/courses" style={location.pathname === '/courses' ? {borderBottom: '2px solid #FDB12D'} : {borderBottom: '2px solid transparent'}}>{languageSelector === 'En' ? 'Courses' : 'Курси'}</NavLink>
                     </li>
 
                     <li className={sh.navLink}>
-                    <NavLink to="/prescriptions" style={location.pathname === '/prescriptions' ? {borderBottom: '2px solid #FDB12D'} : {borderBottom: '2px solid transparent'}}>Prescriptions</NavLink>
+                    <NavLink to="/prescriptions" style={location.pathname === '/prescriptions' ? {borderBottom: '2px solid #FDB12D'} : {borderBottom: '2px solid transparent'}}>{languageSelector === 'En' ? 'Prescriptions' : 'Рецепти'}</NavLink>
                     </li>
                 </ul>}
 
                 <div className={sh.settingsContainer}>
 
+                <div className={sh.settingsToggle}>
+                  <LangToggle />
                   <DayNight />
+                </div>
 
                   {!tokenSelector && <ul className={sh.authList}>
                       <li className={sh.authLink} style={location.pathname === '/signin' ? {borderBottom: '2px solid #FDB12D',} : {borderBottom: '2px solid transparent'}}>
-                      <NavLink to="/signin">SignIn</NavLink>
+                      <NavLink to="/signin">{languageSelector === 'En' ? 'SignIn' : 'Увійти'}</NavLink>
                       </li>
 
                       <li className={sh.authLink} style={location.pathname === '/signup' ? {borderBottom: '2px solid #FDB12D'} : {borderBottom: '2px solid transparent'}}>
-                      <NavLink to="/signup">SignUp</NavLink>
+                      <NavLink to="/signup">{languageSelector === 'En' ? 'SignUp' : 'Створити'}</NavLink>
                       </li>
                   </ul>}
                 </div>

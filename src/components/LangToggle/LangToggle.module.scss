@@ -1,0 +1,32 @@
+.comtainer {
+
+    width: 25px;
+    height: 25px;
+
+    border-radius: 50px;
+
+    box-shadow: 1px 0 3px 3px #c6c6c7, -2px -1px 1px 4px #f4f4f5;
+
+    transition: box-shadow 500ms;
+
+    background-color: #e2e2e2;
+
+    margin-right: 20px;
+
+    cursor: pointer;
+  
+    p {
+
+        font-weight: 600;
+        
+        margin: 0;
+
+        color: rgb(253, 177, 45);
+
+    }
+
+}
+
+.comtainer:active {
+    box-shadow: inset 1px 0 3px 3px #b2b2b3, inset -2px -1px 1px 4px #f4f4f5;
+}
