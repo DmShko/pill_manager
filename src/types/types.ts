@@ -180,3 +180,9 @@ export interface Course {
     status: boolean
     reschedule: boolean
   };
+
+  export interface Cards {
+    value: string, 
+    status: boolean,
+    id: string,
+};

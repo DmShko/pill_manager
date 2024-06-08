@@ -1,11 +1,33 @@
 
     .container {
 
-        // width: calc(100vw - 100px);
-        
-        // padding: 130px 50px 0 50px;
-
         padding: 130px 0 0 0;
         width: 100%;
+        height: 100vh;
         
     }
+
+    //******************************@media rules************************************
+
+ //-------------------(min-width: 768px) and (max-width: 1439px)-----------------
+ @media screen and (min-width: 768px) and (max-width: 1439px) {
+    
+    .container {
+
+        height: unset;
+        
+    }
+
+}
+ 
+ //-------------------min-width: 1440px----------------------------
+ @media screen and (min-width: 1440px) {
+
+     .container {
+
+        width: unset;
+        
+    }
+    
+ }
+ //******************************end************************************

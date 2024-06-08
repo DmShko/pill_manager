@@ -387,6 +387,17 @@
 
                 overflow-y: scroll;
 
+                &::-webkit-scrollbar {
+
+                    width: 8px;
+                }
+           
+                &::-webkit-scrollbar-thumb {
+           
+                    background-color: rgb(253, 177, 45);
+                    
+                }
+
             }
 
             .area:focus {
@@ -413,6 +424,17 @@
         padding: 20px 10px;
 
         overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+
+            width: 8px;
+        }
+   
+        &::-webkit-scrollbar-thumb {
+   
+            background-color: rgb(253, 177, 45);
+            
+        }
 
         .item {
 
@@ -492,6 +514,17 @@
                background-color: white;
 
                border-radius: 0 0 0 8px;
+
+               &::-webkit-scrollbar {
+
+                  width: 8px;
+               }
+       
+               &::-webkit-scrollbar-thumb {
+       
+                  background-color: rgb(253, 177, 45);
+                
+               }
           
             }
 
