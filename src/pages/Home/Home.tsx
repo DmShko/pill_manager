@@ -182,7 +182,7 @@ const Home: FC = () => {
               })
             }
             
-          </ul> : <MedicineCard width={'150px'} height={'150px'}/>}
+          </ul> : <MedicineCard width={'130px'} height={'130px'}/>}
         
         </div>
         

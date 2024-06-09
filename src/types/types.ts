@@ -1,3 +1,9 @@
+export enum FormPill {
+  capsule ='capsule',
+  tablet ='tablet',
+  drops ='drops',
+}
+
 // type for one pill element
 export interface Pill {
     id: string
@@ -5,6 +11,7 @@ export interface Pill {
     perDay: string 
     startMonth: string
     startDay: string
+    form: FormPill
     quantity: string
     duration: string
     frozyDuration: string

@@ -5,7 +5,7 @@
         top: 0;
         left: 0;
 
-        width: 100%;
+        width: 100vw;
 
         border-bottom: 2px solid rgba(16, 16, 24, 0.2);
 
@@ -193,6 +193,82 @@
         width: 100vw;
     }
 
+    .footerContainer {
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+
+        width: calc(100vw - 100vw * 100 / 20);
+        height: 100px;
+
+        padding: 10px 20px;
+        margin: 0 auto;
+
+        border-top: 2px solid lightgray;
+
+        .footerLogo {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            font-family:'Poetsen One';
+            font-size: 16px;
+
+            .title {
+                margin: 0;
+            }
+
+            .subTitle {
+                font-size: 10px;
+                color: gray;
+
+                margin: 0;
+            }
+        }
+
+        .right {
+
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .links {
+            margin: 0;
+
+            .item {
+
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                font-size: 12px;
+
+                height: fit-content;
+
+                margin: 0;
+
+                color: gray;
+
+                a {
+                   cursor: pointer; 
+                }
+                
+
+                p {
+                    margin: 0;
+
+                }
+            }
+
+        }
+
+    }
+
 //******************************@media rules************************************
 
 //-------------------(min-width: 768px) and (max-width: 1439px)-----------------
@@ -231,6 +307,82 @@
         
             }
         }
+    }
+
+    .footerContainer {
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        width: calc(100vw - 100vw * 100 / 20);
+        height: 100px;
+
+        padding: 10px 20px;
+        margin: 0 auto;
+
+        border-top: 2px solid lightgray;
+
+        .footerLogo {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+            font-family:'Poetsen One';
+            font-size: 16px;
+
+            .title {
+                margin: 0;
+            }
+
+            .subTitle {
+                font-size: 10px;
+                color: gray;
+
+                margin: 0;
+            }
+        }
+
+        .right {
+
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .links {
+            margin: 0;
+
+            .item {
+
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+
+                font-size: 12px;
+
+                height: fit-content;
+
+                margin: 0;
+
+                color: gray;
+
+                a {
+                   cursor: pointer; 
+                }
+                
+
+                p {
+                    margin: 0;
+
+                }
+            }
+
+        }
+
     }
    
 }
@@ -275,6 +427,82 @@
         
             }
         }
+    }
+
+    .footerContainer {
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 100vw;
+        height: 100px;
+
+        padding: 10px 20px;
+        margin: 0 auto;
+
+        border-top: 2px solid lightgray;
+
+        .footerLogo {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+            font-family:'Poetsen One';
+            font-size: 16px;
+
+            .title {
+                margin: 0;
+            }
+
+            .subTitle {
+                font-size: 10px;
+                color: gray;
+
+                margin: 0;
+            }
+        }
+
+        .right {
+
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .links {
+            margin: 0;
+
+            .item {
+
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+
+                font-size: 12px;
+
+                height: fit-content;
+
+                margin: 0;
+
+                color: gray;
+
+                a {
+                   cursor: pointer; 
+                }
+                
+
+                p {
+                    margin: 0;
+
+                }
+            }
+
+        }
+
     }
    
 }

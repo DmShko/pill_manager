@@ -14,6 +14,8 @@ import ci from "./CourseItem.module.scss";
 
 // images
 import PillImage from '../../SvgComponents/Courses/pillItem/PillImage'; 
+import Tablet from '../../SvgComponents/Courses/Tablet'; 
+import Drops from '../../SvgComponents/Courses/Drops'; 
 
 import Part from '../../SvgComponents/Courses/Part';
 
@@ -205,7 +207,7 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
               {courses.pills.length !== 0 ? courses.pills.map(element => 
                 {
                   return <li key={nanoid()} className={ci.pillItem} id={element.id} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'white'}}>
-                    <div ><PillImage width={'24px'} height={'24px'}/></div>
+                    <div> {element.form === 'capsule' ? <PillImage width={'24px'} height={'24px'}/> : element.form === 'tablet' ? <Tablet width={'24px'} height={'24px'}/> : element.form === 'drops' ? <Drops width={'24px'} height={'24px'}/> : ''}</div>
                     <p className={ci.pillName} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: 'white'}}>{element.pillName}</p>
                     <div className={ci.pillTextContainer}>
                       <div className={ci.pillText}><div className={ci.itemIcon}><p className={ci.pillTitle}>{languageSelector === 'En' ? 'per/day:': 'на/дн:'}</p><Part width={'12px'} height={'12px'}/></div><p className={ci.pillTitleValue}>{element.perDay}</p></div>

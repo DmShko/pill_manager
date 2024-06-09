@@ -53,7 +53,7 @@ import Done from '../../SvgComponents/Courses/Modal/Success';
 import Horn from '../../SvgComponents/Courses/Modal/Horn'; 
 
 // types
-import { Content, Pill, PillDate, } from '../../../types/types';
+import { Content, Pill, PillDate, FormPill, } from '../../../types/types';// types
 
 const monthes = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -441,6 +441,7 @@ const CourseDashboard: FC = () => {
         perDay: '', 
         startMonth: '',
         startDay: '',
+        form: FormPill.capsule,
         quantity: '',
         duration: '',
         frozyDuration: '',

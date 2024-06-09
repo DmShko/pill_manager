@@ -5,7 +5,7 @@ import axios from "axios";
 import { SignInArgs } from '../types/authTypes'
 import { SignInRes } from '../types/authTypes'
 
-const URL = 'http://localhost:3000/api/auth/signin';
+const URL = 'https://pill-server.onrender.com/api/auth/signin';
 // createAsyncThunk<return data type, arg type, rejectValue type>
 export const singInAPI = createAsyncThunk<SignInRes, SignInArgs, {rejectValue: string}>(
   'singIn/singInAPI', 

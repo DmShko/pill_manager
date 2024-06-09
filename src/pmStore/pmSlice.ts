@@ -188,7 +188,7 @@ const pmSlice = createSlice({
               "string"
             ){
              
-              temp[action.payload.key as keyof Omit<Pill, "selectedPill">] = (
+              temp[action.payload.key as keyof Omit<Pill, "selectedPill" | "form">] = (
                 action.payload.data as ChangePillProp
               ).prop;
             }

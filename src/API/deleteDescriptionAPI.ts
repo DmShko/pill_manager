@@ -4,7 +4,7 @@ import axios from "axios";
 // types
 import { deleteDescriptionArgs } from '../types/descriptionTypes';
 
-const URL='http://localhost:3000/api/description';
+const URL='https://pill-server.onrender.com/api/description';
 
 // createAsyncThunk<return data type, arg type, rejectValue type>
 export const deleteDescriptionAPI = createAsyncThunk<any,  deleteDescriptionArgs, {rejectValue: string}>(

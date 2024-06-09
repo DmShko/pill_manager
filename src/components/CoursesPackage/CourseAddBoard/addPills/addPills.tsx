@@ -16,6 +16,14 @@ import { deleteStatisticAPI } from '../../../../API/deleteStatisticAPI'
 import { changeTempPills } from '../../../../pmStore/pmSlice';
 import { changeStatistic } from '../../../../pmStore/pmSlice';
 
+// images
+import Capsule from '../../../SvgComponents/Courses/pillItem/PillImage'; 
+import Tablet from '../../../SvgComponents/Courses/Tablet'; 
+import Drops from '../../../SvgComponents/Courses/Drops'; 
+
+// types
+import { FormPill } from '../../../../types/types'
+
 const AddPills: FC = () => {
 
   const dispatch = useAppDispatch();
@@ -39,6 +47,7 @@ const AddPills: FC = () => {
   const [itemName, setItemName ] = useState<Boolean>();
   const [itemQuantity, setItemQuantity ] = useState<Boolean>();
   const [itemDuration, setItemDuration ] = useState<Boolean>();
+  const [form, setForm ] = useState<FormPill>(FormPill.capsule);
 
   // save button toggle
   const [itemActiveSave, setItemActiveSave ] = useState<Boolean>(false);
@@ -176,6 +185,7 @@ const AddPills: FC = () => {
 
             dispatch(changeTempPills({ mode: 'addPill', data: {id: id, pillName: values.pillName,
                 perDay: values.perDay,
+                form: form,
                 quantity: values.quantity,
                 duration: values.duration,
                 frozyDuration: values.duration,
@@ -318,6 +328,29 @@ const AddPills: FC = () => {
 
   };
 
+  const typePillsHandler = (evt: React.MouseEvent<HTMLButtonElement>) => {
+      switch((evt.currentTarget as HTMLButtonElement).id) {
+        case 'tablet':
+
+          setForm(FormPill.tablet);
+
+          break;
+        case 'drops':
+
+          setForm(FormPill.drops);
+
+          break;
+        case 'capsule':
+
+          setForm(FormPill.capsule);
+
+          break;
+        default:
+          break;
+
+      }
+  };
+
   return (
    
         <div className={ap.addPillsContainer}>
@@ -326,7 +359,7 @@ const AddPills: FC = () => {
               <label htmlFor='pillName'
               style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}}>{languageSelector === 'En'  ? 'Pill name' : 'Назва ліків'}</label>
               <div className={ap.pillNameContainer}>
-                
+                  <div className={ap.typeOfPills}>
                     <input       
                         id="pillName"
                         name="pillName"
@@ -337,6 +370,15 @@ const AddPills: FC = () => {
                         style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                     />
 
+                    <div className={ap.pillTypeButton}>
+
+                      <button type='button' id='capsule' onClick={typePillsHandler} style={form === 'capsule' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white'}}><Capsule width={'20px'} height={'20px'}/></button>
+                      <button type='button' id='tablet' onClick={typePillsHandler} style={form === 'tablet' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white'}}><Tablet width={'20px'} height={'20px'}/></button>
+                      <button type='button' id='drops' onClick={typePillsHandler} style={form === 'drops' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white'}}><Drops width={'20px'} height={'20px'}/></button>
+
+                    </div>
+
+                  </div>
                 
                 <div className={ap.messageContainer} style={formik.errors.pillName || formik.errors.perDay || formik.errors.quantity || formik.errors.duration ? {opacity: '1', } : {opacity: '0'}}>
 

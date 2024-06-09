@@ -122,12 +122,33 @@ const SharedLayout: FC = () => {
             </nav>
         </div>
       </header>
+
       <main>
         <Suspense fallback={"..loading"}>
           <Outlet />
         </Suspense>
       </main>
+
       <footer>
+
+        <div className={sh.footerContainer} style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)', borderTop: 'none'} : {backgroundColor: 'white'}}>
+
+          <div className={sh.footerLogo} style={lightModeSelector === 'dark' ? {color: '#646cff'} : {color: ''}}>
+            <p className={sh.title}>Medicine</p>
+            <p className={sh.subTitle}>with MedicineServer</p>
+          </div>
+        
+          <p className={sh.right}>&copy; 2024 Dmytro Shevchenko</p>
+          
+          <div className={sh.links}>
+
+            <div className={sh.item}><p>Email: medicine2024.service@gmail.com</p></div>
+            <div className={sh.item}><a className={sh.link} target='_blank' href="">LinkedIn</a></div>
+            <div className={sh.item}><a className={sh.link} target='_blank' href="https://github.com/DmShko?tab=overview&from=2024-06-01&to=2024-06-09">Github</a></div>
+            
+          </div>
+            
+        </div>
 
       </footer>
 

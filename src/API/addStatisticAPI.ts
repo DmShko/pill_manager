@@ -4,7 +4,7 @@ import axios from "axios";
 // types
 import { addStatisticArgs } from '../types/prescriptionTypes';
 
-const URL='http://localhost:3000/api/statistic/';
+const URL='https://pill-server.onrender.com/api/statistic/';
 
 // createAsyncThunk<return data type, arg type, rejectValue type>
 export const addStatisticAPI = createAsyncThunk<any, addStatisticArgs, {rejectValue: string}>(

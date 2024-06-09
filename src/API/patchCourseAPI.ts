@@ -5,7 +5,7 @@ import axios from "axios";
 import { patchCoursesArgs } from '../types/prescriptionTypes';
 
 
-const URL='http://localhost:3000/api/pills/';
+const URL='https://pill-server.onrender.com/api/pills/';
 
 // createAsyncThunk<return data type, arg type, rejectValue type>
 export const patchCourseAPI = createAsyncThunk<any, patchCoursesArgs, {rejectValue: string}>(

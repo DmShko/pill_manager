@@ -81,8 +81,8 @@
         justify-content: center;
         align-items: center;
 
-        width: 90%;
-        height: 150px;
+        width: 80%;
+        height: 200px;
 
         gap: 5px;
 
@@ -131,7 +131,7 @@
         .block {
 
             width: calc((100% - 120px) / 3);
-            height: 250px;
+            height: calc((100% - 120px) / 3);
 
             margin: auto;
 
@@ -166,7 +166,7 @@
         .block {
 
             width: calc((100% - 120px) / 3);
-            height: 300px;
+            height: calc((100% - 120px) / 3);
 
             margin: auto;
 

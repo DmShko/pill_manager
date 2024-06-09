@@ -582,6 +582,16 @@
       width: 90%;
 
       overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+         width: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+
+         background-color: rgb(253, 177, 45);
+      
+      }
    }
     
    .searchContainer {
@@ -735,9 +745,19 @@
    .courses {
 
       height: 90vh;
-      width: 90%;
+      width: 80%;
 
       overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+         width: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+
+         background-color: rgb(253, 177, 45);
+      
+      }
    }
   
    .searchContainer {
@@ -757,6 +777,7 @@
       height: 80%;
 
       overflow-y: scroll;
+
    }
 
    .modalContainer {

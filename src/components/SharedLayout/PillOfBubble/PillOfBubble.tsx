@@ -139,7 +139,7 @@ const PillOfBubble: FC = () => {
         <NavLink to="/" style={lightModeSelector === 'dark' ? {color: 'rgb(253, 177, 45)', borderBottom:'2px solid lightgray', 
           borderRadius: '8px', borderTop:'2px solid lightgray', backgroundColor: 'gray'} :
           {color: 'rgb(201, 189, 20)', borderBottom:'2px solid white', 
-          borderRadius: '8px', borderTop:'2px solid white', backgroundColor: 'white'}}>Medicine</NavLink>
+          borderRadius: '8px', borderTop:'2px solid white', backgroundColor: 'white'}}><p className={bu.logoTitle}>Medicine</p></NavLink>
           { animaStart && transitions((style, item) => (
               <animated.div style={style} className={bu.anima}>
                   <Booble

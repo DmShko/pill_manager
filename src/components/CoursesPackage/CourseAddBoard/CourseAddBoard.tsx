@@ -164,6 +164,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
       setNewCourseId('');
 
       if(pressEditSelector) {
+   
         // get 'values' keys
         const valuesKeys = Object.keys(values);
         // sort value in 'valuesKeys' and compare with search course future values in state
