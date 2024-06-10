@@ -5,7 +5,7 @@ import deleteDescriptionAPI  from '../API/deleteDescriptionAPI';
 // types
 import { deleteDescriptionInitialState, ActionDeleteDescription } from '../types/descriptionTypes';
 
-const deleteDescriptionInitialState: deleteDescriptionInitialState = {
+const deleteDescriptionSliceInitialState: deleteDescriptionInitialState = {
 
   isDelete: false,
   isLoading: false,
@@ -15,7 +15,7 @@ const deleteDescriptionInitialState: deleteDescriptionInitialState = {
 
 const deleteDescriptionSlice = createSlice({
   name: 'deleteDescription',
-  initialState: deleteDescriptionInitialState,
+  initialState: deleteDescriptionSliceInitialState,
 
   reducers: {
 

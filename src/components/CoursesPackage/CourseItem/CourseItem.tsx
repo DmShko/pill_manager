@@ -30,7 +30,6 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
   const dispatch = useAppDispatch();
 
   const tokenSelector = useAppSelector(state => state.signIn.token);
-  const isLogInSelector = useAppSelector(state => state.signIn.isLogIn);
   const coursesSelector = useAppSelector(state => state.pm.courses);
   const statisticsSelector = useAppSelector(state => state.getStatistic.statistics);
   const lightModeSelector = useAppSelector(state => state.pm.lightMode);
