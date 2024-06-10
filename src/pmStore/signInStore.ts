@@ -28,7 +28,7 @@ const singInSlice = createSlice({
         case 'clearToken':
             state.token = '';
             break;
-        case 'changeIsLogiIn':
+        case 'changeIsLogIn':
             state.isLogIn = (action.payload.data as boolean);
             break;
         default: break;

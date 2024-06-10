@@ -48,7 +48,7 @@ const singUpSlice = createSlice({
         state.isLoading = false;
         state.isSignUp = true;
         state.email = action.payload.data.user.email;
-        state.message = 'Account created successfully';
+        state.message = 'Account created successfully. Wait for the verification letter';
         // some actions with 'action'...
       });
             

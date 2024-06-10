@@ -201,7 +201,7 @@
         align-items: center;
 
         width: calc(100vw - 100vw * 100 / 20);
-        height: 100px;
+        height: fit-content;
 
         padding: 10px 20px;
         margin: 0 auto;

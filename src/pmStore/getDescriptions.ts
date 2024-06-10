@@ -5,7 +5,7 @@ import allDescriptionAPI  from '../API/allDescriptionAPI';
 // types
 import { getDescriptionInitialState, ActionDescription, ChangeDescriptionPropB, Desc, ChangeDescriptionPropS } from '../types/descriptionTypes';
 
-const getDescriptionInitialState: getDescriptionInitialState = {
+const getDescriptionSliceInitialState: getDescriptionInitialState = {
 
   description: [],
   isLoad: false,
@@ -16,7 +16,7 @@ const getDescriptionInitialState: getDescriptionInitialState = {
 
 const getDescriptionSlice = createSlice({
   name: 'getDescriptions',
-  initialState: getDescriptionInitialState,
+  initialState: getDescriptionSliceInitialState,
 
   reducers: {
 

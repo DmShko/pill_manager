@@ -49,7 +49,7 @@ const SignIp = () => {
     if(isLogInSelector) {
 
       navigate('/courses');
-      dispatch(changeSingIn({operation: 'changeIsLogiIn', data: false}));
+      dispatch(changeSingIn({operation: 'changeIsLogIn', data: false}));
 
     }; 
    

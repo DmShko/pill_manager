@@ -5,7 +5,7 @@ import addStatisticAPI  from '../API/addStatisticAPI';
 // types
 import { addStatisticInitialState } from '../types/prescriptionTypes';
 
-const addStatisticInitialState: addStatisticInitialState = {
+const addStatisticSliceInitialState: addStatisticInitialState = {
 
   isLoading: false,
   isLoad: false,
@@ -15,7 +15,7 @@ const addStatisticInitialState: addStatisticInitialState = {
 
 const addStatisticSlice = createSlice({
   name: 'addStatistic',
-  initialState: addStatisticInitialState,
+  initialState: addStatisticSliceInitialState,
 
   reducers: {
     
@@ -29,7 +29,7 @@ const addStatisticSlice = createSlice({
         state.isLoad = false;
       });
             
-      builder.addCase(addStatisticAPI.fulfilled, (state, action) => {
+      builder.addCase(addStatisticAPI.fulfilled, (state) => {
 
         state.isLoading = false;
         state.isLoad = true;

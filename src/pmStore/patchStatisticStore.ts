@@ -5,7 +5,7 @@ import patchStatisticAPI  from '../API/patchStatisticAPI';
 // types
 import { patchStatisticInitialState } from '../types/prescriptionTypes';
 
-const patchStatisticInitialState: patchStatisticInitialState = {
+const patchStatisticSliceInitialState: patchStatisticInitialState = {
 
   isLoading: false,
   isLoad: false,
@@ -15,7 +15,7 @@ const patchStatisticInitialState: patchStatisticInitialState = {
 
 const patchStatisticSlice = createSlice({
   name: 'patchStatistic',
-  initialState: patchStatisticInitialState,
+  initialState: patchStatisticSliceInitialState,
 
   reducers: {
 
@@ -30,7 +30,7 @@ const patchStatisticSlice = createSlice({
         
       });
             
-      builder.addCase(patchStatisticAPI.fulfilled, (state, action) => {
+      builder.addCase(patchStatisticAPI.fulfilled, (state) => {
 
         state.isLoading = false;
         state.isLoad = true;

@@ -5,7 +5,7 @@ import deleteStatisticAPI  from '../API/deleteStatisticAPI';
 // types
 import { deleteStatisticInitialState } from '../types/prescriptionTypes';
 
-const deleteStatisticInitialState: deleteStatisticInitialState = {
+const deleteStatisticSliceInitialState: deleteStatisticInitialState = {
 
   isLoading: false,
   isDelete: false,
@@ -15,7 +15,7 @@ const deleteStatisticInitialState: deleteStatisticInitialState = {
 
 const deleteStatisticSlice = createSlice({
   name: 'deleteStatistic',
-  initialState: deleteStatisticInitialState,
+  initialState: deleteStatisticSliceInitialState,
 
   reducers: {
     

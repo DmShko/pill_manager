@@ -5,7 +5,7 @@ import putDescriptionAPI from '../API/putDescriptionAPI';
 // types
 import { putDescriptionInitialState, ActionPutDescription } from '../types/descriptionTypes';
 
-const putDescriptionInitialState: putDescriptionInitialState = {
+const putDescriptionSliceInitialState: putDescriptionInitialState = {
 
   isLoading: false,
   isChange: false,
@@ -15,7 +15,7 @@ const putDescriptionInitialState: putDescriptionInitialState = {
 
 const putDescriptionSlice = createSlice({
   name: 'putDescription',
-  initialState: putDescriptionInitialState,
+  initialState: putDescriptionSliceInitialState,
 
   reducers: {
     changePutDescription(state, action: PayloadAction<ActionPutDescription>) {

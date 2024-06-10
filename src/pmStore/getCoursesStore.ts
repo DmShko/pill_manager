@@ -5,7 +5,7 @@ import getCoursesAPI  from '../API/getCoursesAPI';
 // types
 import { getCoursesInitialState } from '../types/prescriptionTypes';
 
-const getCoursesInitialState: getCoursesInitialState = {
+const getCoursesSliceInitialState: getCoursesInitialState = {
 
   freshCourses: [],
   isLoading: false,
@@ -15,7 +15,7 @@ const getCoursesInitialState: getCoursesInitialState = {
 
 const getCoursesSlice = createSlice({
   name: 'getCourses',
-  initialState: getCoursesInitialState,
+  initialState: getCoursesSliceInitialState,
 
   reducers: {
     

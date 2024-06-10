@@ -47,11 +47,11 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
 
         for(const p of currentCourse.pills) {
 
-          if(p.startDay !== '') count += 1;
+          if(p.startDay !== '0') count += 1;
 
         };
       };
-     
+
       if(count === 0) {
         // not active
         // rewrite in DB
@@ -67,7 +67,7 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
 
       } 
 
-      if(count !== 0 && getAllDone() !== getAllDuration() && isLogInSelector) {
+      if(count !== 0 && getAllDone() !== getAllDuration() && tokenSelector) {
  
         // rewrite in DB
         dispatch(patchCourseAPI({token: tokenSelector, id: courses._id, prop: 'not done', key: 'status',}));
@@ -106,7 +106,7 @@ const CourseItem: FC<CourseItemProps> = ({ courses }) => {
 
       if(!s.reschedule) {
 
-        if(s.done) doneCount += 1;
+        if(s.done !== 0) doneCount += 1;
 
       }
 

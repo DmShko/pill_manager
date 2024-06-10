@@ -5,7 +5,7 @@ import patchCoursesAPI  from '../API/patchCourseAPI';
 // types
 import { patchCoursesInitialState } from '../types/prescriptionTypes';
 
-const patchCoursesInitialState: patchCoursesInitialState = {
+const patchCoursesSliceInitialState: patchCoursesInitialState = {
 
   isLoading: false,
   error: '',
@@ -14,7 +14,7 @@ const patchCoursesInitialState: patchCoursesInitialState = {
 
 const patchCourseSlice = createSlice({
   name: 'patchCourses',
-  initialState: patchCoursesInitialState,
+  initialState: patchCoursesSliceInitialState,
 
   reducers: {
     

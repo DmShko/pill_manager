@@ -143,7 +143,7 @@ const SharedLayout: FC = () => {
           <div className={sh.links}>
 
             <div className={sh.item}><p>Email: medicine2024.service@gmail.com</p></div>
-            <div className={sh.item}><a className={sh.link} target='_blank' href="">LinkedIn</a></div>
+            <div className={sh.item}><a className={sh.link} target='_blank' href="https://www.linkedin.com/in/dmitry-shevchenko-aa884613b">LinkedIn</a></div>
             <div className={sh.item}><a className={sh.link} target='_blank' href="https://github.com/DmShko?tab=overview&from=2024-06-01&to=2024-06-09">Github</a></div>
             
           </div>

@@ -5,7 +5,7 @@ import deleteCoursesAPI  from '../API/deleteCourseAPI';
 // types
 import { delCoursesInitialState } from '../types/prescriptionTypes';
 
-const delCoursesInitialState: delCoursesInitialState = {
+const delCoursesSliceInitialState: delCoursesInitialState = {
 
   isLoading: false,
   error: '',
@@ -14,7 +14,7 @@ const delCoursesInitialState: delCoursesInitialState = {
 
 const deleteCoursesSlice = createSlice({
   name: 'deleteCourses',
-  initialState: delCoursesInitialState,
+  initialState: delCoursesSliceInitialState,
 
   reducers: {
     
@@ -26,7 +26,7 @@ const deleteCoursesSlice = createSlice({
         state.isLoading = true; state.error = '';
       });
             
-      builder.addCase(deleteCoursesAPI.fulfilled, (state, action) => {
+      builder.addCase(deleteCoursesAPI.fulfilled, (state) => {
 
         state.isLoading = false;
 
