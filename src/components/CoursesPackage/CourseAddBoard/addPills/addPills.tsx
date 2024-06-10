@@ -431,6 +431,7 @@ const AddPills: FC = () => {
                             className={ap.pillInput}
                             onChange={formik.handleChange}
                             value={formik.values.duration}
+                           
                             style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}
                         />
                     </div>
