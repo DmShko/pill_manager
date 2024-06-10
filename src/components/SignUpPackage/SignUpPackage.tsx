@@ -134,7 +134,7 @@ const SignUp = () => {
     validationSchema: Yup.object({
         email: Yup.string()
           .matches(
-            /\w{0}[0-9a-zA-Za-яА-Я]+@\w{0}[a-zA-Za-яА-Я]+\.\w{0}[a-zA-Za-яА-Я]/,
+            /\w{0}[0-9a-zA-Za-яА-Я@-_]+@\w{0}[a-zA-Za-яА-Я]+\.\w{0}[a-zA-Za-яА-Я]/,
             { message: errorMessagesTrans('email')}
           )
           .required(errorMessagesTrans('emailReq')),
