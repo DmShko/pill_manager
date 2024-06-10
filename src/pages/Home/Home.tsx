@@ -117,7 +117,7 @@ const Home: FC = () => {
 
     };
 
-    setCards(state => state = [...temp]);
+    setCards([...temp]);
 
   };
 
@@ -130,7 +130,7 @@ const Home: FC = () => {
     if(tempCard !== undefined && tempCard.status !== true) {
       tempCard.status = true;
       
-      setCards(state => state = [...temp]);
+      setCards([...temp]);
 
       toBuffer(tempCard.value);
     }
