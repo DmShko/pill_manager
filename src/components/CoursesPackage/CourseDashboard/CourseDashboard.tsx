@@ -1311,11 +1311,11 @@ const CourseDashboard: FC = () => {
           </div>
             
           <div className={cd.coursesDrive}>
-            <button className={cd.coursesButton} onClick={openAddBoard} type='button' disabled={detectSelected() !== 0 ? true : false}><Add style={addButtonStyle()} width={'30px'} height={'30px'} stroke={detectSelected() !== 0 ? 'lightgray' : '#646cff'}/></button>
-            <button className={cd.coursesButton} id='edit' onClick={courseActions} type='button' disabled={!isAddBoard ? detectSelected() == 1 ? false : true : true}><ChangeImg width={'25px'} height={'25px'} stroke={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? '#646cff' : 'lightgray' : '#646cff'}/></button>
-            <button className={cd.coursesButton} id='delete' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() !== 0 ? '#646cff' : 'lightgray'}/></button>
-            <button className={cd.coursesButton} id='reload' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><Reload width={'25px'} height={'25px'}/></button>
-            <button className={cd.coursesButton} id='details' onClick={openModal} type='button' disabled={detectSelected() == 1 && !detectPillisEmpty() ? false : true}><Details width={'25px'} height={'25px'} fill={detectSelected() == 1 && !detectPillisEmpty() ? '#646cff' : 'lightgray'}/></button>
+            <button className={cd.coursesButton} title="Add new course" onClick={openAddBoard} type='button' disabled={detectSelected() !== 0 ? true : false}><Add style={addButtonStyle()} width={'30px'} height={'30px'} stroke={detectSelected() !== 0 ? 'lightgray' : '#646cff'}/></button>
+            <button className={cd.coursesButton} title="Edit course" id='edit' onClick={courseActions} type='button' disabled={!isAddBoard ? detectSelected() == 1 ? false : true : true}><ChangeImg width={'25px'} height={'25px'} stroke={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? '#646cff' : 'lightgray' : '#646cff'}/></button>
+            <button className={cd.coursesButton} title="Delete course" id='delete' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() !== 0 ? '#646cff' : 'lightgray'}/></button>
+            <button className={cd.coursesButton} title="Refresh course" id='reload' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><Reload width={'25px'} height={'25px'}/></button>
+            <button className={cd.coursesButton} title="Details of course" id='details' onClick={openModal} type='button' disabled={detectSelected() == 1 && !detectPillisEmpty() ? false : true}><Details width={'25px'} height={'25px'} fill={detectSelected() == 1 && !detectPillisEmpty() ? '#646cff' : 'lightgray'}/></button>
           </div>
 
           <div className={cd.coursesInfo}>
@@ -1385,10 +1385,10 @@ const CourseDashboard: FC = () => {
                 </div>
 
                 {month !== '' ? <div className={cd.currentDay}>
-                  <button type='button' className={cd.currentDayButton} id='down' onClick={courseActions}
+                  <button type='button' className={cd.currentDayButton} title="Next day down" id='down' onClick={courseActions}
                   style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc', borderRadius: '8px'} : {backgroundColor:'lightgray', borderRadius: '8px'}}></button>
                   <div className={cd.currentDayData}>{selectedDay.toString()}</div>
-                  <button type='button' className={cd.currentDayButton} id='up' onClick={courseActions}
+                  <button type='button' className={cd.currentDayButton} title="Next day up" id='up' onClick={courseActions}
                   style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc', borderRadius: '8px'} : {backgroundColor:'lightgray', borderRadius: '8px'}}></button>
 
                   <div className={cd.modalDashbord}>
@@ -1425,9 +1425,9 @@ const CourseDashboard: FC = () => {
                 
                 </div>
 
-                <button type='button' id='count' className={cd.countButton} onClick={courseActions} disabled={getStatus().count ? true : false}
+                <button type='button' id='count' className={cd.countButton} title="Done a day" onClick={courseActions} disabled={getStatus().count ? true : false}
                   style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}><span>Count</span></button>
-                <button type='button' id='reschedule' className={cd.rescheduleButton} onClick={courseActions} disabled={getStatus().reschedule ? true : false}
+                <button type='button' id='reschedule' className={cd.rescheduleButton} title="Reschedule a day" onClick={courseActions} disabled={getStatus().reschedule ? true : false}
                   style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}><span>Reschedule</span></button>
 
               </div>

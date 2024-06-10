@@ -347,7 +347,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
                   />
                 </div>
 
-                <button type="submit" className={cb.courseButton}
+                <button type="submit" className={cb.courseButton} title="Add change"
                 style={lightModeSelector === 'dark' ? {backgroundColor:'#9da1fc'} : {backgroundColor:'#f9f9f9'}}>{pressEditSelector ? languageSelector === 'En' ? 'Save change' : 'Зберегти зміни' : languageSelector === 'En' ? 'Create' : 'Створити'}</button>
 
               </div>

@@ -115,9 +115,9 @@ const SharedLayout: FC = () => {
                   </ul>}
                 </div>
 
-              {tokenSelector && <button className={sh.burgerButton} type="button" onClick={menuOpenClose}><Burger width={'25px'} height={'25px'}/></button>}
+              {tokenSelector && <button className={sh.burgerButton} title='Open burger menu' type="button" onClick={menuOpenClose}><Burger width={'25px'} height={'25px'}/></button>}
               
-              {tokenSelector && <button className={sh.logoutButton} type="button" onClick={logout} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}><Logout width={'25px'} height={'25px'} /></button>}
+              {tokenSelector && <button className={sh.logoutButton} title='Logout' type="button" onClick={logout} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}><Logout width={'25px'} height={'25px'} /></button>}
 
             </nav>
         </div>

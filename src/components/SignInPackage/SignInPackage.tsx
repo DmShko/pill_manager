@@ -201,7 +201,7 @@ const SignIp = () => {
             style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
           />
 
-          <button type="submit" className={si.courseButton} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}>{!isLoadingSelector ? languageSelector === 'En' ? 'Submit': 'Увійти': <Loading width={'30px'} height={'30px'} />}</button>
+          <button type="submit" className={si.courseButton} title='SignIn' style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}>{!isLoadingSelector ? languageSelector === 'En' ? 'Submit': 'Увійти': <Loading width={'30px'} height={'30px'} />}</button>
 
         </form>
 

@@ -372,9 +372,9 @@ const AddPills: FC = () => {
 
                     <div className={ap.pillTypeButton}>
 
-                      <button type='button' id='capsule' onClick={typePillsHandler} style={form === 'capsule' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white'}}><Capsule width={'20px'} height={'20px'}/></button>
-                      <button type='button' id='tablet' onClick={typePillsHandler} style={form === 'tablet' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white'}}><Tablet width={'20px'} height={'20px'}/></button>
-                      <button type='button' id='drops' onClick={typePillsHandler} style={form === 'drops' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white'}}><Drops width={'20px'} height={'20px'}/></button>
+                      <button type='button' id='capsule' title="Set type capsule" onClick={typePillsHandler} style={form === 'capsule' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white'}}><Capsule width={'20px'} height={'20px'}/></button>
+                      <button type='button' id='tablet' title="Set type tablet"onClick={typePillsHandler} style={form === 'tablet' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white'}}><Tablet width={'20px'} height={'20px'}/></button>
+                      <button type='button' id='drops' title="Set type drops"onClick={typePillsHandler} style={form === 'drops' ? {backgroundColor: 'lightgray'} : {backgroundColor: 'white'}}><Drops width={'20px'} height={'20px'}/></button>
 
                     </div>
 
@@ -435,7 +435,7 @@ const AddPills: FC = () => {
                         />
                     </div>
                 
-                    <button type="submit" className={ap.pillsButton}>{languageSelector === 'En'  ? 'Add' : 'До-ти'}</button>
+                    <button type="submit" className={ap.pillsButton} title="Add new pill to current course">{languageSelector === 'En'  ? 'Add' : 'До-ти'}</button>
                 </div>
             </form>
 
@@ -461,7 +461,7 @@ const AddPills: FC = () => {
                                     : <p className={ap.pillsText} id='itemDuration'> {value.frozyDuration} </p>}
                                
                                 {itemActiveSave && value.selectedPill ? <button className={ap.itemButton} name='save'>Save</button> : ''}
-                                <button className={ap.itemButton} name='del'>Del</button>
+                                <button className={ap.itemButton} title="Delete pill" name='del'>Del</button>
 
                             </li>
                         })}

@@ -428,11 +428,11 @@ const DescriptionDashboard = () => {
         <form className={pd.form} onSubmit={formik.handleSubmit}>
 
           <div className={pd.drive}>
-              <button className={pd.button} type='submit' id='submit' disabled={detectSelected() !== 0 ? true : false}><Add width={'30px'} height={'30px'} stroke={detectSelected() !== 0 ? 'lightgray' : '#646cff'}/></button>
-              <button className={pd.button} type='button' id='change' onClick={descriptionActions} disabled={detectSelected() === 1 ? false : true}><ChangeImg width={'25px'} height={'25px'} stroke={detectSelected() !== 1 ? 'lightgray' : '#646cff'}/></button>
-              <button className={pd.button} type='button' id='delete' onClick={descriptionActions} disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() === 0 ? 'lightgray' : '#646cff'}/></button>
-              <button className={pd.button} type='button' id='reload' onClick={descriptionActions}><Reload width={'25px'} height={'25px'}/></button>
-              <button className={pd.button} type='button' id='all' onClick={descriptionActions} disabled={descriptionSelector.length !== 0 ? false : true} style={descriptionSelector.length === 0 ? {stroke: 'lightgray', color: 'lightgray'} : {stroke: '#646cff', color: '#646cff'}}>All</button>
+              <button className={pd.button} type='submit' id='submit' title='Add description' disabled={detectSelected() !== 0 ? true : false}><Add width={'30px'} height={'30px'} stroke={detectSelected() !== 0 ? 'lightgray' : '#646cff'}/></button>
+              <button className={pd.button} type='button' id='change' title='Change description' onClick={descriptionActions} disabled={detectSelected() === 1 ? false : true}><ChangeImg width={'25px'} height={'25px'} stroke={detectSelected() !== 1 ? 'lightgray' : '#646cff'}/></button>
+              <button className={pd.button} type='button' id='delete' title='Delete description' onClick={descriptionActions} disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() === 0 ? 'lightgray' : '#646cff'}/></button>
+              <button className={pd.button} type='button' id='reload' title='Reload description' onClick={descriptionActions}><Reload width={'25px'} height={'25px'}/></button>
+              <button className={pd.button} type='button' id='all' title='Selected all description' onClick={descriptionActions} disabled={descriptionSelector.length !== 0 ? false : true} style={descriptionSelector.length === 0 ? {stroke: 'lightgray', color: 'lightgray'} : {stroke: '#646cff', color: '#646cff'}}>All</button>
           </div>
 
           <div className={pd.messageContainer} style={formik.errors.descriptionPillName || formik.errors.descriptionPer || formik.errors.descriptionQuan || formik.errors.descriptionDur ? {width: '230px', } : {width: '0'}}>
@@ -549,9 +549,9 @@ const DescriptionDashboard = () => {
             </div>
 
             <div className={pd.addButton}>
-              <button className={pd.clearToArea} type='button' id='clear' onClick={descriptionActions}
+              <button className={pd.clearToArea} title='Clear description body' type='button' id='clear' onClick={descriptionActions}
               style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: '#f9f9f9'}}>{languageSelector === 'En' ? 'Clear' : 'Очист.'}</button>
-              <button className={pd.writeToArea} type='button' id='write' onClick={descriptionActions}
+              <button className={pd.writeToArea} title='Write to description body' type='button' id='write' onClick={descriptionActions}
               style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9', color:'lightgray'} : {backgroundColor: '#f9f9f9'}}>{languageSelector === 'En' ? 'Write' : 'Запис'}</button>
             </div>
 

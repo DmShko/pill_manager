@@ -247,7 +247,7 @@ const SignUp = () => {
             style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
           />
       
-          <button type="submit" className={su.courseButton} style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}>{!isLoadingSelector ? languageSelector === 'En' ? 'Submit': 'Створити' : <Loading width={'30px'} height={'30px'}/>}</button>
+          <button type="submit" className={su.courseButton} title='SignUp' style={lightModeSelector === 'dark' ? {backgroundColor: '#4b51b9'} : {backgroundColor: 'lightgray'}}>{!isLoadingSelector ? languageSelector === 'En' ? 'Submit': 'Створити' : <Loading width={'30px'} height={'30px'}/>}</button>
 
           <a className={su.verify} onClick={reverify}>{languageSelector === 'En' ? 'Repeat verification letter': 'Повторний лист верифікації'}</a>
 
