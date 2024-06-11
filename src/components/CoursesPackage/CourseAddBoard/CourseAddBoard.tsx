@@ -225,7 +225,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
     
         <div className={cb.courseAddboard}>
 
-            <form className={cb.course} onSubmit={formik.handleSubmit}>
+            <form className={cb.course} onSubmit={() => formik.handleSubmit}>
               
               <label className={cb.courseName}
               style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'black'}} htmlFor="courseName">{languageSelector === 'En' ? 'Course name' : 'Назва курсу'}</label>
