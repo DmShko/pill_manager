@@ -579,17 +579,10 @@ const CourseDashboard: FC = () => {
     
   // },[month]);
 
-  const openAddBoard = (evt: React.MouseEvent<HTMLOrSVGElement>) => {
+  const openAddBoard = () => {
    
-    if(evt.currentTarget) {
-      if(isAddBoard) {
-        setIsAddBoard(false);
-      } else {
-
-        setIsAddBoard(true);
-      };
-    }
-
+    setIsAddBoard(state => !state);
+  
   };
 
   const openModal = () => {

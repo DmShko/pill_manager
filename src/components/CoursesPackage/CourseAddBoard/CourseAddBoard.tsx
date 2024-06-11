@@ -63,6 +63,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
       dispatch(addCourseAPI({data: newCourse, token: tokenSelector,}));
     };
 
+    
     openClose(false);
     
   },[coursesSelector]);

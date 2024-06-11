@@ -138,7 +138,7 @@ const SharedLayout: FC = () => {
             <p className={sh.subTitle}>with MedicineServer</p>
           </div>
         
-          <p className={sh.right}>&copy; 2024 Dmytro Shevchenko</p>
+          <p className={sh.right} style={lightModeSelector === 'dark' ? {color: '#646cff'} : {color: ''}}>&copy; 2024 Dmytro Shevchenko</p>
           
           <div className={sh.links}>
 
