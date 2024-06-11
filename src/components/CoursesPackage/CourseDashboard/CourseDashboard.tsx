@@ -580,7 +580,7 @@ const CourseDashboard: FC = () => {
   // },[month]);
 
   const openAddBoard = (evt: React.MouseEvent<HTMLButtonElement>) => {
-
+    console.log((evt.target as HTMLButtonElement), (evt.currentTarget as HTMLButtonElement))
     if((evt.target as HTMLButtonElement).id === 'add') {
       if(isAddBoard) {
         setIsAddBoard(false);
