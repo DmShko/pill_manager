@@ -581,7 +581,7 @@ const CourseDashboard: FC = () => {
 
   const openAddBoard = () => {
 
-    setIsAddBoard(state => !state);
+    setIsAddBoard(true);
 
   };
 
