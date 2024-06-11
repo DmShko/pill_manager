@@ -370,14 +370,25 @@ const CourseDashboard: FC = () => {
       done: 0,
       status: false, reschedule: false,};
 
-    const pillInStatistic = statisticsSelector.find(element => element.dateNumber === selectedDay.toString());
+    for(const a of statisticsSelector) {
 
-    // if selected day exist in statistic
-    if(pillInStatistic !== undefined && pillInStatistic.pillName === selectedPillName) {
-      isPillDay = true;
-      pillId = pillInStatistic._id;
-    } 
-  
+      // const pillInStatistic = statisticsSelector.find(element => element.pillName === selectedPillName);
+
+      if(a.pillName !== undefined && a.pillName === selectedPillName && a.dateNumber === selectedDay.toString()) {
+      
+        // if selected day exist in statistic
+        // if(pillInStatistic !== undefined && pillInStatistic.dateNumber === selectedDay.toString()) {
+          
+        //   isPillDay = true;
+        //   pillId = pillInStatistic._id;
+        // } 
+
+        isPillDay = true;
+        pillId = a._id;
+      }
+
+    }
+
     if(statisticPill !== undefined) {
      
       const dayStatistic = statisticPill.days.find(element => element.dateNumber === selectedDay.toString());
@@ -394,7 +405,7 @@ const CourseDashboard: FC = () => {
         done: pillDone,
         status: doneDay.status, reschedule: doneDay.reschedule}}));
     } else {
-
+      
       // write change Pill statistic to DB
       dispatch(patchStatisticAPI({token: tokenSelector, data: {id: pillId, prop: {key: 'done', value: pillDone,}}}));
     };
@@ -763,6 +774,7 @@ const CourseDashboard: FC = () => {
       case 'count':
 
         setCountPress(true);
+
         const pillPerDay = coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay;
         const getDone = getDateDone();
       
