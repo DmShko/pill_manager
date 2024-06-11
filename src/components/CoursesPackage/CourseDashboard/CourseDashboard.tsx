@@ -1132,6 +1132,8 @@ const CourseDashboard: FC = () => {
   };
 
   const getStatus = () => {
+
+    const perDay = coursesSelector.find(element => element.selected === true)?.pills.find(element => element.pillName === selectedPillName)?.perDay;
     
     const todayMonth = new Date().getMonth() + 1;
     const today = new Date().getDate();
@@ -1213,6 +1215,11 @@ const CourseDashboard: FC = () => {
             around.count = true;
             around.reschedule = false;
           };
+
+          if(currentStatisticDay.done === Number(perDay)) {
+            around.count = true;
+            around.reschedule = true;
+          }
          
         } 
 
