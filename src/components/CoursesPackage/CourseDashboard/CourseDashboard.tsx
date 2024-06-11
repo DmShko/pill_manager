@@ -579,10 +579,17 @@ const CourseDashboard: FC = () => {
     
   // },[month]);
 
-  const openAddBoard = () => {
+  const openAddBoard = (evt: React.MouseEvent<HTMLOrSVGElement>) => {
    
-    setIsAddBoard(state => !state);
-  
+    if(evt.currentTarget) {
+      if(isAddBoard) {
+        setIsAddBoard(false);
+      } else {
+
+        setIsAddBoard(true);
+      };
+    }
+
   };
 
   const openModal = () => {
@@ -1296,7 +1303,7 @@ const CourseDashboard: FC = () => {
     
       <div className={cd.courses}>
 
-        {isAddBoard && <CourseAddBoard openClose={openAddBoard}/>}
+        {isAddBoard && <CourseAddBoard />}
 
         <div className={cd.searchContainer}>
 

@@ -27,9 +27,8 @@ import Attention from "../../SvgComponents/Courses/Attention";
 
 // my types
 import { Pill } from '../../../types/types';
-import { addBoardProps } from "../../../types/types"; 
 
-const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
+const CourseAddBoard: FC = () => {
 
   const dispatch = useAppDispatch();
   const tempPillsSelector = useAppSelector(state => state.pm.tempPills);
@@ -62,9 +61,6 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
       // save course change or new course to DB
       dispatch(addCourseAPI({data: newCourse, token: tokenSelector,}));
     };
-
-    
-    openClose(false);
     
   },[coursesSelector]);
 
