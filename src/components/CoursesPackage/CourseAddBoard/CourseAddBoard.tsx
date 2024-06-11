@@ -162,7 +162,7 @@ const CourseAddBoard: FC<addBoardProps> = ({ openClose }) => {
 
       // reset newCourseId
       setNewCourseId('');
-
+      
       if(pressEditSelector) {
    
         // get 'values' keys
