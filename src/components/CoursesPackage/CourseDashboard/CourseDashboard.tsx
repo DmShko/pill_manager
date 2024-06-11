@@ -580,8 +580,8 @@ const CourseDashboard: FC = () => {
   // },[month]);
 
   const openAddBoard = (evt: React.MouseEvent<HTMLButtonElement>) => {
-    console.log((evt.target as HTMLButtonElement), (evt.currentTarget as HTMLButtonElement))
-    if((evt.target as HTMLButtonElement).id === 'add') {
+   
+    if((evt.currentTarget as HTMLButtonElement).id === 'add') {
       if(isAddBoard) {
         setIsAddBoard(false);
       } else {
@@ -688,7 +688,7 @@ const CourseDashboard: FC = () => {
     const pillMonth = month;
     const moLength = Number(new Date(year, monthes.indexOf(pillMonth), 0).toString().split(' ')[2]);
 
-    switch((evt.target as HTMLButtonElement).id) {
+    switch((evt.currentTarget as HTMLButtonElement).id) {
 
       case 'delete':
         for(const c of coursesSelector){
