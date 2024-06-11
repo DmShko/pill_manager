@@ -584,9 +584,10 @@ const CourseDashboard: FC = () => {
     if(isAddBoard) {
       setIsAddBoard(false);
     } else {
+
+      console.log('here')
       setIsAddBoard(true);
     };
-    
 
   };
 
