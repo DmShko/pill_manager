@@ -153,10 +153,10 @@ const SharedLayout: FC = () => {
       </footer>
 
       {menuToggle && <ModalMenu >
-
-        <p className={sh.coursesItem} id="courses" onClick={BurgerNavigate} style={location.pathname === '/courses' ? {borderBottom: '2px solid #FDB12D',} : {borderBottom: '2px solid transparent'}}>Courses</p>
-        <p className={sh.descriptionItem} id="prescriptions" onClick={BurgerNavigate} style={location.pathname === '/prescriptions' ? {borderBottom: '2px solid #FDB12D',} : {borderBottom: '2px solid transparent'}}>Prescriptions</p>
-        <p className={sh.logoutItem} id="logout" onClick={BurgerNavigate}>Logout</p>
+       
+        <p className={sh.coursesItem} id="courses" onClick={BurgerNavigate} style={lightModeSelector === 'dark' ? location.pathname === '/courses' ? {borderBottom: '2px solid #FDB12D', color: 'white'} : {borderBottom: '2px solid transparent', color: 'white'} : location.pathname === '/courses' ? {borderBottom: '2px solid #FDB12D', color: 'gray'} : {borderBottom: '2px solid transparent'}}>Courses</p>
+        <p className={sh.descriptionItem} id="prescriptions" onClick={BurgerNavigate}  style={lightModeSelector === 'dark' ? location.pathname === '/prescriptions' ? {borderBottom: '2px solid #FDB12D', color: 'white'} : {borderBottom: '2px solid transparent', color: 'white'} : location.pathname === '/prescriptions' ? {borderBottom: '2px solid #FDB12D', color: 'gray'} : {borderBottom: '2px solid transparent'}}>Prescriptions</p>
+        <p className={sh.logoutItem} id="logout" onClick={BurgerNavigate}  style={lightModeSelector === 'dark' ? {color: 'white'} : {color: 'gray'}}>Logout</p>
         
       </ModalMenu>}
 

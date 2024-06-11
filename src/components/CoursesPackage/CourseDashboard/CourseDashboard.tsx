@@ -1311,7 +1311,7 @@ const CourseDashboard: FC = () => {
           </div>
             
           <div className={cd.coursesDrive}>
-            <button className={cd.coursesButton} title="Add new course" onClick={openAddBoard} type='button' disabled={detectSelected() !== 0 ? true : false}><Add style={addButtonStyle()} width={'30px'} height={'30px'} stroke={detectSelected() !== 0 ? 'lightgray' : '#646cff'}/></button>
+            <button className={cd.coursesButton} title="Add new course" id='add' onClick={openAddBoard} type='button' disabled={detectSelected() !== 0 ? true : false}><Add style={addButtonStyle()} width={'30px'} height={'30px'} stroke={detectSelected() !== 0 ? 'lightgray' : '#646cff'}/></button>
             <button className={cd.coursesButton} title="Edit course" id='edit' onClick={courseActions} type='button' disabled={!isAddBoard ? detectSelected() == 1 ? false : true : true}><ChangeImg width={'25px'} height={'25px'} stroke={!isAddBoard ? detectSelected() > 0 && detectSelected() <= 1 ? '#646cff' : 'lightgray' : '#646cff'}/></button>
             <button className={cd.coursesButton} title="Delete course" id='delete' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><DeleteImg width={'25px'} height={'25px'} stroke={detectSelected() !== 0 ? '#646cff' : 'lightgray'}/></button>
             <button className={cd.coursesButton} title="Refresh course" id='reload' onClick={courseActions} type='button' disabled={detectSelected() !== 0 ? false : true}><Reload width={'25px'} height={'25px'}/></button>
