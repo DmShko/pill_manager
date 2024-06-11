@@ -6,4 +6,3 @@ export default defineConfig({
   plugins: [react(),], 
   base: "/pill_manager",
 })
-// base: "/medicine/",
