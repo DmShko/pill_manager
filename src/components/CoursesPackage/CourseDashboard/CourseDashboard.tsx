@@ -286,7 +286,7 @@ const CourseDashboard: FC = () => {
     // when only with edit mode
     if(detectSelected() != 1 && isEdit) {
       setIsEdit(false);
-      // clear iEdit in storage
+      // clear isEdit in storage
       dispatch(changeIsEdit({data: false}));
       dispatch(changePressEdit({ data: false}));
       dispatch(changeTempPills({mode: 'clearPills', data: '', key: ''}));
@@ -1301,7 +1301,7 @@ const CourseDashboard: FC = () => {
     
       <div className={cd.courses}>
 
-        {isAddBoard && <CourseAddBoard openClose={openAddBoard}/>}
+        {pressEditSelector && <CourseAddBoard openClose={openAddBoard}/>}
 
         <div className={cd.searchContainer}>
 
