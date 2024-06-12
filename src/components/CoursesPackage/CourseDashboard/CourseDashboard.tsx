@@ -1316,6 +1316,20 @@ const CourseDashboard: FC = () => {
 
   };
 
+  const TouchDay = (data: string) => {
+
+    const touchStart = Number(calcStart()[0].dateNumber);
+    const touchEnd = calcEnd();
+
+    if(touchStart !== 0) {
+
+      if(touchStart !== undefined && touchEnd !== undefined) {
+        if(Number(data) >= touchStart && Number(data) <= touchStart + touchEnd) setSelectedDay(Number(data));
+      };
+    }
+
+  };
+
   return (
     
       <div className={cd.courses}>
@@ -1434,7 +1448,7 @@ const CourseDashboard: FC = () => {
 
                     {getPillValue('startDay')?.status && Object.keys(statisticSelector).includes(selectedPillName) ? statisticSelector[selectedPillName].days.map(element => {
                       return(
-                        month === element.month ? <li className={cd.item} key={nanoid()} id={element.position} style={dayStyle(element.dateNumber, element.month)}>{element.position}</li> : ''
+                        month === element.month ? <li className={cd.item} key={nanoid()} id={element.position} onClick={() => TouchDay(element.dateNumber)} style={dayStyle(element.dateNumber, element.month)}>{element.position}</li> : ''
                       )
                     }): ''}
 

@@ -371,7 +371,7 @@
 
             width: 80%;
             height: 100%;
-
+           
             .dashSelect {
                display: flex;
                flex-direction: row;
@@ -516,6 +516,9 @@
             width: 50%;
             height: 100%;
 
+            padding: 5px;
+            
+
             .dayDone {
 
                display: flex;
@@ -553,6 +556,18 @@
 
                   }
                }
+            }
+
+            .countButton {
+
+               background: repeating-linear-gradient(-45deg, lightblue, white 10px);
+
+            }
+
+            .rescheduleButton {
+
+               background: repeating-linear-gradient(-45deg, lightblue, white 10px);
+               
             }
          }
 
@@ -633,7 +648,7 @@
 
          .dashContainer {
 
-          
+            width: 50%;
 
             .modalList {
 
@@ -810,7 +825,7 @@
 
          .dashContainer {
 
-          
+            width: 50%;
 
             .modalList {
 
