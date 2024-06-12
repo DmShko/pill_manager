@@ -1,5 +1,5 @@
 # MEDICINE 
-![My Image](pills-svgrepo-com)
+![My Image](pills-svgrepo-com.svg)
  
 This project allows you to keep track of the medications you take
 
