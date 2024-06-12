@@ -6,6 +6,8 @@ import { nanoid } from 'nanoid';
 
 import Select from 'react-dropdown-select';
 
+import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
+
 // own dispatch hook
 import { useAppDispatch, useAppSelector } from "../../../app.hooks";
 
@@ -372,17 +374,8 @@ const CourseDashboard: FC = () => {
 
     for(const a of statisticsSelector) {
 
-      // const pillInStatistic = statisticsSelector.find(element => element.pillName === selectedPillName);
-
       if(a.pillName !== undefined && a.pillName === selectedPillName && a.dateNumber === selectedDay.toString()) {
-      
-        // if selected day exist in statistic
-        // if(pillInStatistic !== undefined && pillInStatistic.dateNumber === selectedDay.toString()) {
-          
-        //   isPillDay = true;
-        //   pillId = pillInStatistic._id;
-        // } 
-
+    
         isPillDay = true;
         pillId = a._id;
       }
@@ -702,12 +695,24 @@ const CourseDashboard: FC = () => {
     switch(evt.currentTarget.id) {
 
       case 'delete':
-        for(const c of coursesSelector){
-          if(c.selected === true) {
-            dispatch(changeCourses({ mode: 'deleteCourse', data: c._id, key: '',}));
-            dispatch(updateByIdAPI({ token: tokenSelector,  id: c._id,}));
-          }
+        
+        Confirm.show(
+          'Medicine Confirm',
+          'Are you sure',
+          'Yes',
+          'No',
+          () => {
+            for(const c of coursesSelector){
+            if(c.selected === true) {
+              dispatch(changeCourses({ mode: 'deleteCourse', data: c._id, key: '',}));
+              dispatch(updateByIdAPI({ token: tokenSelector,  id: c._id,}));
+            }
         }
+          },
+          () => {
+         
+          },
+          );
         break;
       case 'edit':
         setIsAddBoard(true);
@@ -1361,10 +1366,10 @@ const CourseDashboard: FC = () => {
               <div className={cd.infoSymbols}>
                 {actualMonthesSelector !== undefined ? 
                 <p className={cd.actualMonths} style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'gray'}}>{`Pill months: [${actualMonthesSelector.join(" ")}]`}</p> : 'no months'}
-                <div className={cd.infoBall} style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'white'}}>
-                  <div className={cd.ballContainer}><div className={cd.infoRed}></div><p className={cd.text}>Not done or/and miss</p></div>
+                <div className={cd.infoBall} style={lightModeSelector === 'dark' ? {color:'#9da1fc'} : {color:'gray'}}>
+                  <div className={cd.ballContainer}><div className={cd.infoRed}></div><p className={cd.text}>Missed</p></div>
                   <div className={cd.ballContainer}><div className={cd.infoRedOrange}></div><p className={cd.text}>Reschedule</p></div>
-                  <div className={cd.ballContainer}><div className={cd.infoOrange}></div><p className={cd.text}>Not done or in future</p></div>
+                  <div className={cd.ballContainer}><div className={cd.infoOrange}></div><p className={cd.text}>Not done/in future</p></div>
                   <div className={cd.ballContainer}><div className={cd.infoGreen}></div><p className={cd.text}>Done</p></div>
                 </div>
               </div>
