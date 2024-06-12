@@ -193,6 +193,16 @@
 
       overflow-y: scroll;
 
+      &::-webkit-scrollbar {
+         width: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+
+         background-image: radial-gradient(circle farthest-side at 50% 50%, lightblue, white);
+      
+      }
+
       .infoZone {
 
          width: 100%;
