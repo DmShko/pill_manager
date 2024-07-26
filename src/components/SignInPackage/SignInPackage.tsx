@@ -180,7 +180,7 @@ const SignIp = () => {
 
           <h1 className={si.formTitle}>{languageSelector === 'En' ? 'SignIn': 'Увійти'}</h1>
                   
-          <div className={si.itemLabel}> <Lock width={'20px'} height={'20px'} /> <label htmlFor="email">{languageSelector === 'En' ? 'Email': 'Пошта'}</label></div>
+          <div className={si.itemLabel}> <Mail width={'20px'} height={'20px'} /> <label htmlFor="email">{languageSelector === 'En' ? 'Email': 'Пошта'}</label></div>
 
           <input
             id="email"
@@ -191,7 +191,7 @@ const SignIp = () => {
             style={lightModeSelector === 'dark' ? {backgroundColor: 'rgb(39, 29, 92)'} : {backgroundColor: 'white'}}
           />
 
-          <div className={si.itemLabel}> <Mail width={'20px'} height={'20px'} /> <label htmlFor="password">{languageSelector === 'En' ? 'Password': 'Пароль'}</label> </div>
+          <div className={si.itemLabel}> <Lock width={'20px'} height={'20px'} /> <label htmlFor="password">{languageSelector === 'En' ? 'Password': 'Пароль'}</label> </div>
           <input
             id="password"
             name="password"
